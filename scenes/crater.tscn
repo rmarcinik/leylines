@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dgix0p5h7oqmd"]
+
+[node name="Crater" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+transform = Transform3D(8000, 0, 0, 0, 8000, 0, 0, 0, 8000, 0, 0, 0)
+use_collision = true
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="CSGCombiner3D"]
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.392325, 0)
+operation = 2
+radius = 0.6

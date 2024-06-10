@@ -1,4 +1,4 @@
-extends Node3D
+extends RigidBody3D
 
 var previewmesh = preload("res://asset/Preview.tres")
 var projectile = preload("res://TD/Projectile.tscn")
@@ -16,7 +16,7 @@ func _on_Timer_timeout():
 func action_tower():
 	var rock = projectile.instantiate()
 	add_child(rock, true)
-	rock.global_transform = $Tower/Spawner.global_transform
+	rock.global_transform = $Spawner.global_transform
 	var outwards = rock.global_transform.basis.z + rock.global_transform.basis.y
 	rock.apply_central_impulse(outwards*SPEED)
 
@@ -25,10 +25,10 @@ func enable_preview():
 	# we also need to disable collision
 	# 
 	$Timer.stop()
-	$Tower/Base.set_surface_override_material(0, previewmesh)
-	$Tower/Base/Spout.set_surface_override_material(0, previewmesh)
-	$Tower/BaseCollider.set_disabled(true)
-	$Tower/SpoutCollider.set_disabled(true)
+	$Base.set_surface_override_material(0, previewmesh)
+	$Base/Spout.set_surface_override_material(0, previewmesh)
+	$BaseCollider.set_disabled(true)
+	$SpoutCollider.set_disabled(true)
 
 
 

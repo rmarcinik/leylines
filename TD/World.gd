@@ -14,6 +14,9 @@ func place_tower(preview):
 	add_child(node, true)
 	node.global_transform = preview
 	$Player.connect("action_tower",Callable(node,"action_tower"))
+
+func connect_vortex():
+	pass
 	
 func make_grid() -> void:
 	var width = 6
@@ -22,12 +25,10 @@ func make_grid() -> void:
 	var step = 8
 	var xrange = width * step
 	var zrange = length * step
-	var pos
 	var node
 	
 	for x in range(0, xrange, step):
 		for z in range(0, zrange, step):
-			pos = Vector3(x,height,z)
 			node = land.instantiate()
-			node.position = pos
+			node.position = Vector3(x,height,z)
 			add_child(node, true)

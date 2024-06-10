@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @export var speed := 40.0
 @export var jump_strength := 40.0
-@export var gravity := 60.0
+@export var gravity := 10.0
 signal send_preview(position)
 signal action_tower()
 
@@ -16,7 +16,7 @@ func _ready() -> void:
 	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
 
 func _on_Timer_timeout():
-	print(get_input())
+	print(floored())
 	
 func get_input() -> Vector3:
 	var move_direction := Vector3.ZERO
@@ -33,16 +33,16 @@ func _physics_process(delta: float) -> void:
 	
 	#_velocity.x = move_direction.x * speed
 	#_velocity.z = move_direction.z * speed
-	_velocity.y -= gravity * delta
+	_velocity.y -= 6*gravity * delta
 	
-	var just_landed := is_on_floor() and _snap_vector == Vector3.ZERO
-	var is_jumping := is_on_floor() and Input.is_action_just_pressed("jump")
-	var in_air := not is_on_floor()
+	var just_landed := floored() and _snap_vector == Vector3.ZERO
+	var is_jumping := Input.is_action_just_pressed("jump") # and floored() 
+	var in_air := not floored()
 	
 	# if the player is the the air reduce their input strength, and reduce velocity
 	if in_air:
-		_velocity.x = move_direction.x * speed / 2
-		_velocity.z = move_direction.z * speed / 2
+		_velocity.x = move_direction.x * speed #/ 2
+		_velocity.z = move_direction.z * speed #/ 2
 	else:
 		_velocity.x = move_direction.x * speed
 		_velocity.z = move_direction.z * speed
