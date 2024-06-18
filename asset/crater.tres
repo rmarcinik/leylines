@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://ocxrbni7wot0"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_0qosu"]
+
+[resource]
+albedo_color = Color(0.336608, 0.336608, 0.336608, 1)
+metallic = 0.75
+roughness = 0.3
+roughness_texture = SubResource("MeshTexture_0qosu")

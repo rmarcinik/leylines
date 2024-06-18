@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dgix0p5h7oqmd"]
+[gd_scene load_steps=2 format=3 uid="uid://dgix0p5h7oqmd"]
+
+[ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="1_y008n"]
 
 [node name="Crater" type="Node3D"]
 
@@ -7,8 +9,10 @@ transform = Transform3D(8000, 0, 0, 0, 8000, 0, 0, 0, 8000, 0, 0, 0)
 use_collision = true
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="CSGCombiner3D"]
+material = ExtResource("1_y008n")
 
 [node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.392325, 0)
 operation = 2
 radius = 0.6
+material = ExtResource("1_y008n")

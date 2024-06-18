@@ -1,6 +1,7 @@
-[gd_scene load_steps=30 format=3 uid="uid://ipa5a74hiw2f"]
+[gd_scene load_steps=31 format=3 uid="uid://ipa5a74hiw2f"]
 
 [ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://TD/Player.tscn" id="1"]
+[ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="3_6v7it"]
 [ext_resource type="PackedScene" uid="uid://0yafcgme28lm" path="res://TD/Projectile.tscn" id="3_at2vy"]
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="3_l01bo"]
 [ext_resource type="Script" path="res://TD/World.gd" id="4"]
@@ -39,18 +40,10 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="StandardMaterial3D" id="6"]
-albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
-
-[sub_resource type="StandardMaterial3D" id="7"]
-albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
-
-[sub_resource type="StandardMaterial3D" id="18"]
-albedo_color = Color(0.396078, 0.396078, 0.396078, 1)
-
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vs3v0"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_whpp2"]
+material = ExtResource("3_6v7it")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_v6as0"]
 
@@ -70,6 +63,15 @@ bottom_radius = 3.0
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_vqhgi"]
 height = 6.0
+
+[sub_resource type="StandardMaterial3D" id="6"]
+albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
+
+[sub_resource type="StandardMaterial3D" id="7"]
+albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
+
+[sub_resource type="StandardMaterial3D" id="18"]
+albedo_color = Color(0.396078, 0.396078, 0.396078, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_cp7uq"]
 size = Vector3(120.825, 6, 4844)
@@ -105,7 +107,7 @@ directional_shadow_pancake_size = 0.1
 environment = SubResource("Environment_lm7h8")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 211.464, 167.864, 52.8588)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 206.148, 203.438, 44.304)
 
 [node name="Portal" type="Node3D" parent="."]
 
@@ -137,6 +139,55 @@ path_local = false
 path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
+
+[node name="moon" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
+physics_material_override = SubResource("PhysicsMaterial_vs3v0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="moon"]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+mesh = SubResource("SphereMesh_whpp2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="moon"]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+shape = SubResource("SphereShape3D_v6as0")
+
+[node name="Area3D" type="Area3D" parent="moon"]
+gravity_space_override = 3
+gravity_point = true
+gravity_point_center = Vector3(0, 0, 0)
+gravity_direction = Vector3(0, 0, 0)
+linear_damp = 10.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="moon/Area3D"]
+transform = Transform3D(120, 0, 0, 0, 120, 0, 0, 0, 120, 0, 0, 0)
+shape = SubResource("SphereShape3D_0j64c")
+
+[node name="Tower" type="RigidBody3D" parent="moon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.082, -8.51149)
+input_ray_pickable = false
+mass = 10.0
+
+[node name="Spawner" type="Marker3D" parent="moon/Tower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8459, 4.16025)
+
+[node name="SpoutCollider" type="CollisionShape3D" parent="moon/Tower"]
+transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0, 1.81993, 0.926817)
+shape = SubResource("CylinderShape3D_ora1b")
+
+[node name="BaseCollider" type="CollisionShape3D" parent="moon/Tower"]
+shape = SubResource("CylinderShape3D_k2n6k")
+
+[node name="Base" type="MeshInstance3D" parent="moon/Tower"]
+transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0.00798321, -0.0131406, 0.00105006)
+mesh = SubResource("CylinderMesh_5e3s7")
+
+[node name="Spout" type="MeshInstance3D" parent="moon/Tower/Base"]
+transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0.00671816, 1.78966, 1.02539)
+mesh = SubResource("CylinderMesh_vqhgi")
+
+[node name="Rock" parent="moon" instance=ExtResource("3_at2vy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.525, 26.006, 0)
 
 [node name="Blocks" type="Node3D" parent="."]
 
@@ -178,55 +229,6 @@ polygon = PackedVector2Array(0, 100, 100, 0, 0, 0)
 mode = 1
 spin_degrees = 340.0
 spin_sides = 11
-
-[node name="moon" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
-physics_material_override = SubResource("PhysicsMaterial_vs3v0")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Blocks/moon"]
-transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
-mesh = SubResource("SphereMesh_whpp2")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/moon"]
-transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
-shape = SubResource("SphereShape3D_v6as0")
-
-[node name="Area3D" type="Area3D" parent="Blocks/moon"]
-gravity_space_override = 3
-gravity_point = true
-gravity_point_center = Vector3(0, 0, 0)
-gravity_direction = Vector3(0, 0, 0)
-gravity = 1000.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/moon/Area3D"]
-transform = Transform3D(120, 0, 0, 0, 120, 0, 0, 0, 120, 0, 0, 0)
-shape = SubResource("SphereShape3D_0j64c")
-
-[node name="Tower" type="RigidBody3D" parent="Blocks/moon"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.082, -8.51149)
-input_ray_pickable = false
-mass = 10.0
-
-[node name="Spawner" type="Marker3D" parent="Blocks/moon/Tower"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8459, 4.16025)
-
-[node name="SpoutCollider" type="CollisionShape3D" parent="Blocks/moon/Tower"]
-transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0, 1.81993, 0.926817)
-shape = SubResource("CylinderShape3D_ora1b")
-
-[node name="BaseCollider" type="CollisionShape3D" parent="Blocks/moon/Tower"]
-shape = SubResource("CylinderShape3D_k2n6k")
-
-[node name="Base" type="MeshInstance3D" parent="Blocks/moon/Tower"]
-transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0.00798321, -0.0131406, 0.00105006)
-mesh = SubResource("CylinderMesh_5e3s7")
-
-[node name="Spout" type="MeshInstance3D" parent="Blocks/moon/Tower/Base"]
-transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0.00671816, 1.78966, 1.02539)
-mesh = SubResource("CylinderMesh_vqhgi")
-
-[node name="Rock" parent="Blocks/moon" instance=ExtResource("3_at2vy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.525, 26.006, 0)
 
 [node name="Crater" parent="Blocks" instance=ExtResource("3_l01bo")]
 
