@@ -4,16 +4,16 @@
 size = Vector3(8, 1, 8)
 
 [sub_resource type="BoxShape3D" id="2"]
+size = Vector3(8, 1, 8)
 
 [node name="Land" type="Node3D"]
 
 [node name="Land" type="RigidBody3D" parent="."]
-mass = 500000.0
+mass = 1000.0
 gravity_scale = 0.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Land"]
 mesh = SubResource("1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Land"]
-transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 8, 0, 0, 0)
 shape = SubResource("2")

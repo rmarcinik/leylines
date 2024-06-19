@@ -107,7 +107,7 @@ directional_shadow_pancake_size = 0.1
 environment = SubResource("Environment_lm7h8")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 206.148, 203.438, 44.304)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.80751, 17.9305, -101.533)
 
 [node name="Portal" type="Node3D" parent="."]
 
@@ -157,7 +157,9 @@ gravity_space_override = 3
 gravity_point = true
 gravity_point_center = Vector3(0, 0, 0)
 gravity_direction = Vector3(0, 0, 0)
-linear_damp = 10.0
+gravity = 50.0
+linear_damp_space_override = 3
+linear_damp = 1.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="moon/Area3D"]
 transform = Transform3D(120, 0, 0, 0, 120, 0, 0, 0, 120, 0, 0, 0)
