@@ -62,7 +62,7 @@ func _integrate_forces(state) -> void:
 		#print('applying force when on the ground')
 		apply_central_force(_move_direction * speed)
 	else:
-		print('applying force when in the air')
+		#print('applying force when in the air')
 		# without some downward force jumping feels very floaty
 		apply_central_impulse(local_gravity*100)
 		apply_central_force(_move_direction * speed / 2)

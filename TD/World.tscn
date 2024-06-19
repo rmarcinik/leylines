@@ -1,8 +1,9 @@
-[gd_scene load_steps=32 format=3 uid="uid://ipa5a74hiw2f"]
+[gd_scene load_steps=33 format=3 uid="uid://ipa5a74hiw2f"]
 
 [ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://TD/Player.tscn" id="1"]
-[ext_resource type="Material" path="res://asset/crater.tres" id="3_6v7it"]
+[ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="3_6v7it"]
 [ext_resource type="PackedScene" uid="uid://0yafcgme28lm" path="res://TD/Projectile.tscn" id="3_at2vy"]
+[ext_resource type="Script" path="res://TD/Portal.gd" id="3_ke1d1"]
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="3_l01bo"]
 [ext_resource type="Script" path="res://TD/World.gd" id="4"]
 [ext_resource type="MeshLibrary" path="res://asset/prism.meshlib" id="4_xs8tg"]
@@ -26,6 +27,13 @@ sdfgi_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.002
 
+[sub_resource type="Curve3D" id="Curve3D_7lrgu"]
+_data = {
+"points": PackedVector3Array(-63.7548, -1.25417, -4.08009, 63.7548, 1.25417, 4.08009, 7.00082, -0.264847, 0.0111084, -42.9496, 35.576, 49.3358, 42.9496, -35.576, -49.3358, 156.765, 180.187, 103.33),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
 [sub_resource type="SphereMesh" id="SphereMesh_0vnvy"]
 radius = 1.0
 height = 2.0
@@ -33,14 +41,8 @@ height = 2.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xoogd"]
 shading_mode = 0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_rhkde"]
-
-[sub_resource type="Curve3D" id="Curve3D_7lrgu"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 19.275, -0.575, 0, 0, 0, 0, -21.475, 0, 0, 0, 0, 0, 11.115, 11.35, 0),
-"tilts": PackedFloat32Array(0, 0)
-}
-point_count = 2
+[sub_resource type="SphereShape3D" id="SphereShape3D_tus5q"]
+radius = 1.0
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vs3v0"]
 
@@ -108,25 +110,14 @@ environment = SubResource("Environment_lm7h8")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.80751, 17.9305, -101.533)
 
 [node name="Portal" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.409, 0, 0)
 
-[node name="Portal" type="Area3D" parent="Portal"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.94941, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Portal/Portal"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-visible = false
-mesh = SubResource("SphereMesh_0vnvy")
-surface_material_override/0 = SubResource("StandardMaterial3D_xoogd")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Portal/Portal"]
-shape = SubResource("SphereShape3D_rhkde")
-
-[node name="Path3D" type="Path3D" parent="Portal/Portal"]
-transform = Transform3D(3.80956, 0, 0, 0, 1.50293, 0, 0, 0, 1, 0, 0, 0)
+[node name="Path3D" type="Path3D" parent="Portal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.61302, 0, 0)
 curve = SubResource("Curve3D_7lrgu")
 
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Portal/Portal/Path3D"]
-transform = Transform3D(0.262498, 0, 0, 0, 0.665367, 0, 0, 0, 1, 0, 0, 0)
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Portal/Path3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.848, 0, 0)
 mode = 2
 path_node = NodePath("..")
 path_interval_type = 0
@@ -137,6 +128,34 @@ path_local = false
 path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
+
+[node name="entermesh" type="MeshInstance3D" parent="Portal"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+mesh = SubResource("SphereMesh_0vnvy")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_xoogd")
+
+[node name="Area3D" type="Area3D" parent="Portal/entermesh"]
+script = ExtResource("3_ke1d1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portal/entermesh/Area3D"]
+shape = SubResource("SphereShape3D_tus5q")
+
+[node name="exitmesh" type="MeshInstance3D" parent="Portal"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 152.317, 180.914, 101.062)
+mesh = SubResource("SphereMesh_0vnvy")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_xoogd")
+
+[node name="Area3D" type="Area3D" parent="Portal/exitmesh"]
+script = ExtResource("3_ke1d1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portal/exitmesh/Area3D"]
+shape = SubResource("SphereShape3D_tus5q")
+
+[node name="portal_cooldown" type="Timer" parent="Portal"]
+wait_time = 5.0
+one_shot = true
 
 [node name="moon" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
