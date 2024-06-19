@@ -1,7 +1,7 @@
 extends RigidBody3D
 
 @export var speed := 10000.0
-@export var jump_strength := 10000.0
+@export var jump_strength := 5000.0
 @export var local_gravity := Vector3.DOWN
 var _move_direction = Vector3.ZERO
 var _last_strong_direction = Vector3.FORWARD
@@ -51,8 +51,8 @@ func _integrate_forces(state) -> void:
 	local_gravity = state.total_gravity.normalized()
 		
 	_move_direction = _get_model_oriented_input()
-	_last_strong_direction = _frontraycast.target_position.normalized()
-	_last_strong_direction = get_mouse_preview().normalized()
+	# orient player to the camera direction
+	_last_strong_direction = _spring_arm.basis.z
 	_orient_character_to_direction(_last_strong_direction, state.step)
 	
 	if is_jumping():
@@ -63,7 +63,7 @@ func _integrate_forces(state) -> void:
 		apply_central_force(_move_direction * speed)
 	else:
 		#print('applying force when in the air')
-		apply_central_force(_move_direction * speed / 2)
+		apply_central_force(_move_direction * speed / 4)
 		
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -96,7 +96,8 @@ func get_mouse_preview() -> Vector3:
 		return result.position
 
 func _process(_delta: float) -> void:
-	
+	# move the spring arm to follow the player a bit above them based on gravity	
+	_spring_arm.position = position + Vector3(0, 8, 0) * -local_gravity
 	# move the tower preview to wherever the mouse is looking at a surface
 	$Tower.global_transform.origin = get_mouse_preview()
 	if Input.is_action_just_pressed("Inventory1"):

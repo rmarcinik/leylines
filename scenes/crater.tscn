@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dgix0p5h7oqmd"]
 
-[ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="1_y008n"]
+[ext_resource type="Material" path="res://asset/crater.tres" id="1_y008n"]
 
 [node name="Crater" type="Node3D"]
 

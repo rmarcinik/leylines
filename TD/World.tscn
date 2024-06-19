@@ -1,11 +1,11 @@
 [gd_scene load_steps=31 format=3 uid="uid://ipa5a74hiw2f"]
 
 [ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://TD/Player.tscn" id="1"]
-[ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="3_6v7it"]
+[ext_resource type="Material" path="res://asset/crater.tres" id="3_6v7it"]
 [ext_resource type="PackedScene" uid="uid://0yafcgme28lm" path="res://TD/Projectile.tscn" id="3_at2vy"]
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="3_l01bo"]
 [ext_resource type="Script" path="res://TD/World.gd" id="4"]
-[ext_resource type="MeshLibrary" uid="uid://b3bohtw7m64f5" path="res://asset/prism.meshlib" id="4_xs8tg"]
+[ext_resource type="MeshLibrary" path="res://asset/prism.meshlib" id="4_xs8tg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
 sky_top_color = Color(0, 0, 0, 1)
