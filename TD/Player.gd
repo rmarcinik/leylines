@@ -35,20 +35,18 @@ func floored() -> bool:
 	return _raycast.is_colliding()
 
 func _integrate_forces(state) -> void:
-
+		
+	# Get direction of gravity
+	local_gravity = state.total_gravity.normalized()
 	
+	# translate mouse motion into a vector to rotate the player
 	if(mouseMotion_y != null):
 		v_rot = -Vector3(transform.basis.x*mouseMotion_y*0.2)
 	if(mouseMotion_x != null):
 		h_rot = -Vector3(transform.basis.y*mouseMotion_x*0.2)
 	rot_vec = v_rot + h_rot
 	state.angular_velocity = rot_vec
-	
-	
-	
-	
-	# Get direction of gravity
-	local_gravity = state.total_gravity.normalized()
+
 		
 	_move_direction = _get_model_oriented_input()
 	# orient player to the camera direction
