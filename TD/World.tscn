@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ipa5a74hiw2f"]
+[gd_scene load_steps=32 format=3 uid="uid://ipa5a74hiw2f"]
 
 [ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://TD/Player.tscn" id="1"]
 [ext_resource type="Material" path="res://asset/crater.tres" id="3_6v7it"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="3_l01bo"]
 [ext_resource type="Script" path="res://TD/World.gd" id="4"]
 [ext_resource type="MeshLibrary" path="res://asset/prism.meshlib" id="4_xs8tg"]
+[ext_resource type="Material" uid="uid://bouh5qp24wue8" path="res://asset/Night.tres" id="5_0ne2v"]
+[ext_resource type="Material" uid="uid://kby56bvoe8qk" path="res://asset/Gold.tres" id="5_4n3da"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -88,10 +90,6 @@ size = Vector3(5, 5, 5)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_rfrws"]
 data = PackedVector3Array(-2.5, 2.5, 2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, -2.5, -2.5, 2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, 2.5, -2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, -2.5, 2.5, -2.5, -2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, 2.5, -2.5, -2.5, -2.5, 2.5, -2.5, 2.5, 2.5, -2.5, -2.5, -2.5, -2.5, -2.5)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_3mqlo"]
-height = 20.0
-radius = 1.0
 
 [node name="World" type="Node3D"]
 script = ExtResource("4")
@@ -224,6 +222,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 500.593, -68.1837)
 radius = 100.0
 height = 1000.0
 sides = 64
+material = ExtResource("5_0ne2v")
 
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="Blocks/Foundation2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 211.217, 11.7241, -208.12)
@@ -231,6 +230,7 @@ polygon = PackedVector2Array(0, 100, 100, 0, 0, 0)
 mode = 1
 spin_degrees = 340.0
 spin_sides = 11
+material = ExtResource("5_4n3da")
 
 [node name="Crater" parent="Blocks" instance=ExtResource("3_l01bo")]
 
@@ -380,14 +380,3 @@ data = {
 "cells": PackedInt32Array(0, 65531, 589824, 0, 65530, 589824, 0, 65529, 589824, 0, 65532, 589824, 0, 65527, 589824, 0, 65525, 589824, 0, 65535, 589824, 196606, 65522, 589824, 327676, 65524, 589824, 4, 65525, 65536, 4, 65523, 65536, 4, 65521, 65536, 262148, 65521, 720896, 262148, 65523, 131072, 262148, 65525, 131072, 262144, 65525, 524288, 262144, 65523, 524288, 262144, 65521, 524288, 262144, 65519, 524288)
 }
 metadata/_editor_floor_ = Vector3(0, 4, 0)
-
-[node name="Stream" type="Node3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.338827, 8.39431, 4.57403)
-
-[node name="Area3D" type="Area3D" parent="Stream"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Stream/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19706, 0)
-shape = SubResource("CylinderShape3D_3mqlo")
-
-[node name="RayCast3D" type="RayCast3D" parent="Stream"]
