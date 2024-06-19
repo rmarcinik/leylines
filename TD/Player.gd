@@ -62,8 +62,10 @@ func _integrate_forces(state) -> void:
 		#print('applying force when on the ground')
 		apply_central_force(_move_direction * speed)
 	else:
-		#print('applying force when in the air')
-		apply_central_force(_move_direction * speed / 4)
+		print('applying force when in the air')
+		# without some downward force jumping feels very floaty
+		apply_central_impulse(local_gravity*100)
+		apply_central_force(_move_direction * speed / 2)
 		
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -77,8 +79,7 @@ func _get_model_oriented_input() -> Vector3:
 func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
 	var left_axis := -local_gravity.cross(direction)
 	var rotation_basis := Basis(left_axis, -local_gravity, direction).orthonormalized()
-	print(rotation_basis)
-	basis = basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 20)
+	basis = basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 50)
 
 func is_jumping():
 	return Input.is_action_pressed("jump")
@@ -102,7 +103,7 @@ func _process(_delta: float) -> void:
 	$Tower.global_transform.origin = get_mouse_preview()
 	if Input.is_action_just_pressed("Inventory1"):
 		$Tower.toggle_visible()
-	if Input.is_action_just_pressed("leftclick"):
+	if Input.is_action_just_pressed("leftclick") and $Tower.visible:
 		emit_signal('send_preview', $Tower.global_transform)
 	if Input.is_action_just_pressed("rightclick"):
 		emit_signal('action_tower')
