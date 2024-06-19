@@ -1,7 +1,7 @@
 extends RigidBody3D
 
-@export var speed := 5000.0
-@export var jump_strength := 100000.0
+@export var speed := 10000.0
+@export var jump_strength := 10000.0
 @export var local_gravity := Vector3.DOWN
 var _move_direction = Vector3.ZERO
 var _last_strong_direction = Vector3.FORWARD
@@ -51,15 +51,16 @@ func _integrate_forces(state) -> void:
 	local_gravity = state.total_gravity.normalized()
 		
 	_move_direction = _get_model_oriented_input()
-	_last_strong_direction = _frontraycast.target_position
+	_last_strong_direction = _frontraycast.target_position.normalized()
+	_last_strong_direction = get_mouse_preview().normalized()
 	_orient_character_to_direction(_last_strong_direction, state.step)
 	
-	if is_jumping(state):
+	if is_jumping():
 		#print('applying force when jumping')
 		apply_central_impulse(-local_gravity * jump_strength)
 	if floored():
 		#print('applying force when on the ground')
-		apply_central_force(_move_direction * speed * 2)
+		apply_central_force(_move_direction * speed)
 	else:
 		#print('applying force when in the air')
 		apply_central_force(_move_direction * speed / 2)
@@ -76,10 +77,11 @@ func _get_model_oriented_input() -> Vector3:
 func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
 	var left_axis := -local_gravity.cross(direction)
 	var rotation_basis := Basis(left_axis, -local_gravity, direction).orthonormalized()
+	print(rotation_basis)
 	basis = basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 20)
 
-func is_jumping(state):
-	return Input.is_action_just_pressed("jump")
+func is_jumping():
+	return Input.is_action_pressed("jump")
 
 func get_mouse_preview() -> Vector3:
 	var space_state = get_world_3d().get_direct_space_state()
@@ -97,6 +99,8 @@ func _process(_delta: float) -> void:
 	
 	# move the tower preview to wherever the mouse is looking at a surface
 	$Tower.global_transform.origin = get_mouse_preview()
+	if Input.is_action_just_pressed("Inventory1"):
+		$Tower.toggle_visible()
 	if Input.is_action_just_pressed("leftclick"):
 		emit_signal('send_preview', $Tower.global_transform)
 	if Input.is_action_just_pressed("rightclick"):

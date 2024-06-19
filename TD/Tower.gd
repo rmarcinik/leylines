@@ -8,11 +8,18 @@ func _ready() -> void:
 	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
 	
 	if get_parent().get_name() == "Player":
+		toggle_visible()
 		enable_preview()
 		
 func _on_Timer_timeout():
 	action_tower()
 
+func toggle_visible():
+	if visible:
+		visible = false
+	else:
+		visible = true
+	
 func action_tower():
 	var rock = projectile.instantiate()
 	add_child(rock, true)
