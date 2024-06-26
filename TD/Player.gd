@@ -62,7 +62,7 @@ func _integrate_forces(state) -> void:
 	else:
 		#print('applying force when in the air')
 		# without some downward force jumping feels very floaty
-		apply_central_impulse(local_gravity*100)
+		apply_central_impulse(local_gravity * 100)
 		apply_central_force(_move_direction * speed / 2)
 		
 func _get_model_oriented_input() -> Vector3:
@@ -77,7 +77,7 @@ func _get_model_oriented_input() -> Vector3:
 func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
 	var left_axis := -local_gravity.cross(direction)
 	var rotation_basis := Basis(left_axis, -local_gravity, direction).orthonormalized()
-	basis = basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 50)
+	basis = basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 10)
 
 func is_jumping():
 	return Input.is_action_pressed("jump")
@@ -87,16 +87,20 @@ func get_mouse_preview() -> Vector3:
 	var params = PhysicsRayQueryParameters3D.new()
 	var mouse_pos = get_viewport().get_mouse_position()
 	params.from = $CameraArm/Camera3D.project_ray_origin(mouse_pos)
-	params.to = params.from + $CameraArm/Camera3D.project_ray_normal(mouse_pos) * 1000
+	# distance that player can place object: 100
+	params.to = params.from + $CameraArm/Camera3D.project_ray_normal(mouse_pos) * 100
 	var result = space_state.intersect_ray(params)
 	if result.is_empty():
 		return params.to
 	else:
 		return result.position
 
-func _process(_delta: float) -> void:
+func _physics_process(delta):
 	# move the spring arm to follow the player a bit above them based on gravity	
 	_spring_arm.position = position + Vector3(0, 8, 0) * -local_gravity
+	#_spring_arm.transform.basis = transform.basis
+	
+func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface
 	$Tower.global_transform.origin = get_mouse_preview()
 	if Input.is_action_just_pressed("Inventory1"):

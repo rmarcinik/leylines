@@ -176,7 +176,7 @@ gravity_point_center = Vector3(0, 0, 0)
 gravity_direction = Vector3(0, 0, 0)
 gravity = 50.0
 linear_damp_space_override = 3
-linear_damp = 1.0
+linear_damp = 0.048
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="moon/Area3D"]
 transform = Transform3D(120, 0, 0, 0, 120, 0, 0, 0, 120, 0, 0, 0)
