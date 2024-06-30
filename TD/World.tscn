@@ -1,8 +1,7 @@
-[gd_scene load_steps=33 format=3 uid="uid://ipa5a74hiw2f"]
+[gd_scene load_steps=28 format=3 uid="uid://ipa5a74hiw2f"]
 
 [ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://TD/Player.tscn" id="1"]
 [ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="3_6v7it"]
-[ext_resource type="PackedScene" uid="uid://0yafcgme28lm" path="res://TD/Projectile.tscn" id="3_at2vy"]
 [ext_resource type="Script" path="res://TD/Portal.gd" id="3_ke1d1"]
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="3_l01bo"]
 [ext_resource type="Script" path="res://TD/World.gd" id="4"]
@@ -52,21 +51,6 @@ material = ExtResource("3_6v7it")
 [sub_resource type="SphereShape3D" id="SphereShape3D_v6as0"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0j64c"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_ora1b"]
-height = 6.14613
-radius = 0.891848
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_k2n6k"]
-height = 2.1541
-radius = 2.99997
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_5e3s7"]
-top_radius = 3.0
-bottom_radius = 3.0
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_vqhgi"]
-height = 6.0
 
 [sub_resource type="StandardMaterial3D" id="6"]
 albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
@@ -181,32 +165,6 @@ linear_damp = 0.048
 [node name="CollisionShape3D" type="CollisionShape3D" parent="moon/Area3D"]
 transform = Transform3D(120, 0, 0, 0, 120, 0, 0, 0, 120, 0, 0, 0)
 shape = SubResource("SphereShape3D_0j64c")
-
-[node name="Tower" type="RigidBody3D" parent="moon"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.082, -8.51149)
-input_ray_pickable = false
-mass = 10.0
-
-[node name="Spawner" type="Marker3D" parent="moon/Tower"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8459, 4.16025)
-
-[node name="SpoutCollider" type="CollisionShape3D" parent="moon/Tower"]
-transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0, 1.81993, 0.926817)
-shape = SubResource("CylinderShape3D_ora1b")
-
-[node name="BaseCollider" type="CollisionShape3D" parent="moon/Tower"]
-shape = SubResource("CylinderShape3D_k2n6k")
-
-[node name="Base" type="MeshInstance3D" parent="moon/Tower"]
-transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0.00798321, -0.0131406, 0.00105006)
-mesh = SubResource("CylinderMesh_5e3s7")
-
-[node name="Spout" type="MeshInstance3D" parent="moon/Tower/Base"]
-transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0.00671816, 1.78966, 1.02539)
-mesh = SubResource("CylinderMesh_vqhgi")
-
-[node name="Rock" parent="moon" instance=ExtResource("3_at2vy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.525, 26.006, 0)
 
 [node name="Blocks" type="Node3D" parent="."]
 

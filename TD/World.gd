@@ -14,9 +14,6 @@ func place_tower(preview):
 	add_child(node, true)
 	node.global_transform = preview
 	$Player.connect("action_tower",Callable(node,"action_tower"))
-
-func connect_vortex():
-	pass
 	
 func make_grid() -> void:
 	var width = 6
