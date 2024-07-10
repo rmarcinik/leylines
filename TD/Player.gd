@@ -77,6 +77,8 @@ func _get_model_oriented_input() -> Vector3:
 func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
 	var left_axis := -local_gravity.cross(direction)
 	var rotation_basis := Basis(left_axis, -local_gravity, direction).orthonormalized()
+	# get rotation quaternion is finding how to change the basis to fit the direction of gravity, and player input
+	# spherical linear interpolation tries to make a smooth movement
 	basis = basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 10)
 
 func is_jumping():
