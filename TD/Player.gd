@@ -1,5 +1,6 @@
 extends RigidBody3D
 
+@export var mouse_sens := 0.2
 @export var speed := 10000.0
 @export var jump_strength := 5000.0
 @export var local_gravity := Vector3.DOWN
@@ -41,10 +42,12 @@ func _integrate_forces(state) -> void:
 	
 	# translate mouse motion into a vector to rotate the player
 	if(mouseMotion_y != null):
-		v_rot = -Vector3(transform.basis.x*mouseMotion_y*0.2)
+		v_rot = -Vector3(transform.basis.x*mouseMotion_y*mouse_sens)
 	if(mouseMotion_x != null):
-		h_rot = -Vector3(transform.basis.y*mouseMotion_x*0.2)
-	rot_vec = v_rot + h_rot
+		h_rot = -Vector3(transform.basis.y*mouseMotion_x*mouse_sens)
+	# using vertical rotation makes the player swing upwards in the air
+	# rot_vec = v_rot + h_rot
+	rot_vec = h_rot
 	state.angular_velocity = rot_vec
 
 		
@@ -99,12 +102,16 @@ func get_mouse_preview() -> Vector3:
 
 func _physics_process(delta):
 	# move the spring arm to follow the player a bit above them based on gravity	
-	_spring_arm.position = position + Vector3(0, 8, 0) * -local_gravity
-	#_spring_arm.transform.basis = transform.basis
+	#var above =  
+	_spring_arm.transform = transform #+ Vector3(0, 8, 0) * -local_gravity
+	# syncing the basis makes the camera lock to the player better, but its jittery
+	# _spring_arm.transform.basis = transform.basis
 	
 func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface
 	$Tower.global_transform.origin = get_mouse_preview()
+	# setting the tower basis to rotate with the player, but its facing towards, still needs work
+	$Tower.global_transform.basis = transform.basis
 	if Input.is_action_just_pressed("Inventory1"):
 		$Tower.toggle_visible()
 	if Input.is_action_just_pressed("leftclick") and $Tower.visible:
