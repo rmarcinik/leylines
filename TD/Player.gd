@@ -65,7 +65,7 @@ func _integrate_forces(state) -> void:
 	else:
 		#print('applying force when in the air')
 		# without some downward force jumping feels very floaty
-		apply_central_impulse(local_gravity * 100)
+		apply_central_impulse(state.total_gravity * 10)
 		apply_central_force(_move_direction * speed / 2)
 		
 func _get_model_oriented_input() -> Vector3:
@@ -102,8 +102,8 @@ func get_mouse_preview() -> Vector3:
 
 func _physics_process(delta):
 	# move the spring arm to follow the player a bit above them based on gravity	
-	#var above =  
-	_spring_arm.transform = transform #+ Vector3(0, 8, 0) * -local_gravity
+	# I think the problem lies within rotating the camera based on x and y and its not relative
+	_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
 	# syncing the basis makes the camera lock to the player better, but its jittery
 	# _spring_arm.transform.basis = transform.basis
 	
