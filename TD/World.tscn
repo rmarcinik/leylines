@@ -68,8 +68,9 @@ material = ExtResource("3_6v7it")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c2y1t"]
 
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_xm28p"]
-map_data = PackedFloat32Array(0, -3, 0, 0)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vw3hx"]
+height = 8.0
+radius = 0.15
 
 [sub_resource type="StandardMaterial3D" id="6"]
 albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
@@ -232,7 +233,7 @@ linear_damp = 0.048
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="moon2/Area3D"]
 transform = Transform3D(115.351, 0, -33.0765, 0, 120, 0, 33.0765, 0, 115.351, 0, -26.6639, 0)
-shape = SubResource("HeightMapShape3D_xm28p")
+shape = SubResource("CylinderShape3D_vw3hx")
 
 [node name="Blocks" type="Node3D" parent="."]
 

@@ -18,7 +18,7 @@ signal action_tower()
 
 @onready var _spring_arm: SpringArm3D = $CameraArm
 @onready var _raycast: RayCast3D = $Downward
-@onready var _frontraycast: RayCast3D = $Forward
+#@onready var _frontraycast: RayCast3D = $Forward
 
 func _ready() -> void:
 	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
@@ -101,7 +101,7 @@ func get_mouse_preview() -> Vector3:
 	else:
 		return result.position
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# move the spring arm to follow the player a bit above them based on gravity	
 	# I think the problem lies within rotating the camera based on x and y and its not relative
 	_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
@@ -116,6 +116,6 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Inventory1"):
 		$Tower.toggle_visible()
 	if Input.is_action_just_pressed("leftclick") and $Tower.visible:
-		emit_signal('send_preview', $Tower.global_transform)
+		send_preview.emit($Tower.global_transform)
 	if Input.is_action_just_pressed("rightclick"):
-		emit_signal('action_tower')
+		action_tower.emit()

@@ -14,5 +14,5 @@ func _on_body_entered(body: PhysicsBody3D):
 		body.global_position = _exitarea.global_position if _enterarea.overlaps_body(body) else _enterarea.global_position
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
