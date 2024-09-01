@@ -114,6 +114,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.80751, 17.9305, -101.533)
 
 [node name="Portal" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.409, 0, 0)
+script = ExtResource("3_ke1d1")
 
 [node name="Path3D" type="Path3D" parent="Portal"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.61302, 0, 0)
@@ -138,8 +139,7 @@ mesh = SubResource("SphereMesh_0vnvy")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_xoogd")
 
-[node name="Area3D" type="Area3D" parent="Portal/entermesh" groups=["PortalEntry"]]
-script = ExtResource("3_ke1d1")
+[node name="Area3D" type="Area3D" parent="Portal/entermesh"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Portal/entermesh/Area3D"]
 shape = SubResource("SphereShape3D_tus5q")
@@ -150,8 +150,7 @@ mesh = SubResource("SphereMesh_0vnvy")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_xoogd")
 
-[node name="Area3D" type="Area3D" parent="Portal/exitmesh" groups=["PortalEntry"]]
-script = ExtResource("3_ke1d1")
+[node name="Area3D" type="Area3D" parent="Portal/exitmesh"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Portal/exitmesh/Area3D"]
 shape = SubResource("SphereShape3D_tus5q")

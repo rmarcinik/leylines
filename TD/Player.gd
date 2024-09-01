@@ -30,7 +30,8 @@ func _unhandled_input(event):
 		mouseMotion_y = event.relative.y
 
 func _on_Timer_timeout():
-	print(_move_direction)
+	pass
+	#print(_move_direction)
 
 func floored() -> bool:
 	return _raycast.is_colliding()
