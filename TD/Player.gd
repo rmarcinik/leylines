@@ -21,6 +21,7 @@ signal action_tower()
 #@onready var _frontraycast: RayCast3D = $Forward
 
 func _ready() -> void:
+	add_to_group('Player')
 	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
