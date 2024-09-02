@@ -7,7 +7,7 @@ extends RigidBody3D
 var _move_direction = Vector3.ZERO
 var _last_strong_direction = Vector3.FORWARD
 
-var mouseMotion_x :float 
+var mouseMotion_x :float
 var mouseMotion_y :float
 var rot_vec: Vector3
 var v_rot: Vector3
@@ -25,8 +25,8 @@ func _ready() -> void:
 	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func _unhandled_input(event): 
-	if(event is InputEventMouseMotion): 
+func _unhandled_input(event):
+	if(event is InputEventMouseMotion):
 		mouseMotion_x = event.relative.x
 		mouseMotion_y = event.relative.y
 
@@ -38,10 +38,10 @@ func floored() -> bool:
 	return _raycast.is_colliding()
 
 func _integrate_forces(state) -> void:
-		
+
 	# Get direction of gravity
 	local_gravity = state.total_gravity.normalized()
-	
+
 	# translate mouse motion into a vector to rotate the player
 	if(mouseMotion_y != null):
 		v_rot = -Vector3(transform.basis.x*mouseMotion_y*mouse_sens)
@@ -52,12 +52,12 @@ func _integrate_forces(state) -> void:
 	rot_vec = h_rot
 	state.angular_velocity = rot_vec
 
-		
+
 	_move_direction = _get_model_oriented_input()
 	# orient player to the camera direction
 	_last_strong_direction = _spring_arm.basis.z
 	_orient_character_to_direction(_last_strong_direction, state.step)
-	
+
 	if is_jumping():
 		#print('applying force when jumping')
 		apply_central_impulse(-local_gravity * jump_strength)
@@ -73,7 +73,7 @@ func _integrate_forces(state) -> void:
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var input = Vector3.ZERO
-	
+
 	input.x = raw_input.x * sqrt(1.0 - raw_input.y * raw_input.y / 2.0)
 	input.z = raw_input.y * sqrt(1.0 - raw_input.x * raw_input.x / 2.0)
 	_move_direction = basis * input
@@ -103,12 +103,12 @@ func get_mouse_preview() -> Vector3:
 		return result.position
 
 func _physics_process(_delta):
-	# move the spring arm to follow the player a bit above them based on gravity	
+	# move the spring arm to follow the player a bit above them based on gravity
 	# I think the problem lies within rotating the camera based on x and y and its not relative
 	_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
 	# syncing the basis makes the camera lock to the player better, but its jittery
 	# _spring_arm.transform.basis = transform.basis
-	
+
 func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface
 	$Tower.global_transform.origin = get_mouse_preview()
@@ -120,3 +120,4 @@ func _process(_delta: float) -> void:
 		send_preview.emit($Tower.global_transform)
 	if Input.is_action_just_pressed("rightclick"):
 		action_tower.emit()
+
