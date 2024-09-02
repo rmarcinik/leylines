@@ -105,9 +105,9 @@ func get_mouse_preview() -> Vector3:
 func _physics_process(_delta):
 	# move the spring arm to follow the player a bit above them based on gravity
 	# I think the problem lies within rotating the camera based on x and y and its not relative
-	#_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
+	_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
 	# syncing the basis makes the camera lock to the player better, but its jittery
-	pass #_spring_arm.transform.basis = transform.basis
+	_spring_arm.transform.basis = transform.basis
 
 func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface

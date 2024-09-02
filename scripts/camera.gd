@@ -4,7 +4,7 @@ extends Node3D
 
 func _ready() -> void:
 	# makes camera independent of player
-	#set_as_top_level(true)
+	set_as_top_level(true)
 	# capture the mouse cursor in the game window
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
