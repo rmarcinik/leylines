@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_2qcsn"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j1014"]
-friction = 0.0
 absorbent = true
 
 [sub_resource type="CapsuleShape3D" id="1"]
