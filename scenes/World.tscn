@@ -6,7 +6,7 @@
 [ext_resource type="Material" uid="uid://bouh5qp24wue8" path="res://asset/night.tres" id="4_5h22o"]
 [ext_resource type="Material" uid="uid://kby56bvoe8qk" path="res://asset/gold.tres" id="5_4gkv3"]
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="6_le0xk"]
-[ext_resource type="MeshLibrary" path="res://asset/prism.meshlib" id="7_lc8e3"]
+[ext_resource type="MeshLibrary" uid="uid://b3bohtw7m64f5" path="res://asset/prism.meshlib" id="7_lc8e3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
 sky_top_color = Color(0, 0, 0, 1)
