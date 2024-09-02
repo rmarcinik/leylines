@@ -1,8 +1,8 @@
 extends Node3D
 
-@onready var land = preload("res://scenes/Land.tscn")
-@onready var tower = preload("res://scenes/Tower.tscn")
-@onready var _portal = preload("res://scenes/Portal.tscn")
+@onready var land = preload("res://scenes/land.tscn")
+@onready var tower = preload("res://scenes/tower.tscn")
+@onready var _portal = preload("res://scenes/portal.tscn")
 
 func _ready() -> void:
 	make_grid()
