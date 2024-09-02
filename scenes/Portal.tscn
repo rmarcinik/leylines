@@ -8,7 +8,7 @@ radius = 2.0
 height = 4.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_tus5q"]
-radius = 1.0
+radius = 2.0
 
 [node name="Portal" type="Node3D"]
 script = ExtResource("1_ij3jr")
