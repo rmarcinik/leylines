@@ -1,12 +1,12 @@
 [gd_scene load_steps=20 format=3 uid="uid://ipa5a74hiw2f"]
 
-[ext_resource type="Script" path="res://scripts/World.gd" id="1_ll8qe"]
-[ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://scenes/Player.tscn" id="2_545ix"]
-[ext_resource type="PackedScene" uid="uid://04r7ot5si24h" path="res://scenes/Moon.tscn" id="3_0x6g8"]
-[ext_resource type="Material" uid="uid://bouh5qp24wue8" path="res://asset/Night.tres" id="4_k0kgc"]
-[ext_resource type="Material" uid="uid://kby56bvoe8qk" path="res://asset/Gold.tres" id="5_oy23l"]
-[ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/Crater.tscn" id="6_vgx3e"]
-[ext_resource type="MeshLibrary" path="res://asset/prism.meshlib" id="7_4jr08"]
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_2be1r"]
+[ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://scenes/player.tscn" id="2_t7tw0"]
+[ext_resource type="PackedScene" uid="uid://04r7ot5si24h" path="res://scenes/moon.tscn" id="3_f81e1"]
+[ext_resource type="Material" uid="uid://bouh5qp24wue8" path="res://asset/night.tres" id="4_5h22o"]
+[ext_resource type="Material" uid="uid://kby56bvoe8qk" path="res://asset/gold.tres" id="5_4gkv3"]
+[ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="6_le0xk"]
+[ext_resource type="MeshLibrary" path="res://asset/prism.meshlib" id="7_lc8e3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -58,7 +58,7 @@ size = Vector3(4, 4, 2)
 data = PackedVector3Array(-2.5, 2.5, 2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, -2.5, -2.5, 2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, 2.5, -2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, -2.5, 2.5, -2.5, -2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, 2.5, -2.5, -2.5, -2.5, 2.5, -2.5, 2.5, 2.5, -2.5, -2.5, -2.5, -2.5, -2.5)
 
 [node name="World" type="Node3D"]
-script = ExtResource("1_ll8qe")
+script = ExtResource("1_2be1r")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.62388, -0.194356, 0.756967, 0, 0.968583, 0.24869, -0.78152, -0.155153, 0.60428, 0, 1000, 0)
@@ -70,10 +70,10 @@ directional_shadow_pancake_size = 0.1
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lm7h8")
 
-[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_545ix")]
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_t7tw0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.80751, 17.9305, -101.533)
 
-[node name="moon" parent="." instance=ExtResource("3_0x6g8")]
+[node name="moon" parent="." instance=ExtResource("3_f81e1")]
 
 [node name="Blocks" type="Node3D" parent="."]
 
@@ -108,7 +108,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 500.593, -68.1837)
 radius = 100.0
 height = 1000.0
 sides = 64
-material = ExtResource("4_k0kgc")
+material = ExtResource("4_5h22o")
 
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="Blocks/Foundation2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 211.217, 11.7241, -208.12)
@@ -116,9 +116,9 @@ polygon = PackedVector2Array(0, 100, 100, 0, 0, 0)
 mode = 1
 spin_degrees = 340.0
 spin_sides = 11
-material = ExtResource("5_oy23l")
+material = ExtResource("5_4gkv3")
 
-[node name="Crater" parent="Blocks" instance=ExtResource("6_vgx3e")]
+[node name="Crater" parent="Blocks" instance=ExtResource("6_le0xk")]
 
 [node name="BRidge2" type="CSGCombiner3D" parent="Blocks"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -46.4646, -164.156)
@@ -278,7 +278,7 @@ shape = SubResource("ConcavePolygonShape3D_rfrws")
 
 [node name="GridMap" type="GridMap" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51426, 0)
-mesh_library = ExtResource("7_4jr08")
+mesh_library = ExtResource("7_lc8e3")
 cell_size = Vector3(1, 1, 1)
 data = {
 "cells": PackedInt32Array(0, 65531, 589824, 0, 65530, 589824, 0, 65529, 589824, 0, 65532, 589824, 0, 65527, 589824, 0, 65525, 589824, 0, 65535, 589824, 196606, 65522, 589824, 327676, 65524, 589824, 4, 65525, 65536, 4, 65523, 65536, 4, 65521, 65536, 262148, 65521, 720896, 262148, 65523, 131072, 262148, 65525, 131072, 262144, 65525, 524288, 262144, 65523, 524288, 262144, 65521, 524288, 262144, 65519, 524288, 655362, 65510, 262144, 655362, 65507, 917504, 655375, 65529, 1376256, 655376, 65527, 917504)
