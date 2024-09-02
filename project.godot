@@ -20,6 +20,11 @@ config/icon="res://asset/icon.png"
 window/size/viewport_width=2048
 window/size/viewport_height=1200
 
+[editor]
+
+version_control/plugin_name="GitPlugin"
+version_control/autoload_on_startup=true
+
 [input]
 
 move_left={
@@ -81,6 +86,10 @@ Inventory1={
 2d_physics/layer_1="player"
 2d_physics/layer_2="enemies"
 2d_physics/layer_3="level"
+
+[physics]
+
+3d/physics_engine="JoltPhysics3D"
 
 [rendering]
 

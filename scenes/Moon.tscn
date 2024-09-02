@@ -3,6 +3,8 @@
 [ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="1_51aob"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vs3v0"]
+friction = 0.0
+absorbent = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_whpp2"]
 material = ExtResource("1_51aob")
@@ -15,8 +17,9 @@ radius = 25.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_0j64c"]
 radius = 50.0
 
-[node name="moon" type="StaticBody3D"]
+[node name="moon" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
+mass = 10000.0
 physics_material_override = SubResource("PhysicsMaterial_vs3v0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
