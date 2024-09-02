@@ -1,5 +1,5 @@
 extends Node3D
-@onready var _timer = $portal_cooldown
+@onready var _timer = $portal_cooldown # Timer node, wait time: 5s, one shot: true
 @onready var _enterarea = $Enter/Area3D
 @onready var _exitarea = $Exit/Area3D
 

@@ -1,11 +1,13 @@
 extends Node3D
 
-var land = preload("res://TD/Land.tscn")
-var tower = preload("res://TD/Tower.tscn")
+@onready var land = preload("res://TD/Land.tscn")
+@onready var tower = preload("res://TD/Tower.tscn")
+@onready var _portal = preload("res://scenes/Portal.tscn")
 
 func _ready() -> void:
 	make_grid()
-	$Player.connect("send_preview",Callable(self,"place_tower"))
+	make_portal()
+	$Player.connect("send_preview", place_tower)
 	var node = tower.instantiate()
 	$Player.add_child(node)
 	
@@ -13,7 +15,7 @@ func place_tower(preview):
 	var node = tower.instantiate()
 	add_child(node, true)
 	node.global_transform = preview
-	$Player.connect("action_tower",Callable(node,"action_tower"))
+	$Player.connect("action_tower", Callable(node,"action_tower"))
 	
 func make_grid() -> void:
 	var width = 6
@@ -29,3 +31,9 @@ func make_grid() -> void:
 			node = land.instantiate()
 			node.position = Vector3(x,height,z)
 			add_child(node, true)
+
+func make_portal() -> void:
+	var node = _portal.instantiate()
+	add_child(node, true)
+	node.get_node('Enter').global_position = Vector3(40, 0, 0)
+	node.get_node('Exit').global_position = Vector3(190, 180, 101)
