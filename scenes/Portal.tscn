@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bevviiu7cirus"]
 
-[ext_resource type="Script" path="res://TD/Portal.gd" id="1_8o8da"]
+[ext_resource type="Script" path="res://scripts/Portal.gd" id="1_8o8da"]
 [ext_resource type="Material" uid="uid://jpa30uwys4o" path="res://asset/WhitePortal.tres" id="2_fwgso"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_0vnvy"]
