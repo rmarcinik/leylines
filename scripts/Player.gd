@@ -69,7 +69,7 @@ func _integrate_forces(state) -> void:
 		# without some downward force jumping feels very floaty
 		apply_central_impulse(state.total_gravity * 10)
 		apply_central_force(_move_direction * speed / 2)
-		
+
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var input = Vector3.ZERO
