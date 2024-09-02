@@ -15,10 +15,6 @@ run/main_scene="res://scenes/world.tscn"
 config/features=PackedStringArray("4.3")
 config/icon="res://asset/icon.png"
 
-[autoload]
-
-Global="*res://global.gd"
-
 [display]
 
 window/size/viewport_width=2048

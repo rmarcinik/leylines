@@ -220,7 +220,7 @@ sides = 60
 use_collision = true
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Blocks/Fort"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 172.628, 2551.19)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 170, 2550)
 mesh = SubResource("BoxMesh_x1s50")
 
 [node name="CSGMesh3D2" type="CSGMesh3D" parent="Blocks/Fort"]

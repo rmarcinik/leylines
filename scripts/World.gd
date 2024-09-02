@@ -37,3 +37,8 @@ func make_portal() -> void:
 	add_child(node, true)
 	node.get_node('Enter').global_position = Vector3(40, 0, 0)
 	node.get_node('Exit').global_position = Vector3(190, 180, 101)
+	
+	var farnode = _portal.instantiate()
+	add_child(farnode, true)
+	farnode.get_node('Enter').global_position = Vector3(-40, 0, 0)
+	farnode.get_node('Exit').global_position = Vector3(0, 180, 2700)
