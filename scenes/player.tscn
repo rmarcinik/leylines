@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_2qcsn"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j1014"]
+friction = 0.0
 absorbent = true
 
 [sub_resource type="CapsuleShape3D" id="1"]
@@ -21,9 +22,9 @@ material = SubResource("StandardMaterial3D_a44l2")
 [node name="Player" type="RigidBody3D"]
 mass = 100.0
 physics_material_override = SubResource("PhysicsMaterial_j1014")
-angular_damp = 0.5
+gravity_scale = 5.0
+linear_damp = 0.5
 script = ExtResource("1")
-jump_strength = 600.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -39,8 +40,9 @@ margin = 0.2
 script = ExtResource("2_2qcsn")
 
 [node name="Camera3D" type="Camera3D" parent="CameraArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 3)
 cull_mask = 1048559
-fov = 90.0
+fov = 100.0
 far = 5000.0
 
 [node name="Timer" type="Timer" parent="."]

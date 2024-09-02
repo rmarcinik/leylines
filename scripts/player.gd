@@ -1,8 +1,8 @@
 extends RigidBody3D
 
 @export var mouse_sens := 0.2
-@export var speed := 10000.0
-@export var jump_strength := 5000.0
+@export var speed := 4000.0
+@export var jump_strength := 500.0
 @export var local_gravity := Vector3.DOWN
 var _move_direction = Vector3.ZERO
 var _last_strong_direction = Vector3.FORWARD
@@ -52,10 +52,11 @@ func _integrate_forces(state) -> void:
 	state.angular_velocity = rot_vec
 
 
-	_move_direction = _get_model_oriented_input()
 	# orient player to the camera direction
 	_last_strong_direction = _spring_arm.basis.z
 	_orient_character_to_direction(_last_strong_direction, state.step)
+	
+	_move_direction = _get_model_oriented_input()
 
 	if is_jumping():
 		#print('applying force when jumping')
@@ -68,16 +69,14 @@ func _integrate_forces(state) -> void:
 		# without some downward force jumping feels very floaty
 		# it was because of damping, so we dont need to push down anymore
 		#apply_central_impulse(state.total_gravity * 10)
-		apply_central_force(_move_direction * speed / 2)
+		apply_central_force(_move_direction * speed)
 
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var input = Vector3.ZERO
-
 	input.x = raw_input.x * sqrt(1.0 - raw_input.y * raw_input.y / 2.0)
 	input.z = raw_input.y * sqrt(1.0 - raw_input.x * raw_input.x / 2.0)
-	_move_direction = basis * input
-	return  _move_direction
+	return  basis * input #_move_direction
 
 func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
 	var left_axis := -local_gravity.cross(direction)
@@ -107,7 +106,8 @@ func _physics_process(_delta):
 	# I think the problem lies within rotating the camera based on x and y and its not relative
 	_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
 	# syncing the basis makes the camera lock to the player better, but its jittery
-	_spring_arm.transform.basis = transform.basis
+	# this also makes the player spin unecessarily
+	#_spring_arm.transform.basis = transform.basis
 
 func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface
