@@ -1,7 +1,7 @@
 extends RigidBody3D
 
-var previewmesh = preload("res://asset/Preview.tres")
-var projectile = preload("res://scenes/Projectile.tscn")
+var previewmesh = preload("res://asset/preview.tres")
+var projectile = preload("res://scenes/projectile.tscn")
 var SPEED = 100
 
 func _ready() -> void:
