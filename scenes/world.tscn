@@ -1,0 +1,286 @@
+[gd_scene load_steps=20 format=3 uid="uid://ipa5a74hiw2f"]
+
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_2be1r"]
+[ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://scenes/player.tscn" id="2_t7tw0"]
+[ext_resource type="PackedScene" uid="uid://04r7ot5si24h" path="res://scenes/moon.tscn" id="3_f81e1"]
+[ext_resource type="Material" uid="uid://bouh5qp24wue8" path="res://asset/night.tres" id="4_5h22o"]
+[ext_resource type="Material" uid="uid://kby56bvoe8qk" path="res://asset/gold.tres" id="5_4gkv3"]
+[ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="6_le0xk"]
+[ext_resource type="MeshLibrary" uid="uid://b3bohtw7m64f5" path="res://asset/prism.meshlib" id="7_lc8e3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
+sky_top_color = Color(0, 0, 0, 1)
+sky_horizon_color = Color(0.734314, 0.734314, 0.736274, 1)
+sky_energy_multiplier = 0.75
+ground_bottom_color = Color(0.937255, 0.937255, 0.945098, 1)
+ground_horizon_color = Color(0.734314, 0.734314, 0.736274, 1)
+
+[sub_resource type="Sky" id="Sky_m0a6d"]
+sky_material = SubResource("ProceduralSkyMaterial_mi338")
+
+[sub_resource type="Environment" id="Environment_lm7h8"]
+background_mode = 2
+sky = SubResource("Sky_m0a6d")
+sdfgi_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.002
+
+[sub_resource type="StandardMaterial3D" id="6"]
+albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
+
+[sub_resource type="StandardMaterial3D" id="7"]
+albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
+
+[sub_resource type="StandardMaterial3D" id="18"]
+albedo_color = Color(0.396078, 0.396078, 0.396078, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cp7uq"]
+size = Vector3(120.825, 6, 4844)
+
+[sub_resource type="BoxMesh" id="BoxMesh_x1s50"]
+size = Vector3(2000, 500, 50)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8y1gi"]
+size = Vector3(250, 50, 1500)
+
+[sub_resource type="Curve3D" id="Curve3D_7lrgu"]
+_data = {
+"points": PackedVector3Array(-63.7548, -1.25417, -4.08009, 63.7548, 1.25417, 4.08009, 7.00082, -0.264847, 0.0111084, -42.9496, 35.576, 49.3358, 42.9496, -35.576, -49.3358, 156.765, 180.187, 103.33),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="PrismMesh" id="PrismMesh_slkwf"]
+left_to_right = 0.0
+size = Vector3(4, 4, 2)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_rfrws"]
+data = PackedVector3Array(-2.5, 2.5, 2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, -2.5, -2.5, 2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, -2.5, 2.5, -2.5, 2.5, -2.5, -2.5, 2.5, 2.5, -2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, -2.5, 2.5, -2.5, -2.5, -2.5, -2.5, -2.5, 2.5, 2.5, -2.5, 2.5, -2.5, -2.5, -2.5, 2.5, -2.5, 2.5, 2.5, -2.5, -2.5, -2.5, -2.5, -2.5)
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_2be1r")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.62388, -0.194356, 0.756967, 0, 0.968583, 0.24869, -0.78152, -0.155153, 0.60428, 0, 1000, 0)
+shadow_enabled = true
+directional_shadow_fade_start = 1.0
+directional_shadow_max_distance = 1000.0
+directional_shadow_pancake_size = 0.1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lm7h8")
+
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_t7tw0")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.80751, 17.9305, -101.533)
+
+[node name="moon" parent="." instance=ExtResource("3_f81e1")]
+
+[node name="Blocks" type="Node3D" parent="."]
+
+[node name="Foundation" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5862, -48.5848)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Blocks/Foundation"]
+size = Vector3(170.218, 19.3872, 194.13)
+material = SubResource("6")
+
+[node name="CSGBox2" type="CSGBox3D" parent="Blocks/Foundation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6861, 0)
+operation = 2
+size = Vector3(167.752, 20.5346, 192.395)
+material = SubResource("7")
+
+[node name="CSGBox3" type="CSGBox3D" parent="Blocks/Foundation"]
+transform = Transform3D(3.11625, 0, 0, 0, 2.54378, 0, 0, 0, 3.0358, -26.3677, 0.204798, 19.1288)
+material = SubResource("18")
+
+[node name="Foundation2" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -29.93, 260.303)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Blocks/Foundation2"]
+size = Vector3(1000, 10, 1000)
+material = SubResource("6")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/Foundation2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 500.593, -68.1837)
+radius = 100.0
+height = 1000.0
+sides = 64
+material = ExtResource("4_5h22o")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Blocks/Foundation2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 211.217, 11.7241, -208.12)
+polygon = PackedVector2Array(0, 100, 100, 0, 0, 0)
+mode = 1
+spin_degrees = 340.0
+spin_sides = 11
+material = ExtResource("5_4gkv3")
+
+[node name="Crater" parent="Blocks" instance=ExtResource("6_le0xk")]
+
+[node name="BRidge2" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -46.4646, -164.156)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGMesh3D" parent="Blocks/BRidge2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+mesh = SubResource("BoxMesh_cp7uq")
+
+[node name="BRidge3" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -454.481, 809.225)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGMesh3D" parent="Blocks/BRidge3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+mesh = SubResource("BoxMesh_cp7uq")
+
+[node name="BRidge4" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -941.873, 809.225)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGMesh3D" parent="Blocks/BRidge4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+mesh = SubResource("BoxMesh_cp7uq")
+
+[node name="BRidge5" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1227.39, 809.225)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGMesh3D" parent="Blocks/BRidge5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+mesh = SubResource("BoxMesh_cp7uq")
+
+[node name="disc3" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3854.29, 473.319, -0.383499)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/disc3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+radius = 30.0
+height = 5.0
+sides = 40
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/disc3/CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.64935, 0)
+operation = 2
+radius = 27.0
+sides = 60
+
+[node name="Disc" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 473.344, 3866.07)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/Disc"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+radius = 30.0
+height = 5.0
+sides = 40
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/Disc/CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.64935, 0)
+operation = 2
+radius = 27.0
+sides = 60
+
+[node name="Disc2" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 472.164, -3866.78)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/Disc2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+radius = 30.0
+height = 5.0
+sides = 40
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/Disc2/CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.64935, 0)
+operation = 2
+radius = 27.0
+sides = 60
+
+[node name="disc4" type="CSGCombiner3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3901.9, 473.379, 0)
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/disc4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.5672, 0)
+radius = 30.0
+height = 5.0
+sides = 40
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Blocks/disc4/CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.64935, 0)
+operation = 2
+radius = 27.0
+sides = 60
+
+[node name="Fort" type="CSGCombiner3D" parent="Blocks"]
+use_collision = true
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Blocks/Fort"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 170, 2550)
+mesh = SubResource("BoxMesh_x1s50")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Blocks/Fort"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 963.969, 172.628, 3510.18)
+mesh = SubResource("BoxMesh_x1s50")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="Blocks/Fort"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -984.18, 172.628, 3510.18)
+mesh = SubResource("BoxMesh_x1s50")
+
+[node name="Crag" type="CSGCombiner3D" parent="Blocks"]
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Blocks/Crag"]
+transform = Transform3D(0.258819, 0.965926, -1.49012e-08, -0.683037, 0.183019, -0.707082, -0.682989, 0.183006, 0.707131, -299.354, 0, -3251.4)
+mesh = SubResource("BoxMesh_8y1gi")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Blocks/Crag"]
+transform = Transform3D(-0.258819, 0.965926, 0, -0.683013, -0.183013, -0.707107, -0.683013, -0.183013, 0.707107, 36.709, 0, -3245.68)
+mesh = SubResource("BoxMesh_8y1gi")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="Blocks/Crag"]
+transform = Transform3D(-0.57838, 0.801922, -0.149659, -0.592057, -0.538853, -0.599254, -0.561199, -0.25799, 0.786446, -489.841, -103.475, -3078.64)
+mesh = SubResource("BoxMesh_8y1gi")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="Blocks/Crag"]
+transform = Transform3D(-0.635831, 0.769213, -0.0634864, 0.446378, 0.433583, 0.782785, 0.629655, 0.46938, -0.619045, 246.319, -151.622, -3092.56)
+mesh = SubResource("BoxMesh_8y1gi")
+
+[node name="Path3D" type="Path3D" parent="Blocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.796, 0, 0)
+curve = SubResource("Curve3D_7lrgu")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Blocks/Path3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.848, 0, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+
+[node name="Triangular" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.10797, -9.37123)
+mesh = SubResource("PrismMesh_slkwf")
+skeleton = NodePath("../Blocks")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Triangular"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Triangular/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_rfrws")
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51426, 0)
+mesh_library = ExtResource("7_lc8e3")
+cell_size = Vector3(1, 1, 1)
+data = {
+"cells": PackedInt32Array(0, 65531, 589824, 0, 65530, 589824, 0, 65529, 589824, 0, 65532, 589824, 0, 65527, 589824, 0, 65525, 589824, 0, 65535, 589824, 196606, 65522, 589824, 327676, 65524, 589824, 4, 65525, 65536, 4, 65523, 65536, 4, 65521, 65536, 262148, 65521, 720896, 262148, 65523, 131072, 262148, 65525, 131072, 262144, 65525, 524288, 262144, 65523, 524288, 262144, 65521, 524288, 262144, 65519, 524288, 655362, 65510, 262144, 655362, 65507, 917504, 655375, 65529, 1376256, 655376, 65527, 917504)
+}
+metadata/_editor_floor_ = Vector3(0, 10, 0)

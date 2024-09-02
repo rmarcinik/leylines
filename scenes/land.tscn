@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsgohbvoaetcv"]
+
+[sub_resource type="BoxMesh" id="1"]
+size = Vector3(8, 1, 8)
+
+[sub_resource type="BoxShape3D" id="2"]
+size = Vector3(8, 1, 8)
+
+[node name="Land" type="Node3D"]
+
+[node name="Land" type="RigidBody3D" parent="."]
+mass = 1000.0
+gravity_scale = 0.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Land"]
+mesh = SubResource("1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Land"]
+shape = SubResource("2")

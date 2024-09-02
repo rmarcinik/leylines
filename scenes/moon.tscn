@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://04r7ot5si24h"]
+
+[ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="1_51aob"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vs3v0"]
+friction = 0.0
+absorbent = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_whpp2"]
+material = ExtResource("1_51aob")
+radius = 25.0
+height = 50.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_v6as0"]
+radius = 25.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0j64c"]
+radius = 50.0
+
+[node name="moon" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
+mass = 10000.0
+physics_material_override = SubResource("PhysicsMaterial_vs3v0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_whpp2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_v6as0")
+
+[node name="Area3D" type="Area3D" parent="."]
+gravity_space_override = 3
+gravity_point = true
+gravity_point_center = Vector3(0, 0, 0)
+gravity_direction = Vector3(0, 0, 0)
+gravity = 50.0
+linear_damp_space_override = 3
+linear_damp = 0.048
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_0j64c")

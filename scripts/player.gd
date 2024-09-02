@@ -31,8 +31,7 @@ func _unhandled_input(event):
 		mouseMotion_y = event.relative.y
 
 func _on_Timer_timeout():
-	pass
-	#print(_move_direction)
+	print(_move_direction)
 
 func floored() -> bool:
 	return _raycast.is_colliding()
@@ -67,7 +66,8 @@ func _integrate_forces(state) -> void:
 	else:
 		#print('applying force when in the air')
 		# without some downward force jumping feels very floaty
-		apply_central_impulse(state.total_gravity * 10)
+		# it was because of damping, so we dont need to push down anymore
+		#apply_central_impulse(state.total_gravity * 10)
 		apply_central_force(_move_direction * speed / 2)
 
 func _get_model_oriented_input() -> Vector3:
@@ -105,9 +105,9 @@ func get_mouse_preview() -> Vector3:
 func _physics_process(_delta):
 	# move the spring arm to follow the player a bit above them based on gravity
 	# I think the problem lies within rotating the camera based on x and y and its not relative
-	_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
+	#_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
 	# syncing the basis makes the camera lock to the player better, but its jittery
-	# _spring_arm.transform.basis = transform.basis
+	pass #_spring_arm.transform.basis = transform.basis
 
 func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface
@@ -120,4 +120,3 @@ func _process(_delta: float) -> void:
 		send_preview.emit($Tower.global_transform)
 	if Input.is_action_just_pressed("rightclick"):
 		action_tower.emit()
-
