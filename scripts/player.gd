@@ -18,7 +18,7 @@ signal action_tower()
 
 @onready var _spring_arm: SpringArm3D = $CameraArm
 @onready var _raycast: RayCast3D = $Downward
-#@onready var _frontraycast: RayCast3D = $Forward
+@onready var _frontraycast: RayCast3D = $Forward
 
 func _ready() -> void:
 	add_to_group('Player')
@@ -31,7 +31,14 @@ func _unhandled_input(event):
 		mouseMotion_y = event.relative.y
 
 func _on_Timer_timeout():
-	print(_move_direction)
+	print('''
+	camera arm basis
+	%s 
+	player basis
+	%s
+	player front basis
+	%s
+	''' % [_spring_arm.basis, transform.basis, _frontraycast.basis])
 
 func floored() -> bool:
 	return _raycast.is_colliding()
@@ -105,9 +112,11 @@ func _physics_process(_delta):
 	# move the spring arm to follow the player a bit above them based on gravity
 	# I think the problem lies within rotating the camera based on x and y and its not relative
 	_spring_arm.position = position + Vector3(0, 10, 0) * -local_gravity
+	pass
 	# syncing the basis makes the camera lock to the player better, but its jittery
 	# this also makes the player spin unecessarily
 	#_spring_arm.transform.basis = transform.basis
+	#transform.basis = $CameraArm/Camera3D.transform.basis
 
 func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface
