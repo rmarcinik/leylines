@@ -75,7 +75,7 @@ func _integrate_forces(state) -> void:
 
 	if is_jumping():
 		#print('applying force when jumping')
-		apply_central_impulse(get_jump_vector())
+		apply_central_impulse(-local_gravity * jump_strength)
 	if floored():
 		#print('applying force when on the ground')
 		apply_central_force(_move_direction * speed)
@@ -97,15 +97,10 @@ func _orient_character_to_direction(direction: Vector3, gravity: Vector3, delta:
 	# spherical linear interpolation tries to make a smooth movement
 	return basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 10)
 
+
 func is_jumping() -> bool:
 	return Input.is_action_pressed("jump")
 
-func get_jump_vector():
-	return -local_gravity * jump_strength
-
-func jump():
-	apply_central_impulse(get_jump_vector())
-	
 func get_mouse_vector() -> Vector3:
 	var mouse_pos = get_viewport().get_mouse_position()
 	_camera.project_ray_origin(mouse_pos)
