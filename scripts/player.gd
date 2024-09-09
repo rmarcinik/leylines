@@ -32,11 +32,13 @@ func _unhandled_input(event):
 		get_tree().quit()
 		
 	if(event is InputEventMouseMotion):
-		_camera_pivot.rotate_y(-event.relative.x * mouse_sens)
-		_camera_arm.rotate_x(-event.relative.y * mouse_sens)
-		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI/4, PI/4)
 		mouseMotion_x = event.relative.x
 		mouseMotion_y = event.relative.y
+		# look right and left
+		_camera_pivot.rotate_y(-mouseMotion_x * mouse_sens)
+		# look up an down
+		_camera_arm.rotate_x(-mouseMotion_y * mouse_sens)
+		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI/4, PI/4)
 
 func _on_Timer_timeout():
 	print('''
@@ -46,28 +48,34 @@ func _on_Timer_timeout():
 	%s
 	player front basis
 	%s
-	''' % [_camera_arm.basis, transform.basis, _frontraycast.basis])
+	player rotation
+	%s
+	camera rotation
+	%s
+	''' % [_camera_arm.basis, transform.basis, _frontraycast.basis, rotation, _camera_pivot.rotation])
 
 func floored() -> bool:
 	return _raycast.is_colliding()
-
+func get_gravity_direction(state) -> Vector3:
+	return state.total_gravity.normalized()
+	
 func _integrate_forces(state) -> void:
 
 	# Get direction of gravity
-	local_gravity = state.total_gravity.normalized()
+	local_gravity = get_gravity_direction(state)
 	
 	# stop player from falling down
 	state.angular_velocity = Vector3.ZERO
 
 	# orient player to the camera direction
-	_last_strong_direction = _camera_arm.basis.z
-	_orient_character_to_direction(_last_strong_direction, state.step)
+	_last_strong_direction = _camera_pivot.basis.z
+	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 	
 	_move_direction = _get_model_oriented_input()
 
 	if is_jumping():
 		#print('applying force when jumping')
-		apply_central_impulse(-local_gravity * jump_strength)
+		apply_central_impulse(get_jump_vector())
 	if floored():
 		#print('applying force when on the ground')
 		apply_central_force(_move_direction * speed)
@@ -82,15 +90,28 @@ func _get_model_oriented_input() -> Vector3:
 	input.z = raw_input.y * sqrt(1.0 - raw_input.x * raw_input.x / 2.0)
 	return  basis * input #_move_direction
 
-func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
-	var left_axis := -local_gravity.cross(direction)
-	var rotation_basis := Basis(left_axis, -local_gravity, direction).orthonormalized()
+func _orient_character_to_direction(direction: Vector3, gravity: Vector3, delta: float):
+	var left_axis := -gravity.cross(direction)
+	var rotation_basis := Basis(left_axis, -gravity, direction).orthonormalized()
 	# get rotation quaternion is finding how to change the basis to fit the direction of gravity, and player input
 	# spherical linear interpolation tries to make a smooth movement
-	global_basis = basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 10)
+	return basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 10)
 
-func is_jumping():
+func is_jumping() -> bool:
 	return Input.is_action_pressed("jump")
+
+func get_jump_vector():
+	return -local_gravity * jump_strength
+
+func jump():
+	apply_central_impulse(get_jump_vector())
+	
+func get_mouse_vector() -> Vector3:
+	var mouse_pos = get_viewport().get_mouse_position()
+	_camera.project_ray_origin(mouse_pos)
+	
+	return _camera.project_ray_origin(mouse_pos)
+	
 
 func get_mouse_preview() -> Vector3:
 	var space_state = get_world_3d().get_direct_space_state()
