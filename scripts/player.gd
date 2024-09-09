@@ -1,6 +1,6 @@
 extends RigidBody3D
 
-@export var mouse_sens := 0.002
+@export var mouse_sens := 0.001
 @export var speed := 4000.0
 @export var jump_strength := 500.0
 @export var local_gravity := Vector3.DOWN
@@ -48,11 +48,7 @@ func _on_Timer_timeout():
 	%s
 	player front basis
 	%s
-	player rotation
-	%s
-	camera rotation
-	%s
-	''' % [_camera_arm.basis, transform.basis, _frontraycast.basis, rotation, _camera_pivot.rotation])
+	''' % [_camera_arm.basis.z, transform.basis.z, _frontraycast.global_basis])
 
 func floored() -> bool:
 	return _raycast.is_colliding()
@@ -68,7 +64,8 @@ func _integrate_forces(state) -> void:
 	state.angular_velocity = Vector3.ZERO
 
 	# orient player to the camera direction
-	_last_strong_direction = _camera_pivot.basis.z
+	var cam_forward = _camera.global_basis.z 
+	_last_strong_direction = cam_forward #if _move_direction.length() > 0.2 else _last_strong_direction
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 	
 	_move_direction = _get_model_oriented_input()
