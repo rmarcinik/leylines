@@ -1,26 +1,23 @@
 extends RigidBody3D
 
-@export var mouse_sens := 0.001
-@export var speed := 4000.0
-@export var jump_strength := 500.0
-@export var local_gravity := Vector3.DOWN
-var _move_direction = Vector3.ZERO
-var _last_strong_direction = Vector3.FORWARD
-
-var mouseMotion_x :float
-var mouseMotion_y :float
-var rot_vec: Vector3
-var v_rot: Vector3
-var h_rot: Vector3
-
-signal send_preview(position)
-signal action_tower()
-
 @onready var _camera_pivot: Node3D = $CameraPivot
 @onready var _camera_arm: SpringArm3D = $CameraPivot/CameraArm
 @onready var _camera: Camera3D = $CameraPivot/CameraArm/Camera3D
 @onready var _raycast: RayCast3D = $Downward
 @onready var _frontraycast: RayCast3D = $Forward
+
+@export var mouse_sens := 0.001
+@export var speed := 4000.0
+@export var jump_strength := 500.0
+@export var local_gravity := Vector3.DOWN
+
+var _move_direction = Vector3.ZERO
+var _last_strong_direction = Vector3.FORWARD
+var mouseMotion_x :float
+var mouseMotion_y :float
+
+signal send_preview(position)
+signal action_tower()
 
 func _ready() -> void:
 	add_to_group('Player')
