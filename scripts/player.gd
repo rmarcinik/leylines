@@ -26,6 +26,9 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event):
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
+		
 	if(event is InputEventMouseMotion):
 		mouseMotion_x = event.relative.x
 		mouseMotion_y = event.relative.y
