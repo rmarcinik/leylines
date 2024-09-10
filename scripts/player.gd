@@ -63,9 +63,11 @@ func _integrate_forces(state) -> void:
 
 	_move_direction = _get_model_oriented_input()
 	# orient player to the camera direction
-	_last_strong_direction = _camera_pivot.global_basis.z
+	# camera at top level prevents spinning, but doesnt follow player around planet
 	_camera_pivot.top_level = true
-	_camera_pivot.global_transform.origin = global_transform.origin
+	_camera_pivot.global_transform.origin = $Head.global_transform.origin
+	
+	_last_strong_direction = _camera_pivot.global_basis.z
 	if not is_falling():
 		basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 	
