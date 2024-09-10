@@ -63,7 +63,9 @@ func _integrate_forces(state) -> void:
 
 	_move_direction = _get_model_oriented_input()
 	# orient player to the camera direction
-	_last_strong_direction = _camera_pivot.global_basis.z #if _move_direction.length() > 0.2 else _last_strong_direction
+	_last_strong_direction = _camera_pivot.global_basis.z
+	_camera_pivot.top_level = true
+	_camera_pivot.global_transform.origin = global_transform.origin
 	if not is_falling():
 		basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 	
@@ -99,13 +101,7 @@ func is_jumping() -> bool:
 	return Input.is_action_pressed("jump")
 func is_falling() -> bool:
 	return Input.is_action_pressed("fall")
-	
-func get_mouse_vector() -> Vector3:
-	var mouse_pos = get_viewport().get_mouse_position()
-	_camera.project_ray_origin(mouse_pos)
-	
-	return _camera.project_ray_origin(mouse_pos)
-	
+
 
 func get_mouse_preview() -> Vector3:
 	var space_state = get_world_3d().get_direct_space_state()
@@ -127,8 +123,9 @@ func get_mouse_preview() -> Vector3:
 func _process(_delta: float) -> void:
 	# move the tower preview to wherever the mouse is looking at a surface
 	$Tower.global_transform.origin = get_mouse_preview()
-	# setting the tower basis to rotate with the player, but its facing towards, still needs work
+	# setting the tower basis to rotate with the player
 	$Tower.global_transform.basis = transform.basis
+	$Tower.global_transform.basis.z = -global_transform.basis.z
 	if Input.is_action_just_pressed("Inventory1"):
 		$Tower.toggle_visible()
 	if Input.is_action_just_pressed("leftclick") and $Tower.visible:
