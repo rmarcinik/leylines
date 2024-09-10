@@ -3,10 +3,13 @@ extends Node3D
 @onready var land = preload("res://scenes/land.tscn")
 @onready var tower = preload("res://scenes/tower.tscn")
 @onready var _portal = preload("res://scenes/portal.tscn")
+@onready var _moon = preload("res://scenes/moon.tscn")
+@onready var _pillar = $Blocks/Foundation2/Pillar
 
 func _ready() -> void:
 	make_grid()
 	make_portal()
+	move_moon()
 	$Player.connect("send_preview", place_tower)
 	var node = tower.instantiate()
 	$Player.add_child(node)
@@ -42,3 +45,26 @@ func make_portal() -> void:
 	add_child(farnode, true)
 	farnode.get_node('Enter').global_position = Vector3(-40, 0, 0)
 	farnode.get_node('Exit').global_position = Vector3(0, 180, 2700)
+
+func move_moon() -> void:
+	var moon = _moon.instantiate()
+	_pillar.add_child(moon, true)
+	moon.global_position = Vector3(-50,10,80)
+
+
+func _physics_process(delta: float) -> void:
+
+	var moon = _pillar.get_child(0)
+	var moon_y = moon.global_transform.origin.y
+	var pillar_origin = _pillar.global_transform.origin
+	var pillar_height = _pillar.height
+	var base_position = pillar_origin.y - pillar_height / 2
+	
+	var top_position = base_position + pillar_height
+	if moon_y < base_position + 50:
+		moon.apply_central_impulse(Vector3.UP * 200000)
+	if moon_y > top_position:
+		moon.apply_central_impulse(Vector3.DOWN * 200000)
+		
+		
+	
