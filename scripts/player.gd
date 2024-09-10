@@ -6,7 +6,7 @@ extends RigidBody3D
 @onready var _raycast: RayCast3D = $Downward
 @onready var _frontraycast: RayCast3D = $Forward
 
-@export var mouse_sens := 0.0002
+@export var mouse_sens := 0.001
 @export var speed := 4000.0
 @export var jump_strength := 300.0
 @export var local_gravity := Vector3.DOWN
@@ -23,7 +23,7 @@ func _ready() -> void:
 	add_to_group('Player')
 	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
+	
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
@@ -49,23 +49,26 @@ func _on_Timer_timeout():
 
 func floored() -> bool:
 	return _raycast.is_colliding()
+
 func get_gravity_direction(state) -> Vector3:
 	return state.total_gravity.normalized()
 	
 func _integrate_forces(state) -> void:
-
+	## Orient Player
 	# Get direction of gravity
 	local_gravity = get_gravity_direction(state)
 	
 	# stop player from falling down
 	state.angular_velocity = Vector3.ZERO
 
-	# orient player to the camera direction
-	_last_strong_direction = _camera.global_basis.z #if _move_direction.length() > 0.2 else _last_strong_direction
-	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
-	
 	_move_direction = _get_model_oriented_input()
+	# orient player to the camera direction
+	_last_strong_direction = _camera_pivot.global_basis.z #if _move_direction.length() > 0.2 else _last_strong_direction
+	if not is_falling():
+		basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
+	
 
+	## Move Player
 	if is_jumping():
 		apply_central_impulse(-local_gravity * jump_strength)
 	if is_falling():
@@ -74,7 +77,9 @@ func _integrate_forces(state) -> void:
 		apply_central_force(_move_direction * speed)
 	else:
 		apply_central_force(_move_direction * speed)
-
+func _rotate_with_gravity():
+	
+	pass
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var input = Vector3.ZERO
