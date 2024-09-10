@@ -6,9 +6,9 @@ extends RigidBody3D
 @onready var _raycast: RayCast3D = $Downward
 @onready var _frontraycast: RayCast3D = $Forward
 
-@export var mouse_sens := 0.001
+@export var mouse_sens := 0.0002
 @export var speed := 4000.0
-@export var jump_strength := 500.0
+@export var jump_strength := 300.0
 @export var local_gravity := Vector3.DOWN
 
 var _move_direction = Vector3.ZERO
@@ -67,13 +67,12 @@ func _integrate_forces(state) -> void:
 	_move_direction = _get_model_oriented_input()
 
 	if is_jumping():
-		#print('applying force when jumping')
 		apply_central_impulse(-local_gravity * jump_strength)
+	if is_falling():
+		apply_central_impulse(local_gravity * jump_strength)
 	if floored():
-		#print('applying force when on the ground')
 		apply_central_force(_move_direction * speed)
 	else:
-		#print('applying force when in the air')
 		apply_central_force(_move_direction * speed)
 
 func _get_model_oriented_input() -> Vector3:
@@ -93,7 +92,9 @@ func _orient_character_to_direction(direction: Vector3, gravity: Vector3, delta:
 
 func is_jumping() -> bool:
 	return Input.is_action_pressed("jump")
-
+func is_falling() -> bool:
+	return Input.is_action_pressed("fall")
+	
 func get_mouse_vector() -> Vector3:
 	var mouse_pos = get_viewport().get_mouse_position()
 	_camera.project_ray_origin(mouse_pos)
