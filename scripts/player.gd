@@ -61,8 +61,7 @@ func _integrate_forces(state) -> void:
 	state.angular_velocity = Vector3.ZERO
 
 	# orient player to the camera direction
-	var cam_forward = _camera.global_basis.z 
-	_last_strong_direction = cam_forward #if _move_direction.length() > 0.2 else _last_strong_direction
+	_last_strong_direction = _camera.global_basis.z #if _move_direction.length() > 0.2 else _last_strong_direction
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 	
 	_move_direction = _get_model_oriented_input()
@@ -109,6 +108,9 @@ func get_mouse_preview() -> Vector3:
 	params.from = _camera.project_ray_origin(mouse_pos)
 	# distance that player can place object: 100
 	params.to = params.from + _camera.project_ray_normal(mouse_pos) * 100
+	var rid_array : Array[RID]
+	rid_array.append(get_rid())
+	params.exclude = rid_array
 	var result = space_state.intersect_ray(params)
 	if result.is_empty():
 		return params.to
