@@ -19,6 +19,9 @@ metallic = 0.48
 material = SubResource("StandardMaterial3D_a44l2")
 
 [node name="Player" type="RigidBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 mass = 100.0
 physics_material_override = SubResource("PhysicsMaterial_j1014")
 gravity_scale = 5.0
