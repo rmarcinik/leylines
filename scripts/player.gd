@@ -58,9 +58,6 @@ func _integrate_forces(state) -> void:
 	# Get direction of gravity
 	local_gravity = get_gravity_direction(state)
 	
-	# stop player from falling down
-	state.angular_velocity = Vector3.ZERO
-
 	_move_direction = _get_model_oriented_input()
 	# orient player to the camera direction
 	# camera at top level prevents spinning, but doesnt follow player around planet
@@ -68,8 +65,7 @@ func _integrate_forces(state) -> void:
 	_camera_pivot.global_transform.origin = $Head.global_transform.origin
 	
 	_last_strong_direction = _camera_pivot.global_basis.z
-	if not is_falling():
-		basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
+	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 	
 
 	## Move Player
@@ -81,9 +77,7 @@ func _integrate_forces(state) -> void:
 		apply_central_force(_move_direction * speed)
 	else:
 		apply_central_force(_move_direction * speed)
-func _rotate_with_gravity():
 	
-	pass
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var input = Vector3.ZERO
