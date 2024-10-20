@@ -6,7 +6,7 @@ extends RigidBody3D
 @onready var _raycast: RayCast3D = $Downward
 @onready var _frontraycast: RayCast3D = $Forward
 
-@export var mouse_sens := 0.001
+@export var mouse_sens := 0.003
 @export var speed := 4000.0
 @export var jump_strength := 300.0
 @export var local_gravity := Vector3.DOWN
@@ -39,13 +39,13 @@ func _unhandled_input(event):
 
 func _on_Timer_timeout():
 	print('''
-	camera arm basis
+	mouseMotion_x
 	%s 
 	player basis
 	%s
 	player front basis
 	%s
-	''' % [_camera_arm.basis.z, transform.basis.z, _frontraycast.global_basis])
+	''' % [mouseMotion_x, transform.basis.z, _frontraycast.global_basis])
 
 func floored() -> bool:
 	return _raycast.is_colliding()
@@ -59,13 +59,11 @@ func _integrate_forces(state) -> void:
 	local_gravity = get_gravity_direction(state)
 	
 	_move_direction = _get_model_oriented_input()
-	# orient player to the camera direction
-	# camera at top level prevents spinning, but doesnt follow player around planet
-	_camera_pivot.top_level = true
-	_camera_pivot.global_transform.origin = $Head.global_transform.origin
-	
+		
 	_last_strong_direction = _camera_pivot.global_basis.z
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
+	
+	
 	
 
 	## Move Player
@@ -117,6 +115,7 @@ func get_mouse_preview() -> Vector3:
 
 
 func _process(_delta: float) -> void:
+	_camera_pivot.global_basis = $Head.global_basis
 	# move the tower preview to wherever the mouse is looking at a surface
 	$Tower.global_transform.origin = get_mouse_preview()
 	# setting the tower basis to rotate with the player
