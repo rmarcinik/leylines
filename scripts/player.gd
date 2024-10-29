@@ -6,7 +6,8 @@ extends RigidBody3D
 @onready var _raycast: RayCast3D = $Downward
 @onready var _frontraycast: RayCast3D = $Forward
 
-@export var mouse_sens := 0.003
+@export var mouse_sens := 0.01
+@export var y_mouse_sens := 0.1
 @export var speed := 4000.0
 @export var jump_strength := 300.0
 @export var local_gravity := Vector3.DOWN
@@ -34,7 +35,7 @@ func _unhandled_input(event):
 		# look right and left
 		_camera_pivot.rotate_y(-mouseMotion_x * mouse_sens)
 		# look up an down
-		_camera_arm.rotate_x(-mouseMotion_y * mouse_sens)
+		_camera_arm.rotate_x(-mouseMotion_y * mouse_sens * y_mouse_sens)
 		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI/4, PI/4)
 
 func _on_Timer_timeout():

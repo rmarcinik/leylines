@@ -4,10 +4,10 @@ extends Node3D
 @onready var _exitarea = $Exit/Area3D
 
 func _ready():
-	_enterarea.connect("body_entered", _on_body_entered)
-	_exitarea.connect("body_entered", _on_body_entered)
-	
-func _on_body_entered(body: PhysicsBody3D):
+	_enterarea.connect("body_entered", _on_body_entered.bind(_exitarea))
+	_exitarea.connect("body_entered", _on_body_entered.bind(_enterarea))
+
+func _on_body_entered(body: PhysicsBody3D, exit: Node3D):
 	if body.is_in_group("Player") and _timer.is_stopped():
 		_timer.start()
-		body.global_position = _exitarea.global_position if _enterarea.overlaps_body(body) else _enterarea.global_position
+		body.global_position = exit.global_position
