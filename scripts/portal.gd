@@ -1,7 +1,8 @@
 extends Node3D
-@onready var _timer = $Portal_timer # Timer node, wait time: 5s, one shot: true
-@onready var _enterarea = $Enter/Area3D
-@onready var _exitarea = $Exit/Area3D
+
+@onready var _timer: Timer = $Portal_timer # Timer node, wait time: 5s, one shot: true
+@onready var _enterarea: Area3D = $Enter/Area3D
+@onready var _exitarea: Area3D = $Exit/Area3D
 
 func _ready():
 	_enterarea.connect("body_entered", _on_body_entered.bind(_exitarea))
