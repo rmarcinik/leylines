@@ -5,8 +5,8 @@ extends Node3D
 @onready var _exitarea: Area3D = $Exit/Area3D
 
 func _ready():
-	_enterarea.connect("body_entered", _on_body_entered.bind(_exitarea))
-	_exitarea.connect("body_entered", _on_body_entered.bind(_enterarea))
+	_enterarea.body_entered.connect(_on_body_entered.bind(_exitarea))
+	_exitarea.body_entered.connect(_on_body_entered.bind(_enterarea))
 
 func _on_body_entered(body: PhysicsBody3D, exit: Node3D):
 	if body.is_in_group("Player") and _timer.is_stopped():
