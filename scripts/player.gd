@@ -22,7 +22,7 @@ signal action_tower()
 
 func _ready() -> void:
 	add_to_group('Player')
-	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
+	$Timer.timeout.connect(self._on_Timer_timeout)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _unhandled_input(event):

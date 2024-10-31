@@ -5,7 +5,7 @@ var projectile = preload("res://scenes/projectile.tscn")
 var SPEED = 100
 
 func _ready() -> void:
-	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
+	$Timer.timeout.connect(self._on_Timer_timeout)
 	
 	if get_parent().get_name() == "Player":
 		toggle_visible()

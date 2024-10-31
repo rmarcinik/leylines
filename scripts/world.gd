@@ -10,7 +10,7 @@ func _ready() -> void:
 	make_grid()
 	make_portal()
 	move_moon()
-	$Player.connect("send_preview", place_tower)
+	$Player.send_preview.connect(place_tower)
 	var node = tower.instantiate()
 	$Player.add_child(node)
 	
@@ -18,7 +18,7 @@ func place_tower(preview):
 	var node = tower.instantiate()
 	add_child(node, true)
 	node.global_transform = preview
-	$Player.connect("action_tower", Callable(node,"action_tower"))
+	$Player.action_tower.connect(node.action_tower)
 	
 func make_grid() -> void:
 	var width = 6
