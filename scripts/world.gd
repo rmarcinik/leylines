@@ -13,13 +13,13 @@ func _ready() -> void:
 	$Player.send_preview.connect(place_tower)
 	var node = tower.instantiate()
 	$Player.add_child(node)
-	
+
 func place_tower(preview):
 	var node = tower.instantiate()
 	add_child(node, true)
 	node.global_transform = preview
 	$Player.action_tower.connect(node.action_tower)
-	
+
 func make_grid() -> void:
 	var width = 6
 	var length = 6
@@ -28,7 +28,7 @@ func make_grid() -> void:
 	var xrange = width * step
 	var zrange = length * step
 	var node
-	
+
 	for x in range(0, xrange, step):
 		for z in range(0, zrange, step):
 			node = land.instantiate()
@@ -40,7 +40,7 @@ func make_portal() -> void:
 	add_child(node, true)
 	node.get_node('Enter').global_position = Vector3(40, 0, 0)
 	node.get_node('Exit').global_position = Vector3(190, 180, 101)
-	
+
 	var farnode = _portal.instantiate()
 	add_child(farnode, true)
 	farnode.get_node('Enter').global_position = Vector3(-40, 0, 0)
@@ -59,12 +59,9 @@ func _physics_process(delta: float) -> void:
 	var pillar_origin = _pillar.global_transform.origin
 	var pillar_height = _pillar.height
 	var base_position = pillar_origin.y - pillar_height / 2
-	
+
 	var top_position = base_position + pillar_height
 	if moon_y < base_position + 50:
 		moon.apply_central_impulse(Vector3.UP * 200000)
 	if moon_y > top_position:
 		moon.apply_central_impulse(Vector3.DOWN * 200000)
-		
-		
-	
