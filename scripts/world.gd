@@ -55,12 +55,11 @@ func make_portal() -> void:
 
 func move_moon() -> void:
 	var moon = _moon.instantiate()
-	print(moon.global_position)
 	_pillar.add_child(moon, true)
 	moon.global_position = Vector3(-50,10,80)
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 
 	var moon = _pillar.get_child(0)
 	var moon_y = moon.global_transform.origin.y
