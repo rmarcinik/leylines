@@ -1,7 +1,7 @@
 extends Node3D
 
-@onready var land = preload("res://scenes/land.tscn")
-@onready var tower = preload("res://scenes/tower.tscn")
+@onready var _land = preload("res://scenes/land.tscn")
+@onready var _tower = preload("res://scenes/tower.tscn")
 @onready var _portal = preload("res://scenes/portal.tscn")
 @onready var _moon = preload("res://scenes/moon.tscn")
 @onready var _pillar = $Blocks/Foundation2/Pillar
@@ -11,13 +11,20 @@ func _ready() -> void:
 	make_portal()
 	move_moon()
 	$Player.send_preview.connect(place_tower)
-	var node = tower.instantiate()
+	var node = _tower.instantiate()
 	$Player.add_child(node)
 
+func place_node(node, transform: Transform3D):
+	var instance = node.instantiate()
+	add_child(instance, true)
+	instance.global_transform = transform
+	return instance
+
 func place_tower(preview):
-	var node = tower.instantiate()
-	add_child(node, true)
-	node.global_transform = preview
+	#var node = tower.instantiate()
+	#add_child(node, true)
+	#node.global_transform = preview
+	var node = place_node(_tower, preview)
 	$Player.action_tower.connect(node.action_tower)
 
 func make_grid() -> void:
@@ -31,7 +38,7 @@ func make_grid() -> void:
 
 	for x in range(0, xrange, step):
 		for z in range(0, zrange, step):
-			node = land.instantiate()
+			node = _land.instantiate()
 			node.position = Vector3(x,height,z)
 			add_child(node, true)
 

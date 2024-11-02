@@ -6,11 +6,11 @@ var SPEED = 100
 
 func _ready() -> void:
 	$Timer.timeout.connect(self._on_Timer_timeout)
-	
+
 	if get_parent().get_name() == "Player":
 		toggle_visible()
 		enable_preview()
-		
+
 func _on_Timer_timeout():
 	action_tower()
 
@@ -19,7 +19,7 @@ func toggle_visible():
 		visible = false
 	else:
 		visible = true
-	
+
 func action_tower():
 	var rock = projectile.instantiate()
 	add_child(rock, true)
@@ -30,7 +30,7 @@ func action_tower():
 func enable_preview():
 	# previewmesh is a transparent green mesh to replace the tower
 	# we also need to disable collision
-	# 
+	#
 	$Timer.stop()
 	$Base.set_surface_override_material(0, previewmesh)
 	$Base/Spout.set_surface_override_material(0, previewmesh)
@@ -67,6 +67,5 @@ func make_triangle():
 	st.index()
 
 	# Commit to a mesh.
-	return st.commit()		
+	return st.commit()
 	# then do this on a mesh instance 	rock.get_child(1).create_trimesh_collision()
-	
