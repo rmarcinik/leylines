@@ -13,7 +13,7 @@ extends RigidBody3D
 @export var local_gravity := Vector3.DOWN
 @export var ground_acceleration := 20.0
 @export var air_acceleration := 5.0
-@export var ground_friction := 0.9
+@export var ground_friction := 1
 @export var air_friction := 0.99
 
 var _move_direction = Vector3.ZERO
