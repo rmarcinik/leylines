@@ -104,7 +104,7 @@ size = Vector3(1000, 10, 1000)
 material = SubResource("6")
 
 [node name="Pillar" type="CSGCylinder3D" parent="Blocks/Foundation2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 500.593, -68.1837)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28717, 505.021, -68.9868)
 radius = 100.0
 height = 1000.0
 sides = 64

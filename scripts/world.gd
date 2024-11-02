@@ -14,10 +14,10 @@ func _ready() -> void:
 	var node = _tower.instantiate()
 	$Player.add_child(node)
 
-func place_node(node, desired_transform: Transform3D):
+func place_node(node, xform: Transform3D):
 	var instance = node.instantiate()
 	add_child(instance, true)
-	instance.global_transform = desired_transform
+	instance.global_transform = xform
 	return instance
 
 func place_tower(preview):
@@ -56,19 +56,21 @@ func make_portal() -> void:
 func move_moon() -> void:
 	var moon = _moon.instantiate()
 	_pillar.add_child(moon, true)
-	moon.global_position = Vector3(-50,10,80)
+	moon.global_position = Vector3(-60,20,80)
+	moon.freeze = true
 
-
-func _physics_process(_delta: float) -> void:
-
+func moon_move():
 	var moon = _pillar.get_child(0)
+	moon.freeze = false
 	var moon_y = moon.global_transform.origin.y
 	var pillar_origin = _pillar.global_transform.origin
 	var pillar_height = _pillar.height
 	var base_position = pillar_origin.y - pillar_height / 2
-
 	var top_position = base_position + pillar_height
 	if moon_y < base_position + 50:
 		moon.apply_central_impulse(Vector3.UP * 200000)
 	if moon_y > top_position:
 		moon.apply_central_impulse(Vector3.DOWN * 200000)
+
+func _physics_process(_delta: float) -> void:
+	moon_move()

@@ -8,9 +8,10 @@ func _init() -> void:
 	OS.set_environment("SteamGameID", str(480))
 
 func _ready() -> void:
-	Steam.steamInit()
-	steam_id = Steam.getSteamID()
-	steam_username = Steam.getPersonaName()
+	pass
+	#Steam.steamInit() #commented to not spam spacewar
+	#steam_id = Steam.getSteamID()
+	#steam_username = Steam.getPersonaName()
 
 func _process(_delta: float) -> void:
-	Steam.run_callbacks()
+	pass #Steam.run_callbacks()

@@ -4,7 +4,7 @@ extends RigidBody3D
 @onready var _camera_arm: SpringArm3D = $CameraPivot/CameraArm
 @onready var _camera: Camera3D = $CameraPivot/CameraArm/Camera3D
 @onready var _raycast: RayCast3D = $Downward
-@onready var _frontraycast: RayCast3D = $Forward
+#@onready var _frontraycast: RayCast3D = $Forward
 
 @export var mouse_sens := 0.01
 @export var y_mouse_sens := 0.1
@@ -28,7 +28,6 @@ signal action_tower()
 
 func _ready() -> void:
 	add_to_group('Player')
-	$Timer.timeout.connect(self._on_Timer_timeout)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event):
@@ -43,16 +42,6 @@ func _unhandled_input(event):
 		# look up an down
 		_camera_arm.rotate_x(-mouseMotion_y * mouse_sens * y_mouse_sens)
 		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI/4, PI/4)
-
-func _on_Timer_timeout():
-	print('''
-	mouseMotion_x
-	%s
-	player basis
-	%s
-	player front basis
-	%s
-	''' % [mouseMotion_x, transform.basis.z, _frontraycast.global_basis])
 
 func floored() -> bool:
 	return _raycast.is_colliding()
