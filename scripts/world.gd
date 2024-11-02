@@ -14,10 +14,10 @@ func _ready() -> void:
 	var node = _tower.instantiate()
 	$Player.add_child(node)
 
-func place_node(node, transform: Transform3D):
+func place_node(node, desired_transform: Transform3D):
 	var instance = node.instantiate()
 	add_child(instance, true)
-	instance.global_transform = transform
+	instance.global_transform = desired_transform
 	return instance
 
 func place_tower(preview):
@@ -55,6 +55,7 @@ func make_portal() -> void:
 
 func move_moon() -> void:
 	var moon = _moon.instantiate()
+	print(moon.global_position)
 	_pillar.add_child(moon, true)
 	moon.global_position = Vector3(-50,10,80)
 

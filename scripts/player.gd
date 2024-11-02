@@ -11,11 +11,17 @@ extends RigidBody3D
 @export var speed := 4000.0
 @export var jump_strength := 300.0
 @export var local_gravity := Vector3.DOWN
+@export var ground_acceleration := 20.0
+@export var air_acceleration := 5.0
+@export var ground_friction := 0.9
+@export var air_friction := 0.99
 
 var _move_direction = Vector3.ZERO
 var _last_strong_direction = Vector3.FORWARD
 var mouseMotion_x :float
 var mouseMotion_y :float
+var _current_velocity := Vector3.ZERO
+var _target_velocity := Vector3.ZERO
 
 signal send_preview(position)
 signal action_tower()
@@ -56,33 +62,44 @@ func get_gravity_direction(state) -> Vector3:
 
 func _integrate_forces(state) -> void:
 	## Orient Player
-	# Get direction of gravity
 	local_gravity = get_gravity_direction(state)
-
 	_move_direction = _get_model_oriented_input()
-
 	_last_strong_direction = _camera_pivot.global_basis.z
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 
-
-
-
 	## Move Player
+	var is_grounded = floored()
+
+	# Calculate target velocity
+	_target_velocity = _move_direction * speed
+
+	# Apply acceleration and friction
+	var accel = ground_acceleration if is_grounded else air_acceleration
+	var friction = ground_friction if is_grounded else air_friction
+
+	_current_velocity = _current_velocity.lerp(_target_velocity, state.step * accel)
+	_current_velocity *= friction
+
+	# Apply movement force
+	apply_central_force(_current_velocity)
+
+	# Handle jumping/falling
 	if is_jumping():
 		apply_central_impulse(-local_gravity * jump_strength)
 	if is_falling():
 		apply_central_impulse(local_gravity * jump_strength)
-	if floored():
-		apply_central_force(_move_direction * speed)
-	else:
-		apply_central_force(_move_direction * speed)
 
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if raw_input == Vector2.ZERO:
+		return Vector3.ZERO
+
 	var input = Vector3.ZERO
-	input.x = raw_input.x * sqrt(1.0 - raw_input.y * raw_input.y / 2.0)
-	input.z = raw_input.y * sqrt(1.0 - raw_input.x * raw_input.x / 2.0)
-	return  basis * input #_move_direction
+	# Normalize input for consistent movement speed in all directions
+	input.x = raw_input.x
+	input.z = raw_input.y
+
+	return basis * input.normalized()
 
 func _orient_character_to_direction(direction: Vector3, gravity: Vector3, delta: float):
 	var left_axis := -gravity.cross(direction)
@@ -91,12 +108,10 @@ func _orient_character_to_direction(direction: Vector3, gravity: Vector3, delta:
 	# spherical linear interpolation tries to make a smooth movement
 	return basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 10)
 
-
 func is_jumping() -> bool:
 	return Input.is_action_pressed("jump")
 func is_falling() -> bool:
 	return Input.is_action_pressed("fall")
-
 
 func get_mouse_preview() -> Vector3:
 	var space_state = get_world_3d().get_direct_space_state()
@@ -113,7 +128,6 @@ func get_mouse_preview() -> Vector3:
 		return params.to
 	else:
 		return result.position
-
 
 func _process(_delta: float) -> void:
 	_camera_pivot.global_basis = $Head.global_basis
