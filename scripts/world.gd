@@ -14,10 +14,10 @@ func _ready() -> void:
 	var node = _tower.instantiate()
 	$Player.add_child(node)
 
-func place_node(node, xform: Transform3D):
+func place_node(node, globaltransform: Transform3D):
 	var instance = node.instantiate()
 	add_child(instance, true)
-	instance.global_transform = xform
+	instance.global_transform = globaltransform
 	return instance
 
 func place_tower(preview):
