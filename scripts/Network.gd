@@ -1,5 +1,5 @@
 extends Node
-
+w
 const PACKET_READ_LIMIT: int = 32
 
 var is_host: bool = false
@@ -21,18 +21,18 @@ func create_lobby():
 		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, lobby_members_max)
 
 func _on_lobby_created(connect: int, this_lobby_id: int):
-		if connect == 1:
-			lobby_id = this_lobby_id
-			Steam.setLobbyData(lobby_id, 'name', 'Lobby Time')
+	if connect == 1:
+		lobby_id = this_lobby_id
+		Steam.setLobbyData(lobby_id, 'name', 'Lobby Time')
 
-			var set_relay: bool = Steam.allowP2PPacketRelay(true)
+		var set_relay: bool = Steam.allowP2PPacketRelay(true)
 
 func join_lobby(this_lobby_id: int) -> void:
 	Steam.joinLobby(this_lobby_id)
 
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked:int, response: int):
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
-		lobby_id == this_lobby_id
+		lobby_id = this_lobby_id
 
 	get_lobby_members()
 	make_p2p_handshake()

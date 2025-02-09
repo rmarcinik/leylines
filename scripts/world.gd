@@ -9,12 +9,12 @@ extends Node3D
 func _ready() -> void:
 	make_grid()
 	make_portal()
-	move_moon()
+	#move_moon()
 	$Player.send_preview.connect(place_tower)
 	var node = _tower.instantiate()
 	$Player.add_child(node)
 
-func place_node(node, globaltransform: Transform3D):
+func place_node(node, globaltransform: Transform3D = Transform3D()):
 	var instance = node.instantiate()
 	add_child(instance, true)
 	instance.global_transform = globaltransform
@@ -43,13 +43,11 @@ func make_grid() -> void:
 			add_child(node, true)
 
 func make_portal() -> void:
-	var node = _portal.instantiate()
-	add_child(node, true)
+	var node = place_node(_portal)
 	node.get_node('Enter').global_position = Vector3(40, 0, 0)
 	node.get_node('Exit').global_position = Vector3(190, 180, 101)
 
-	var farnode = _portal.instantiate()
-	add_child(farnode, true)
+	var farnode = place_node(_portal)
 	farnode.get_node('Enter').global_position = Vector3(-40, 0, 0)
 	farnode.get_node('Exit').global_position = Vector3(0, 180, 2700)
 
@@ -73,4 +71,4 @@ func moon_move():
 		moon.apply_central_impulse(Vector3.DOWN * 200000)
 
 func _physics_process(_delta: float) -> void:
-	moon_move()
+	pass #moon_move()
