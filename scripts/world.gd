@@ -1,15 +1,16 @@
 extends Node3D
-
+var time : float
 @onready var _land = preload("res://scenes/land.tscn")
 @onready var _tower = preload("res://scenes/tower.tscn")
 @onready var _portal = preload("res://scenes/portal.tscn")
 @onready var _moon = preload("res://scenes/moon.tscn")
-@onready var _pillar = $Blocks/Foundation2/Pillar
+#@onready var _pillar = $Blocks/Foundation2/Pillar
+@onready var _path_follower = $path_3d/path_follow_3d
 
 func _ready() -> void:
 	make_grid()
 	make_portal()
-	#move_moon()
+	move_moon()
 	$Player.send_preview.connect(place_tower)
 	var node = _tower.instantiate()
 	$Player.add_child(node)
@@ -44,8 +45,10 @@ func make_grid() -> void:
 
 func make_portal() -> void:
 	var node = place_node(_portal)
-	node.get_node('Enter').global_position = Vector3(40, 0, 0)
+	node.get_node('Enter').global_position = Vector3(40, 4, 0)
+	node.get_node('Exit').get_node('EnterView').get_node('EnterCam').global_position = Vector3(190, 180, 101)
 	node.get_node('Exit').global_position = Vector3(190, 180, 101)
+	node.get_node('Enter').get_node('ExitView').get_node('ExitCam').global_position = Vector3(40, 4, 0)
 
 	var farnode = place_node(_portal)
 	farnode.get_node('Enter').global_position = Vector3(-40, 0, 0)
@@ -53,22 +56,16 @@ func make_portal() -> void:
 
 func move_moon() -> void:
 	var moon = _moon.instantiate()
-	_pillar.add_child(moon, true)
-	moon.global_position = Vector3(-60,20,80)
-	moon.freeze = true
+	_path_follower.add_child(moon, true)
+	moon.global_position = Vector3(210,20,-200)
 
-func moon_move():
-	var moon = _pillar.get_child(0)
-	moon.freeze = false
-	var moon_y = moon.global_transform.origin.y
-	var pillar_origin = _pillar.global_transform.origin
-	var pillar_height = _pillar.height
-	var base_position = pillar_origin.y - pillar_height / 2
-	var top_position = base_position + pillar_height
-	if moon_y < base_position + 50:
-		moon.apply_central_impulse(Vector3.UP * 200000)
-	if moon_y > top_position:
-		moon.apply_central_impulse(Vector3.DOWN * 200000)
+func moon_move_static(delta):
+	#var moon = _path_3d.get_child(0)
+	time+=delta
+	_path_follower.progress += (sin(time * 1) * 1)
+	#var target_position = Vector3.UP * (sin(time * .7) * 4)
+	#moon.position = moon.position + target_position
+	print(_path_follower.progress)
 
 func _physics_process(_delta: float) -> void:
-	pass #moon_move()
+	moon_move_static(_delta)

@@ -43,8 +43,12 @@ func _unhandled_input(event):
 		_camera_arm.rotate_x(-mouseMotion_y * mouse_sens * y_mouse_sens)
 		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI/4, PI/4)
 
-func floored() -> bool:
+func is_grounded() -> bool:
 	return _raycast.is_colliding()
+func is_jumping() -> bool:
+	return Input.is_action_pressed("jump")
+func is_falling() -> bool:
+	return Input.is_action_pressed("fall")
 
 func get_gravity_direction(state) -> Vector3:
 	return state.total_gravity.normalized()
@@ -57,14 +61,12 @@ func _integrate_forces(state) -> void:
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 
 	## Move Player
-	var is_grounded = floored()
-
 	# Calculate target velocity
 	_target_velocity = _move_direction * speed
 
 	# Apply acceleration and friction
-	var accel = ground_acceleration if is_grounded else air_acceleration
-	var friction = ground_friction if is_grounded else air_friction
+	var accel = ground_acceleration if is_grounded() else air_acceleration
+	var friction = ground_friction if is_grounded() else air_friction
 
 	_current_velocity = _current_velocity.lerp(_target_velocity, state.step * accel)
 	_current_velocity *= friction
@@ -96,11 +98,6 @@ func _orient_character_to_direction(direction: Vector3, gravity: Vector3, delta:
 	# get rotation quaternion is finding how to change the basis to fit the direction of gravity, and player input
 	# spherical linear interpolation tries to make a smooth movement
 	return basis.get_rotation_quaternion().slerp(rotation_basis.get_rotation_quaternion(), delta * 10)
-
-func is_jumping() -> bool:
-	return Input.is_action_pressed("jump")
-func is_falling() -> bool:
-	return Input.is_action_pressed("fall")
 
 func get_mouse_preview() -> Vector3:
 	var space_state = get_world_3d().get_direct_space_state()
