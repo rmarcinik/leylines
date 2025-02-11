@@ -45,27 +45,28 @@ func make_grid() -> void:
 
 func make_portal() -> void:
 	var node = place_node(_portal)
-	node.get_node('Enter').global_position = Vector3(40, 4, 0)
-	node.get_node('Exit').get_node('EnterView').get_node('EnterCam').global_position = Vector3(190, 180, 101)
-	node.get_node('Exit').global_position = Vector3(190, 180, 101)
-	node.get_node('Enter').get_node('ExitView').get_node('ExitCam').global_position = Vector3(40, 4, 0)
+	node.get_node('Enter').global_position = Vector3(40, 4, -20)
+	node.get_node('Enter').get_node('EnterView').get_node('EnterCam').global_position = Vector3(40, 4, -20)
+	node.get_node('Exit').global_position = Vector3(190, 180, 100)
+	node.get_node('Exit').get_node('ExitView').get_node('ExitCam').global_position = Vector3(190, 180, 100)
 
 	var farnode = place_node(_portal)
-	farnode.get_node('Enter').global_position = Vector3(-40, 0, 0)
+	farnode.get_node('Enter').global_position = Vector3(-40, 4, 0)
+	farnode.get_node('Enter').get_node('EnterView').get_node('EnterCam').global_position = Vector3(-40, 4, 0)
 	farnode.get_node('Exit').global_position = Vector3(0, 180, 2700)
+	farnode.get_node('Exit').get_node('ExitView').get_node('ExitCam').global_position = Vector3(0, 180, 2700)
 
 func move_moon() -> void:
 	var moon = _moon.instantiate()
 	_path_follower.add_child(moon, true)
 	moon.global_position = Vector3(210,20,-200)
 
-func moon_move_static(delta):
-	#var moon = _path_3d.get_child(0)
-	time+=delta
-	_path_follower.progress += (sin(time * 1) * 1)
-	#var target_position = Vector3.UP * (sin(time * .7) * 4)
-	#moon.position = moon.position + target_position
-	print(_path_follower.progress)
+func moon_move_static(delta: float) -> void:
+	time += delta
+	# Use sin to oscillate between -1 and 1, then map it to 0-1 range
+	# Multiply time by a smaller number to slow down the oscillation
+	var progress = (sin(time * 0.1) + 1) * 0.5
+	_path_follower.progress_ratio = progress
 
 func _physics_process(_delta: float) -> void:
 	moon_move_static(_delta)

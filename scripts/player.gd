@@ -9,12 +9,12 @@ extends RigidBody3D
 @export var mouse_sens := 0.01
 @export var y_mouse_sens := 0.1
 @export var speed := 4000.0
-@export var jump_strength := 300.0
+@export var jump_strength := 600.0
 @export var local_gravity := Vector3.DOWN
 @export var ground_acceleration := 20.0
-@export var air_acceleration := 5.0
+@export var air_acceleration := 10.0
 @export var ground_friction := 1.0
-@export var air_friction := 1.0
+@export var air_friction := 1.1
 
 var _move_direction = Vector3.ZERO
 var _last_strong_direction = Vector3.FORWARD

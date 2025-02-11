@@ -10,11 +10,11 @@ height = 4.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_tus5q"]
 radius = 2.0
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_d2klf"]
-viewport_path = NodePath("Exit/EnterView")
+[sub_resource type="ViewportTexture" id="ViewportTexture_rmo3j"]
+viewport_path = NodePath("Exit/ExitView")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_it32s"]
-viewport_path = NodePath("Enter/ExitView")
+[sub_resource type="ViewportTexture" id="ViewportTexture_jkp8x"]
+viewport_path = NodePath("Enter/EnterView")
 
 [node name="Portal" type="Node3D"]
 script = ExtResource("1_ij3jr")
@@ -31,17 +31,14 @@ surface_material_override/0 = ExtResource("2_aohh7")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Enter/Area3D"]
 shape = SubResource("SphereShape3D_tus5q")
 
-[node name="ExitView" type="SubViewport" parent="Enter"]
-size_2d_override_stretch = true
-render_target_update_mode = 4
+[node name="EnterView" type="SubViewport" parent="Enter"]
 
-[node name="ExitCam" type="Camera3D" parent="Enter/ExitView"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10.2482, 0)
-fov = 160.0
+[node name="EnterCam" type="Camera3D" parent="Enter/EnterView"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.3272, 4.1659, -1.54606)
 
 [node name="EnterScreen" type="Sprite3D" parent="Enter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.4175)
-texture = SubResource("ViewportTexture_d2klf")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446283, 0, 7.19283)
+texture = SubResource("ViewportTexture_rmo3j")
 
 [node name="Exit" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
@@ -55,21 +52,14 @@ surface_material_override/0 = ExtResource("2_aohh7")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Exit/Area3D"]
 shape = SubResource("SphereShape3D_tus5q")
 
-[node name="OuterArea" type="Area3D" parent="Exit"]
+[node name="ExitView" type="SubViewport" parent="Exit"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Exit/OuterArea"]
-shape = SubResource("SphereShape3D_tus5q")
-
-[node name="EnterView" type="SubViewport" parent="Exit"]
-size_2d_override_stretch = true
-render_target_update_mode = 4
-
-[node name="EnterCam" type="Camera3D" parent="Exit/EnterView"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.32448, 10.2482, 0)
+[node name="ExitCam" type="Camera3D" parent="Exit/ExitView"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3.60484, -2.22116)
 
 [node name="ExitScreen" type="Sprite3D" parent="Exit"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.94694)
-texture = SubResource("ViewportTexture_it32s")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.70416)
+texture = SubResource("ViewportTexture_jkp8x")
 
 [node name="Portal_timer" type="Timer" parent="."]
 wait_time = 5.0
