@@ -11,6 +11,15 @@ extends Node3D
 func _ready():
 	_enterarea.body_entered.connect(_on_body_entered.bind(_exitarea))
 	_exitarea.body_entered.connect(_on_body_entered.bind(_enterarea))
+	_set_viewport_mat($Enter/MeshInstance3D, $Exit/ExitView)
+	_set_viewport_mat($Exit/MeshInstance3D, $Enter/EnterView)
+
+# https://old.reddit.com/r/godot/comments/13d93o1/godot_4_viewport_texture_error/
+# avoids false error if the viewport texture is set in code
+func _set_viewport_mat(_display_mesh : MeshInstance3D, _sub_viewport : SubViewport, _surface_id : int = 0):
+	var _mat : StandardMaterial3D = StandardMaterial3D.new()
+	_mat.albedo_texture = _sub_viewport.get_texture()
+	_display_mesh.set_surface_override_material(_surface_id, _mat)
 
 func _on_body_entered(body: PhysicsBody3D, exit: Node3D):
 	if body.is_in_group("Player") and _timer.is_stopped():
