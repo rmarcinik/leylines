@@ -50,6 +50,7 @@ render_target_update_mode = 4
 
 [node name="EnterCam" type="Camera3D" parent="Enter/EnterView"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 10.327, 0, 2)
+fov = 120.0
 
 [node name="EnterScreen" type="Sprite3D" parent="Enter"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
@@ -73,6 +74,7 @@ render_target_update_mode = 4
 
 [node name="ExitCam" type="Camera3D" parent="Exit/ExitView"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -10, 0, 2)
+fov = 120.0
 
 [node name="ExitScreen" type="Sprite3D" parent="Exit"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
