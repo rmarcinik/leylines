@@ -32,12 +32,13 @@ surface_material_override/0 = ExtResource("2_aohh7")
 shape = SubResource("SphereShape3D_tus5q")
 
 [node name="EnterView" type="SubViewport" parent="Enter"]
+render_target_update_mode = 4
 
 [node name="EnterCam" type="Camera3D" parent="Enter/EnterView"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.3272, 4.1659, -1.54606)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 10.327, 0, 2)
 
 [node name="EnterScreen" type="Sprite3D" parent="Enter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446283, 0, 7.19283)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 texture = SubResource("ViewportTexture_rmo3j")
 
 [node name="Exit" type="Node3D" parent="."]
@@ -53,12 +54,13 @@ surface_material_override/0 = ExtResource("2_aohh7")
 shape = SubResource("SphereShape3D_tus5q")
 
 [node name="ExitView" type="SubViewport" parent="Exit"]
+render_target_update_mode = 4
 
 [node name="ExitCam" type="Camera3D" parent="Exit/ExitView"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3.60484, -2.22116)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -10, 0, 2)
 
 [node name="ExitScreen" type="Sprite3D" parent="Exit"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.70416)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 texture = SubResource("ViewportTexture_jkp8x")
 
 [node name="Portal_timer" type="Timer" parent="."]

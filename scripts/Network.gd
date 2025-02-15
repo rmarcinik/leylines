@@ -1,5 +1,5 @@
 extends Node
-w
+
 const PACKET_READ_LIMIT: int = 32
 
 var is_host: bool = false

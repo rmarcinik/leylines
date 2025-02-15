@@ -89,13 +89,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5862, -48.5848)
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Blocks/Foundation"]
-size = Vector3(170.218, 19.3872, 194.13)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.78968, 0, 0.57193)
+size = Vector3(173.797, 19.3872, 195.274)
 material = SubResource("6")
 
 [node name="CSGBox2" type="CSGBox3D" parent="Blocks/Foundation"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6861, 0)
 operation = 2
 size = Vector3(167.752, 20.5346, 192.395)
+material = SubResource("7")
+
+[node name="CSGBox4" type="CSGBox3D" parent="Blocks/Foundation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.790764, 9.2492, 0.0609207)
+operation = 2
+size = Vector3(169.334, 1.60702, 192.517)
 material = SubResource("7")
 
 [node name="CSGBox3" type="CSGBox3D" parent="Blocks/Foundation"]
