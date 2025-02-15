@@ -18,7 +18,6 @@ radius = 25.0
 radius = 50.0
 
 [node name="moon" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
 mass = 1000.0
 physics_material_override = SubResource("PhysicsMaterial_vs3v0")
 
