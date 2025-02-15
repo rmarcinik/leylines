@@ -1,9 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://bevviiu7cirus"]
+[gd_scene load_steps=10 format=3 uid="uid://bevviiu7cirus"]
 
 [ext_resource type="Script" path="res://scripts/portal.gd" id="1_ij3jr"]
-[ext_resource type="Material" uid="uid://jpa30uwys4o" path="res://asset/white_portal.tres" id="2_aohh7"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_51f6t"]
+viewport_path = NodePath("Exit/ExitView")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yi3mk"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_51f6t")
 
 [sub_resource type="SphereMesh" id="SphereMesh_0vnvy"]
+resource_local_to_scene = true
 radius = 2.0
 height = 4.0
 
@@ -12,6 +19,13 @@ radius = 2.0
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rmo3j"]
 viewport_path = NodePath("Exit/ExitView")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kyinw"]
+viewport_path = NodePath("Enter/EnterView")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rgrn0"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_kyinw")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_jkp8x"]
 viewport_path = NodePath("Enter/EnterView")
@@ -23,8 +37,8 @@ script = ExtResource("1_ij3jr")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Enter"]
+material_override = SubResource("StandardMaterial3D_yi3mk")
 mesh = SubResource("SphereMesh_0vnvy")
-surface_material_override/0 = ExtResource("2_aohh7")
 
 [node name="Area3D" type="Area3D" parent="Enter"]
 
@@ -39,14 +53,15 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 10.327
 
 [node name="EnterScreen" type="Sprite3D" parent="Enter"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+visible = false
 texture = SubResource("ViewportTexture_rmo3j")
 
 [node name="Exit" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Exit"]
+material_override = SubResource("StandardMaterial3D_rgrn0")
 mesh = SubResource("SphereMesh_0vnvy")
-surface_material_override/0 = ExtResource("2_aohh7")
 
 [node name="Area3D" type="Area3D" parent="Exit"]
 
@@ -61,6 +76,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -10, 0
 
 [node name="ExitScreen" type="Sprite3D" parent="Exit"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+visible = false
 texture = SubResource("ViewportTexture_jkp8x")
 
 [node name="Portal_timer" type="Timer" parent="."]
