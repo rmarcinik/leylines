@@ -59,6 +59,7 @@ func make_portal() -> void:
 func move_moon() -> void:
 	var moon = _moon.instantiate()
 	moon.add_to_group('elevator')
+	moon.freeze = false
 	var path_target = Node3D.new()  # Create bare Node3D to follow path
 	_path_follower.add_child(path_target, true)  # Add target to path follower
 	add_child(moon, true)  # Add moon to world instead of path follower
