@@ -74,6 +74,10 @@ environment = SubResource("Environment_lm7h8")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.80751, 17.9305, -101.533)
 
 [node name="moon" parent="." instance=ExtResource("3_f81e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mass = 1000.0
+freeze = true
+freeze_mode = 1
 
 [node name="Blocks" type="Node3D" parent="."]
 

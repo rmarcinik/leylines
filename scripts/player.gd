@@ -24,11 +24,11 @@ func _ready() -> void:
 	add_to_group('Player')
 	$Timer.connect("timeout",Callable(self,"_on_Timer_timeout"))
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
+
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
-		
+
 	if(event is InputEventMouseMotion):
 		mouseMotion_x = event.relative.x
 		mouseMotion_y = event.relative.y
@@ -41,7 +41,7 @@ func _unhandled_input(event):
 func _on_Timer_timeout():
 	print('''
 	mouseMotion_x
-	%s 
+	%s
 	player basis
 	%s
 	player front basis
@@ -53,19 +53,19 @@ func floored() -> bool:
 
 func get_gravity_direction(state) -> Vector3:
 	return state.total_gravity.normalized()
-	
+
 func _integrate_forces(state) -> void:
 	## Orient Player
 	# Get direction of gravity
 	local_gravity = get_gravity_direction(state)
-	
+
 	_move_direction = _get_model_oriented_input()
-		
+
 	_last_strong_direction = _camera_pivot.global_basis.z
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
-	
-	
-	
+
+
+
 
 	## Move Player
 	if is_jumping():
@@ -76,7 +76,7 @@ func _integrate_forces(state) -> void:
 		apply_central_force(_move_direction * speed)
 	else:
 		apply_central_force(_move_direction * speed)
-	
+
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var input = Vector3.ZERO
