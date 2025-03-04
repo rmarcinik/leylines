@@ -1,6 +1,6 @@
 [gd_scene load_steps=21 format=3 uid="uid://ipa5a74hiw2f"]
 
-[ext_resource type="Script" path="res://scripts/world.gd" id="1_2be1r"]
+[ext_resource type="Script" uid="uid://xh0tiat88cvd" path="res://scripts/world.gd" id="1_2be1r"]
 [ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://scenes/player.tscn" id="2_t7tw0"]
 [ext_resource type="PackedScene" uid="uid://04r7ot5si24h" path="res://scenes/moon.tscn" id="3_f81e1"]
 [ext_resource type="Material" uid="uid://bouh5qp24wue8" path="res://asset/night.tres" id="4_5h22o"]
@@ -82,6 +82,9 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.8075
 
 [node name="moon" parent="." instance=ExtResource("3_f81e1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
+mass = 10000.0
+freeze = false
+freeze_mode = 0
 
 [node name="Blocks" type="Node3D" parent="."]
 
@@ -276,6 +279,7 @@ path_interval_type = 0
 path_interval = 1.0
 path_simplify_angle = 0.0
 path_rotation = 2
+path_rotation_accurate = false
 path_local = false
 path_continuous_u = true
 path_u_distance = 1.0

@@ -3,6 +3,7 @@
 [ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="1_51aob"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vs3v0"]
+friction = 0.0
 absorbent = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_whpp2"]

@@ -12,7 +12,7 @@ config_version=5
 
 config/name="leylines"
 run/main_scene="res://scenes/world.tscn"
-config/features=PackedStringArray("4.3")
+config/features=PackedStringArray("4.4")
 config/icon="res://asset/icon.png"
 
 [autoload]
@@ -89,10 +89,6 @@ fall={
 2d_physics/layer_1="player"
 2d_physics/layer_2="enemies"
 2d_physics/layer_3="level"
-
-[physics]
-
-3d/physics_engine="JoltPhysics3D"
 
 [rendering]
 
