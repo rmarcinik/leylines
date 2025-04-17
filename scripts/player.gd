@@ -1,4 +1,4 @@
-extends RigidBody3D
+class_name Player extends RigidBody3D
 
 @onready var _camera_pivot: Node3D = $CameraPivot
 @onready var _camera_arm: SpringArm3D = $CameraPivot/CameraArm
@@ -27,7 +27,6 @@ signal send_preview(position)
 signal action_tower()
 
 func _ready() -> void:
-	add_to_group('Player')
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event):
@@ -41,7 +40,7 @@ func _unhandled_input(event):
 		_camera_pivot.rotate_y(-mouseMotion_x * mouse_sens)
 		# look up an down
 		_camera_arm.rotate_x(-mouseMotion_y * mouse_sens * y_mouse_sens)
-		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI/4, PI/4)
+		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI/2, PI/2)
 
 func is_grounded() -> bool:
 	return _raycast.is_colliding()
@@ -79,6 +78,8 @@ func _integrate_forces(state) -> void:
 		apply_central_impulse(-local_gravity * jump_strength)
 	if is_falling():
 		apply_central_impulse(local_gravity * jump_strength)
+	if is_grounded():
+		pass
 
 func _get_model_oriented_input() -> Vector3:
 	var raw_input = Input.get_vector("move_left", "move_right", "move_up", "move_down")

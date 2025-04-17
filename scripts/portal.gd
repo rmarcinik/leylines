@@ -15,7 +15,7 @@ func _ready():
 	_set_viewport_mat($Exit/MeshInstance3D, $Enter/EnterView)
 
 func _on_body_entered(body: PhysicsBody3D, exit: Node3D):
-	if body.is_in_group("Player") and _timer.is_stopped():
+	if body is Player and _timer.is_stopped():
 		_timer.start()
 		body.global_position = exit.global_position
 

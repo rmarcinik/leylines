@@ -58,18 +58,17 @@ func make_portal() -> void:
 
 func move_moon() -> void:
 	var moon = _moon.instantiate()
-	moon.add_to_group('elevator')
 	moon.freeze = false
 	var path_target = Node3D.new()  # Create bare Node3D to follow path
 	_path_follower.add_child(path_target, true)  # Add target to path follower
 	add_child(moon, true)  # Add moon to world instead of path follower
 	moon.global_position = Vector3(210,20,-200)
-	moon.name = "moon"  # Name it so we can find it easily
+	moon.name = "elevator"  # Name it so we can find it easily
 	path_target.name = "path_target"
 
 func moon_move_static(delta: float) -> void:
 	time += delta
-	var moon = get_tree().get_nodes_in_group('elevator')[0]
+	var moon = get_node('elevator')
 	var path_target = _path_follower.get_node("path_target")
 
 	# Update path follower position
@@ -77,9 +76,11 @@ func moon_move_static(delta: float) -> void:
 	_path_follower.progress_ratio = progress
 
 	# Calculate direction to path target
-	var to_target = path_target.global_position - moon.global_position
+	var to_target: Vector3 = path_target.global_position - moon.global_position
 	# Apply force towards target
-	moon.apply_central_impulse(to_target * .1)  # Adjust multiplier as needed
+	moon.apply_central_impulse(to_target * 1)  # Adjust multiplier as needed
+	var to_moon = Vector3(209,143,54) - $moon.global_position
+	$moon.apply_central_impulse(to_moon * 10)  # Adjust multiplier as needed
 
 func _physics_process(_delta: float) -> void:
 	moon_move_static(_delta)
