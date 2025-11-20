@@ -8,13 +8,14 @@ class_name Player extends RigidBody3D
 
 @export var mouse_sens := 0.01
 @export var y_mouse_sens := 0.1
-@export var speed := 4000.0
-@export var jump_strength := 600.0
+@export var speed := 3000.0
+@export var jump_strength := 200.0
 @export var local_gravity := Vector3.DOWN
-@export var ground_acceleration := 20.0
-@export var air_acceleration := 10.0
-@export var ground_friction := 1.0
-@export var air_friction := 1.1
+@export var ground_acceleration := 30.0
+@export var air_acceleration := 20.0
+@export var ground_friction := 1.1
+@export var air_friction := 0.8
+@export var accel_curve: Curve
 
 var _move_direction = Vector3.ZERO
 var _last_strong_direction = Vector3.FORWARD
@@ -54,6 +55,7 @@ func get_gravity_direction(state) -> Vector3:
 
 func _integrate_forces(state) -> void:
 	## Orient Player
+	_current_velocity = linear_velocity
 	local_gravity = get_gravity_direction(state)
 	_move_direction = _get_model_oriented_input()
 	_last_strong_direction = _camera_pivot.global_basis.z
@@ -63,13 +65,18 @@ func _integrate_forces(state) -> void:
 	# Calculate target velocity
 	_target_velocity = _move_direction * speed
 
+	# TODO figure out velocity diff, its 1 when not moving and should be 0
+	
 	# Apply acceleration and friction
+	var velocity_difference = (_target_velocity - _current_velocity).length()
+	var curve_sample = accel_curve.sample_baked(velocity_difference)
 	var accel = ground_acceleration if is_grounded() else air_acceleration
 	var friction = ground_friction if is_grounded() else air_friction
 
-	_current_velocity = _current_velocity.lerp(_target_velocity, state.step * accel)
 	_current_velocity *= friction
-
+	print("current velocity ", _current_velocity, "target velocity ", _target_velocity, "velocity difference ", velocity_difference, "curve sample ", curve_sample)
+	
+	_current_velocity = _current_velocity.lerp(_target_velocity, state.step * accel )
 	# Apply movement force
 	apply_central_force(_current_velocity)
 
@@ -78,6 +85,7 @@ func _integrate_forces(state) -> void:
 		apply_central_impulse(-local_gravity * jump_strength)
 	if is_falling():
 		apply_central_impulse(local_gravity * jump_strength)
+		dampen_velocity()
 	if is_grounded():
 		pass
 
@@ -129,3 +137,9 @@ func _process(_delta: float) -> void:
 		send_preview.emit($Tower.global_transform)
 	if Input.is_action_just_pressed("rightclick"):
 		action_tower.emit()
+
+func dampen_velocity():
+	print(linear_damp)
+	var tween = create_tween()
+	tween.tween_property(self, "linear_damp", 10.0, 0.2) # Rapidly increase damp
+	tween.tween_property(self, "linear_damp", 0, 1) # Gradually return to original over remaining time

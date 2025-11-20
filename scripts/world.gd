@@ -11,20 +11,19 @@ func _ready() -> void:
 	make_grid()
 	make_portal()
 	move_moon()
-	$Player.send_preview.connect(place_tower)
-	var node = _tower.instantiate()
-	$Player.add_child(node)
+	ready_player()
 
+func ready_player() -> void:
+	$Player.send_preview.connect(place_tower)
+	$Player.add_child(_tower.instantiate())
+	
 func place_node(node, globaltransform: Transform3D = Transform3D()):
 	var instance = node.instantiate()
 	add_child(instance, true)
 	instance.global_transform = globaltransform
 	return instance
 
-func place_tower(preview):
-	#var node = tower.instantiate()
-	#add_child(node, true)
-	#node.global_transform = preview
+func place_tower(preview: Transform3D):
 	var node = place_node(_tower, preview)
 	$Player.action_tower.connect(node.action_tower)
 
@@ -64,6 +63,7 @@ func move_moon() -> void:
 	add_child(moon, true)  # Add moon to world instead of path follower
 	moon.global_position = Vector3(210,20,-200)
 	moon.name = "elevator"  # Name it so we can find it easily
+	moon.mesh_radius = 10
 	path_target.name = "path_target"
 
 func moon_move_static(delta: float) -> void:

@@ -15,10 +15,7 @@ func _on_Timer_timeout():
 	action_tower()
 
 func toggle_visible():
-	if visible:
-		visible = false
-	else:
-		visible = true
+	visible = not visible
 
 func action_tower():
 	var rock = projectile.instantiate()

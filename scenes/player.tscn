@@ -1,10 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cvun2i847jxpl"]
+[gd_scene load_steps=8 format=3 uid="uid://cvun2i847jxpl"]
 
 [ext_resource type="Script" uid="uid://d1axno5d0yrt2" path="res://scripts/player.gd" id="1"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j1014"]
 friction = 0.0
 absorbent = true
+
+[sub_resource type="Curve" id="Curve_3vyb7"]
+_data = [Vector2(0, 1), 0.0, 0.137845, 0, 0, Vector2(0.832753, 0.210714), -2.56982, -2.56982, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CapsuleShape3D" id="1"]
 margin = 0.1
@@ -30,8 +34,8 @@ gravity_scale = 5.0
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 1
-linear_damp = 0.5
 script = ExtResource("1")
+accel_curve = SubResource("Curve_3vyb7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://ipa5a74hiw2f"]
+[gd_scene load_steps=20 format=3 uid="uid://ipa5a74hiw2f"]
 
 [ext_resource type="Script" uid="uid://xh0tiat88cvd" path="res://scripts/world.gd" id="1_2be1r"]
 [ext_resource type="PackedScene" uid="uid://cvun2i847jxpl" path="res://scenes/player.tscn" id="2_t7tw0"]
@@ -7,6 +7,7 @@
 [ext_resource type="Material" uid="uid://kby56bvoe8qk" path="res://asset/gold.tres" id="5_4gkv3"]
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="6_le0xk"]
 [ext_resource type="MeshLibrary" uid="uid://bs0ojwibk3vdm" path="res://asset/prism.meshlib" id="7_i7141"]
+[ext_resource type="PackedScene" uid="uid://bbts57wwfsqnb" path="res://scenes/field.tscn" id="8_4mrxx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -78,7 +79,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
 mass = 100000.0
 freeze = false
 freeze_mode = 0
-mesh_radius = 1.0
 
 [node name="Blocks" type="Node3D" parent="."]
 
@@ -293,5 +293,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179.802, 0, -141.943)
 curve = SubResource("Curve3D_7cyne")
 
 [node name="path_follow_3d" type="PathFollow3D" parent="path_3d"]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 1.00097, 0)
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 0, 1.000966, 0)
 progress = 1.0
+
+[node name="Field" parent="." instance=ExtResource("8_4mrxx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00526, -21.1888)
