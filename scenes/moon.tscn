@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://04r7ot5si24h"]
+[gd_scene format=3 uid="uid://04r7ot5si24h"]
 
 [ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="1_51aob"]
 [ext_resource type="Script" uid="uid://crlqrin4prish" path="res://scripts/moon.gd" id="1_q6it2"]
@@ -18,24 +18,24 @@ radius = 25.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_0j64c"]
 radius = 50.0
 
-[node name="moon" type="RigidBody3D"]
+[node name="moon" type="RigidBody3D" unique_id=2003515689]
 mass = 1000.0
 physics_material_override = SubResource("PhysicsMaterial_vs3v0")
 freeze = true
 freeze_mode = 1
 script = ExtResource("1_q6it2")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=968003100]
 mesh = SubResource("SphereMesh_530pw")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1017357484]
 shape = SubResource("SphereShape3D_v6as0")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=713027610]
 gravity_space_override = 3
 gravity_point_unit_distance = 50.0
 gravity = 10.0
 linear_damp_space_override = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1176670367]
 shape = SubResource("SphereShape3D_0j64c")

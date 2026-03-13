@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bevviiu7cirus"]
+[gd_scene format=3 uid="uid://bevviiu7cirus"]
 
 [ext_resource type="Script" uid="uid://dsr23ii3uos1d" path="res://scripts/portal.gd" id="1_ij3jr"]
 
@@ -9,45 +9,45 @@ height = 4.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_tus5q"]
 radius = 2.0
 
-[node name="Portal" type="Node3D"]
+[node name="Portal" type="Node3D" unique_id=1240889533]
 script = ExtResource("1_ij3jr")
 
-[node name="Enter" type="Node3D" parent="."]
+[node name="Enter" type="Node3D" parent="." unique_id=1855870612]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Enter"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enter" unique_id=2050654782]
 mesh = SubResource("SphereMesh_0vnvy")
 
-[node name="Area3D" type="Area3D" parent="Enter"]
+[node name="Area3D" type="Area3D" parent="Enter" unique_id=2045444089]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enter/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enter/Area3D" unique_id=1775271952]
 shape = SubResource("SphereShape3D_tus5q")
 
-[node name="EnterView" type="SubViewport" parent="Enter"]
+[node name="EnterView" type="SubViewport" parent="Enter" unique_id=257725138]
 render_target_update_mode = 4
 
-[node name="EnterCam" type="Camera3D" parent="Enter/EnterView"]
+[node name="EnterCam" type="Camera3D" parent="Enter/EnterView" unique_id=850217899]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 10.327, 0, 2)
 fov = 120.0
 
-[node name="Exit" type="Node3D" parent="."]
+[node name="Exit" type="Node3D" parent="." unique_id=525141313]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Exit"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Exit" unique_id=57635667]
 mesh = SubResource("SphereMesh_0vnvy")
 
-[node name="Area3D" type="Area3D" parent="Exit"]
+[node name="Area3D" type="Area3D" parent="Exit" unique_id=1794140486]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Exit/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Exit/Area3D" unique_id=393538654]
 shape = SubResource("SphereShape3D_tus5q")
 
-[node name="ExitView" type="SubViewport" parent="Exit"]
+[node name="ExitView" type="SubViewport" parent="Exit" unique_id=666262881]
 render_target_update_mode = 4
 
-[node name="ExitCam" type="Camera3D" parent="Exit/ExitView"]
+[node name="ExitCam" type="Camera3D" parent="Exit/ExitView" unique_id=27441558]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -10, 0, 2)
 fov = 120.0
 
-[node name="Portal_timer" type="Timer" parent="."]
+[node name="Portal_timer" type="Timer" parent="." unique_id=1329573888]
 wait_time = 5.0
 one_shot = true

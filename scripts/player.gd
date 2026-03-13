@@ -74,7 +74,7 @@ func _integrate_forces(state) -> void:
 	var friction = ground_friction if is_grounded() else air_friction
 
 	_current_velocity *= friction
-	print("current velocity ", _current_velocity, "target velocity ", _target_velocity, "velocity difference ", velocity_difference, "curve sample ", curve_sample)
+	#print("current velocity ", _current_velocity, "target velocity ", _target_velocity, "velocity difference ", velocity_difference, "curve sample ", curve_sample)
 	
 	_current_velocity = _current_velocity.lerp(_target_velocity, state.step * accel )
 	# Apply movement force
@@ -139,7 +139,6 @@ func _process(_delta: float) -> void:
 		action_tower.emit()
 
 func dampen_velocity():
-	print(linear_damp)
 	var tween = create_tween()
 	tween.tween_property(self, "linear_damp", 10.0, 0.2) # Rapidly increase damp
 	tween.tween_property(self, "linear_damp", 0, 1) # Gradually return to original over remaining time

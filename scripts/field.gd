@@ -9,7 +9,7 @@ extends Node3D
 
 var apply: bool = false
 var target_body: Node3D
-@export var default_mag := 100
+@export var default_mag := 10
 
 var overlapping_bodies: Array[RigidBody3D] = []
 
@@ -50,9 +50,9 @@ func push_force(body, mag):
 
 func pull_force(body, mag):
 	var new_mag = max(body.linear_velocity.length(), mag)
-	var direction = body.position - position
-	body.apply_central_impulse(-direction * new_mag)	
+	var direction = position - body.position
+	body.apply_central_impulse(direction * new_mag)	
 
 func _physics_process(delta: float) -> void:
 	for body in overlapping_bodies:
-		pull_force(body, default_mag)
+		push_force(body, default_mag)
