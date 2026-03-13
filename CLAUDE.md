@@ -27,7 +27,6 @@ Open `project.godot` in the Godot 4.6 editor. There is no CLI build step.
 |---|---|
 | `scripts/world.gd` | Level generation, portal/player/tower instantiation |
 | `scripts/player.gd` | Third-person controller: WASD + mouse look, jump, tower placement preview |
-| `scripts/tower.gd` | Turret that spawns `projectile.tscn` with physics-based targeting |
 | `scripts/portal.gd` | Viewport-based see-through portals |
 | `scripts/Network.gd` | Steam P2P relay networking (disabled by default in Global.gd) |
 | `scripts/moon.gd` | Moon orbit logic |
@@ -37,11 +36,6 @@ Open `project.godot` in the Godot 4.6 editor. There is no CLI build step.
 
 **Addons:**
 - `godotsteam` — Steam API integration (multiplayer, achievements)
-- `godot-jolt` — Jolt physics engine
 - `godot-git-plugin` — Git integration inside the editor
 
 **Assets:** Shaders in `asset/*.gdshader`, materials as `asset/*.tres`, mesh library in `asset/prism.meshlib`.
-
-## Key Design Notes
-
-See `leyliones.txt` for the full game design document. Core mechanic: players place towers along leylines (invisible mana streams) to automate spellcasting. The magic world is a "cyberspace" visualization of those streams.

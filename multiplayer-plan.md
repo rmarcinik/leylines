@@ -132,21 +132,6 @@ Optional: lerp position on the remote player for smoothness.
 
 ---
 
-### 6. Tower Placement Sync — `world.gd` + `Network.gd`
-
-When local player places a tower, broadcast it:
-```gdscript
-func place_tower(preview: Transform3D) -> void:
-    var node = place_node(_tower, preview)
-    $Player.action_tower.connect(node.action_tower)
-    Network.send_tower_place(preview, Global.steam_id)
-```
-
-On receipt in `Network.gd`, call `world.place_tower_remote(transform)` — same as `place_tower` but skips the re-broadcast.
-
-Track towers in an array on `world.gd` so `tower_action` packets can reference them by index.
-
----
 
 ## File Change Summary
 
