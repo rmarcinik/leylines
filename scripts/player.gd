@@ -19,6 +19,7 @@ class_name Player extends RigidBody3D
 ## Set false on nodes that represent remote peers — disables input, camera, and broadcasting.
 var is_local: bool = true
 
+var _pos_sent_logged      := false
 var _move_direction       := Vector3.ZERO
 var _last_strong_direction := Vector3.FORWARD
 var _current_velocity     := Vector3.ZERO
@@ -124,8 +125,11 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("rightclick"):
 		action_tower.emit()
 
-	# Broadcast position to peers every frame (unreliable — drops are fine)
-	Network.send("player_pos", {'pos': global_position, 'rot': global_rotation})
+	# Broadcast position — reliable for now until unreliable ENet is confirmed working
+	if not _pos_sent_logged:
+		print("[Player] sending player_pos pos=", global_position, " lobby_id=", Network.lobby_id)
+		_pos_sent_logged = true
+	Network.send("player_pos", {'pos': global_position, 'rot': global_rotation}, true)
 
 func dampen_velocity() -> void:
 	var tween := create_tween()

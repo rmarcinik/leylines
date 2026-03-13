@@ -103,14 +103,23 @@ func _spawn_remote_player(steam_id: int) -> void:
 	var cap   := CapsuleMesh.new()
 	cap.radius = 0.4
 	cap.height = 1.8
+	var mat   := StandardMaterial3D.new()
+	mat.albedo_color = Color.CYAN
 	mesh.mesh = cap
+	mesh.material_override = mat
+	mesh.position.y = cap.height
 	ghost.add_child(mesh)
 	add_child(ghost, true)
 	_remote_players[steam_id] = ghost
+	print("ghost spawned for peer: ", steam_id)
 
+var _pos_logged := false
 func _on_player_pos(sender: int, data: Dictionary) -> void:
+	if not _pos_logged:
+		print("player_pos received from ", sender, " pos=", data.get('pos', 'MISSING'))
+		_pos_logged = true
 	if not _remote_players.has(sender):
-		return
+		_spawn_remote_player(sender)
 	var ghost: Node3D = _remote_players[sender]
 	ghost.global_position = data['pos']
 	ghost.global_rotation = data['rot']

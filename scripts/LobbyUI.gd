@@ -63,6 +63,35 @@ func _build_ui() -> void:
 	_style_button(join_btn)
 	row.add_child(join_btn)
 
+	_add_gap(col, 24)
+
+	# Divider
+	var div := ColorRect.new()
+	div.color = Color(0.3, 0.3, 0.3)
+	div.custom_minimum_size = Vector2(280, 1)
+	div.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	col.add_child(div)
+
+	_add_gap(col, 16)
+
+	var local_row := HBoxContainer.new()
+	local_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	col.add_child(local_row)
+
+	var local_host_btn := Button.new()
+	local_host_btn.text = "LOCAL HOST"
+	local_host_btn.pressed.connect(_on_local_host)
+	local_host_btn.custom_minimum_size = Vector2(150, 40)
+	local_host_btn.add_theme_font_size_override("font_size", 16)
+	local_row.add_child(local_host_btn)
+
+	var local_join_btn := Button.new()
+	local_join_btn.text = "LOCAL JOIN"
+	local_join_btn.pressed.connect(_on_local_join)
+	local_join_btn.custom_minimum_size = Vector2(150, 40)
+	local_join_btn.add_theme_font_size_override("font_size", 16)
+	local_row.add_child(local_join_btn)
+
 	_add_gap(col, 20)
 
 	_status_label = Label.new()
@@ -101,6 +130,14 @@ func _on_join() -> void:
 		return
 	_status_label.text = "joining..."
 	Network.join_lobby(id)
+
+func _on_local_host() -> void:
+	_status_label.text = "hosting locally on port %d..." % Network.LOCAL_PORT
+	Network.create_local_lobby()
+
+func _on_local_join() -> void:
+	_status_label.text = "joining localhost:%d..." % Network.LOCAL_PORT
+	Network.join_local_lobby()
 
 func _on_lobby_ready(lobby_id: int) -> void:
 	_hud_label.text = "lobby  %d" % lobby_id

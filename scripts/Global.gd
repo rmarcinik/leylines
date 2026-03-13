@@ -14,7 +14,7 @@ func _ready() -> void:
 		steam_active = true
 		steam_id = Steam.getSteamID()
 		steam_username = Steam.getPersonaName()
-		print("Steam OK — %s (%d)" % [steam_username, steam_id])
+		print("Steam OK — %s  steam_id:%d" % [steam_username, steam_id])
 	else:
 		print("Steam init failed: ", init)
 
