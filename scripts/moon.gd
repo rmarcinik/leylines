@@ -9,8 +9,9 @@ class_name Moon extends RigidBody3D
 func _ready() -> void:
 	freeze = true
 	add_sphere()
-	add_timer()
-
+	#add_timer()
+	set_gravity_to_center()
+	
 func add_sphere() -> void:
 	var sphere_mesh = SphereMesh.new()
 	sphere_mesh.radius = mesh_radius
@@ -25,6 +26,14 @@ func add_timer() -> void:
 	timer.timeout.connect(rotate_gravity)
 	add_child(timer)
 	
+func set_gravity_to_center() -> void:
+	var area := get_node("Area3D")
+	if not area is Area3D:
+		return
+	area.gravity_space_override = Area3D.SPACE_OVERRIDE_REPLACE
+	area.gravity_point        = true
+	area.gravity_point_center = Vector3.ZERO
+
 # Function to rotate the moon's gravity direction by a given angle (in radians)
 func rotate_gravity() -> void:
 	var area = get_node("Area3D")  # Assuming the last child is the Area3D
