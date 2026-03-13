@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dp0fo81mk1j3p"]
-
-[ext_resource type="Script" uid="uid://bndxte4secr7o" path="res://scripts/atom.gd" id="1_70ww4"]
-
-[node name="Atom" type="Node3D"]
-script = ExtResource("1_70ww4")
