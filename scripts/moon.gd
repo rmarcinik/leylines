@@ -35,6 +35,6 @@ func rotate_gravity() -> void:
 		var angle = randf_range(0, TAU) # TAU is 2*PI, a full circle in radians
 		var new_gravity = current_gravity + rotation_axis * angle
 		area.gravity_direction = new_gravity
-		print("OLD GRAVITY", current_gravity, "NEW GRAVITY", new_gravity)
+		#print("OLD GRAVITY", current_gravity, "NEW GRAVITY", new_gravity)
 
 	
