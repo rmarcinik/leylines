@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dgix0p5h7oqmd" path="res://scenes/crater.tscn" id="6_le0xk"]
 [ext_resource type="MeshLibrary" uid="uid://bs0ojwibk3vdm" path="res://asset/prism.meshlib" id="7_i7141"]
 [ext_resource type="PackedScene" uid="uid://bbts57wwfsqnb" path="res://scenes/field.tscn" id="8_4mrxx"]
+[ext_resource type="PackedScene" uid="uid://d0gn1f27woihv" path="res://scenes/atom.tscn" id="9_7r4gi"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -298,3 +299,6 @@ progress = 1.0
 
 [node name="Field" parent="." unique_id=1096557150 instance=ExtResource("8_4mrxx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00526, -21.1888)
+
+[node name="Atom" parent="Field" unique_id=913673898 instance=ExtResource("9_7r4gi")]
+radial = -100.0

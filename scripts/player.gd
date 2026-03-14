@@ -7,7 +7,7 @@ class_name Player extends RigidBody3D
 
 @export var mouse_sens          := 0.01
 @export var y_mouse_sens        := 0.1
-@export var speed               := 3000.0
+@export var speed               := 6000.0
 @export var jump_strength       := 200.0
 @export var local_gravity       := Vector3.DOWN
 @export var ground_acceleration := 30.0

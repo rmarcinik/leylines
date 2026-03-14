@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d0gn1f27woihv"]
+
+[ext_resource type="Script" uid="uid://uyluiklm7quc" path="res://scripts/Atom.gd" id="1_4ja7t"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_70ww4"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="Atom" type="Node3D" unique_id=913673898]
+script = ExtResource("1_4ja7t")
+
+[node name="mesh_instance_3d" type="MeshInstance3D" parent="." unique_id=384417220]
+mesh = SubResource("PrismMesh_70ww4")
+
+[node name="ray_cast_3d" type="RayCast3D" parent="." unique_id=129733377]

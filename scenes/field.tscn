@@ -3,11 +3,12 @@
 [ext_resource type="Script" uid="uid://bry0s44n10ppj" path="res://scripts/field.gd" id="1_6pmjc"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ycb0e"]
+resource_local_to_scene = true
 
-[node name="Field" type="Node3D"]
+[node name="Field" type="Node3D" unique_id=2038408437]
 script = ExtResource("1_6pmjc")
 
-[node name="area_3d" type="Area3D" parent="."]
+[node name="area_3d" type="Area3D" parent="." unique_id=176299662]
 
-[node name="collision_shape_3d" type="CollisionShape3D" parent="area_3d"]
+[node name="collision_shape_3d" type="CollisionShape3D" parent="area_3d" unique_id=1444840990]
 shape = SubResource("SphereShape3D_ycb0e")
