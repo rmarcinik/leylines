@@ -8,12 +8,13 @@ $PRESET = "Windows Desktop"
 $EXE    = ".\build\leylines.exe"
 $DLL    = ".\build\steam_api64.dll"
 $ZIP    = ".\build\leylines-dist.zip"
+$LIBGODOTSTEAM = ".\build\libgodotsteam.windows.template_release.x86_64.dll"
 
 Write-Host "Exporting '$PRESET'..."
-& $GODOT --headless --export-release $PRESET $EXE
+#& $GODOT --headless --export-release $PRESET $EXE
 
 Write-Host "Zipping..."
 if (Test-Path $ZIP) { Remove-Item $ZIP }
-Compress-Archive -Path $EXE, $DLL -DestinationPath $ZIP
+Compress-Archive -Path $EXE, $DLL, $LIBGODOTSTEAM -DestinationPath $ZIP
 
 Write-Host "Done -> $ZIP"
