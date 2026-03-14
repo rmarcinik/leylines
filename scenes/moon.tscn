@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://04r7ot5si24h"]
+[gd_scene format=3 uid="uid://04r7ot5si24h"]
 
 [ext_resource type="Material" uid="uid://ocxrbni7wot0" path="res://asset/crater.tres" id="1_51aob"]
+[ext_resource type="Script" uid="uid://crlqrin4prish" path="res://scripts/moon.gd" id="1_q6it2"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vs3v0"]
 friction = 0.0
 absorbent = true
 
-[sub_resource type="SphereMesh" id="SphereMesh_whpp2"]
+[sub_resource type="SphereMesh" id="SphereMesh_530pw"]
 material = ExtResource("1_51aob")
 radius = 25.0
 height = 50.0
@@ -17,25 +18,26 @@ radius = 25.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_0j64c"]
 radius = 50.0
 
-[node name="moon" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
-mass = 10000.0
+[node name="moon" type="RigidBody3D" unique_id=2003515689]
+mass = 1000.0
 physics_material_override = SubResource("PhysicsMaterial_vs3v0")
+freeze = true
+freeze_mode = 1
+script = ExtResource("1_q6it2")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_whpp2")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=968003100]
+mesh = SubResource("SphereMesh_530pw")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1017357484]
 shape = SubResource("SphereShape3D_v6as0")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=713027610]
 gravity_space_override = 3
-gravity_point = true
-gravity_point_center = Vector3(0, 0, 0)
-gravity_direction = Vector3(0, 0, 0)
-gravity = 50.0
+gravity_point_unit_distance = 50.0
+gravity_point_center = Vector3(0, 1, 0)
+gravity_direction = Vector3(0, 1, 0)
+gravity = 10.0
 linear_damp_space_override = 3
-linear_damp = 0.048
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1176670367]
 shape = SubResource("SphereShape3D_0j64c")

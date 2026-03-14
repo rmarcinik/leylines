@@ -8,17 +8,27 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="leylines"
 run/main_scene="res://scenes/world.tscn"
-config/features=PackedStringArray("4.3")
+config/features=PackedStringArray("4.6")
 config/icon="res://asset/icon.png"
+
+[autoload]
+
+Global="*res://scripts/Global.gd"
+Network="*res://scripts/Network.gd"
 
 [display]
 
-window/size/viewport_width=2048
+window/size/viewport_width=2400
 window/size/viewport_height=1200
+window/size/resizable=false
 
 [editor]
 
@@ -84,10 +94,6 @@ fall={
 2d_physics/layer_1="player"
 2d_physics/layer_2="enemies"
 2d_physics/layer_3="level"
-
-[physics]
-
-3d/physics_engine="JoltPhysics3D"
 
 [rendering]
 
