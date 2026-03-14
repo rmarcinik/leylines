@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnx07gcl2mdby"]
+[gd_scene format=3 uid="uid://bnx07gcl2mdby"]
 
 [ext_resource type="Shader" uid="uid://cb6ft4t8c372d" path="res://asset/triangle-prism.gdshader" id="1_uoll5"]
 
