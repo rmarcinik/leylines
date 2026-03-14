@@ -1,0 +1,14 @@
+[gd_resource type="SphereMesh" format=3 uid="uid://dw6712uhjh634"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_8eyrd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3kw2"]
+albedo_color = Color(0.336608, 0.336608, 0.336608, 1)
+metallic = 0.75
+roughness = 0.0
+roughness_texture = SubResource("MeshTexture_8eyrd")
+
+[resource]
+material = SubResource("StandardMaterial3D_f3kw2")
+radius = 25.0
+height = 50.0

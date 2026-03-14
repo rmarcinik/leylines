@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bnx07gcl2mdby"]
+
+[ext_resource type="Shader" uid="uid://cb6ft4t8c372d" path="res://asset/triangle-prism.gdshader" id="1_uoll5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7r4gi"]
+render_priority = 0
+shader = ExtResource("1_uoll5")
+shader_parameter/max_distance = 4000.0
+shader_parameter/emission_strength = 0.2
+
+[sub_resource type="PrismMesh" id="PrismMesh_slkwf"]
+material = SubResource("ShaderMaterial_7r4gi")
+left_to_right = 0.0
+size = Vector3(4, 4, 4)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_uoll5"]
+data = PackedVector3Array(-2, 2, 2, 2, -2, 2, -2, -2, 2, -2, 2, -2, -2, -2, -2, 2, -2, -2, -2, 2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, -2, 2, -2, 2, -2, 2, -2, -2, 2, 2, -2, -2, -2, -2, 2, 2, -2, -2, 2, -2, -2, -2, -2, -2, 2, 2, -2, 2, -2, -2, -2, 2, -2, 2, 2, -2, -2, -2, -2, -2)
+
+[node name="Triangular" type="MeshInstance3D"]
+mesh = SubResource("PrismMesh_slkwf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_uoll5")
