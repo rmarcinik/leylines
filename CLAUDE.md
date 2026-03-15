@@ -47,3 +47,7 @@ Open `project.godot` in the Godot 4.6 editor. There is no CLI build step.
 - `godot-git-plugin` — Git integration inside the editor
 
 **Assets:** Shaders in `asset/*.gdshader`, materials as `asset/*.tres`, mesh library in `asset/prism.meshlib`.
+
+
+## TODO
+Make multiplayer object syncing more general, so as to apply to any number of world objects. Right now its limited to "tower"

@@ -11,10 +11,13 @@ $ZIP    = ".\build\leylines-dist.zip"
 $LIBGODOTSTEAM = ".\build\libgodotsteam.windows.template_release.x86_64.dll"
 
 Write-Host "Exporting '$PRESET'..."
-#& $GODOT --headless --export-release $PRESET $EXE
+& $GODOT --headless --export-release $PRESET $EXE
 
 Write-Host "Zipping..."
 if (Test-Path $ZIP) { Remove-Item $ZIP }
+
+Read-Host "Waiting"
+
 Compress-Archive -Path $EXE, $DLL, $LIBGODOTSTEAM -DestinationPath $ZIP
 
 Write-Host "Done -> $ZIP"

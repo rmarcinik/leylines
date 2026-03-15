@@ -5,6 +5,8 @@
 [sub_resource type="PrismMesh" id="PrismMesh_70ww4"]
 size = Vector3(0.5, 0.5, 0.5)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_70ww4"]
+
 [node name="Atom" type="Node3D" unique_id=913673898]
 script = ExtResource("1_4ja7t")
 
@@ -12,3 +14,8 @@ script = ExtResource("1_4ja7t")
 mesh = SubResource("PrismMesh_70ww4")
 
 [node name="ray_cast_3d" type="RayCast3D" parent="." unique_id=129733377]
+
+[node name="area_3d" type="Area3D" parent="." unique_id=195835054]
+
+[node name="collision_shape_3d" type="CollisionShape3D" parent="area_3d" unique_id=915833934]
+shape = SubResource("SphereShape3D_70ww4")

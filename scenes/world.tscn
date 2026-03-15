@@ -73,7 +73,7 @@ directional_shadow_pancake_size = 0.1
 environment = SubResource("Environment_lm7h8")
 
 [node name="Player" parent="." unique_id=675372018 groups=["Player"] instance=ExtResource("2_t7tw0")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.80751, 17.9305, -101.533)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6.80751, 17.9305, -43.9361)
 
 [node name="moon" parent="." unique_id=1075750361 instance=ExtResource("3_f81e1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.919, 142.655, 53.6342)
@@ -302,3 +302,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00526, -21.1888)
 
 [node name="Atom" parent="Field" unique_id=913673898 instance=ExtResource("9_7r4gi")]
 radial = -100.0
+
+[node name="Field2" parent="." unique_id=2038408437 instance=ExtResource("8_4mrxx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -43.11783)
