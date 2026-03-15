@@ -60,3 +60,10 @@ git push origin v0.1-sandbox
 
 ## TODO
 ~~Make multiplayer object syncing more general, so as to apply to any number of world objects. Right now its limited to "tower"~~ — done: `item_place` network message + `_place_item` handle any registered item
+ability for player to place fields, with action_item to remove
+atom item_action to remove itself
+function to create any arbitrary atom, and random atoms
+- atoms that apply force in one arbitrary direction rather than radially
+- atoms that increase field size
+- atoms that change collision
+- atoms that produce light
