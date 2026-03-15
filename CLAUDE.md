@@ -49,5 +49,14 @@ Open `project.godot` in the Godot 4.6 editor. There is no CLI build step.
 **Assets:** Shaders in `asset/*.gdshader`, materials as `asset/*.tres`, mesh library in `asset/prism.meshlib`.
 
 
+## Releases
+
+Tag a release from the current commit:
+
+```
+git tag v0.1-sandbox
+git push origin v0.1-sandbox
+```
+
 ## TODO
-Make multiplayer object syncing more general, so as to apply to any number of world objects. Right now its limited to "tower"
+~~Make multiplayer object syncing more general, so as to apply to any number of world objects. Right now its limited to "tower"~~ — done: `item_place` network message + `_place_item` handle any registered item
