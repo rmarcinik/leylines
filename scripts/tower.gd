@@ -12,12 +12,12 @@ func _ready() -> void:
 		enable_preview()
 
 func _on_Timer_timeout():
-	action_tower()
+	item_action()
 
 func toggle_visible():
 	visible = not visible
 
-func action_tower():
+func item_action():
 	var rock = projectile.instantiate()
 	add_child(rock, true)
 	rock.global_transform = $Spawner.global_transform

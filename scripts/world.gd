@@ -4,11 +4,13 @@ var time: float
 
 @onready var _land          = preload("res://scenes/land.tscn")
 @onready var _tower         = preload("res://scenes/tower.tscn")
+@onready var _atom         = preload("res://scenes/atom.tscn")
 @onready var _portal        = preload("res://scenes/portal.tscn")
 @onready var _moon          = preload("res://scenes/moon.tscn")
 @onready var _path_follower = $path_3d/path_follow_3d
 
 var _remote_players: Dictionary = {}   # steam_id (int) -> Node3D ghost
+var _scenes: Dictionary = {}           # preview Node3D -> {scene: PackedScene, config: Dictionary}
 
 func _ready() -> void:
 	make_grid()
@@ -22,13 +24,44 @@ func _connect_network() -> void:
 	Network.peer_connected.connect(_on_peer_connected)
 	Network.peer_disconnected.connect(_on_peer_disconnected)
 	Network.register("player_pos", _on_player_pos)
-	Network.register("tower_place", _on_tower_place_remote)
+	Network.register("item_place", _on_item_place_remote)
 
 # ── Player setup ──────────────────────────────────────────────────────────────
 
 func ready_player() -> void:
-	$Player.send_preview.connect(place_tower)
-	$Player.add_child(_tower.instantiate())
+	$Player.send_preview.connect(_on_send_preview)
+	_register_item(_tower)
+	_register_item(_atom, {radial = -100.0})
+
+func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
+	var preview = scene.instantiate()
+	for key in config:
+		preview.set(key, config[key])
+	$Player.add_child(preview)
+	$Player.inventory.append(preview)
+	_scenes[preview] = {scene = scene, config = config}
+
+func _on_send_preview(node: Node3D, xform: Transform3D) -> void:
+	var entry = _scenes[node]
+	_place_item(entry.scene, xform, entry.config, true)
+	Network.send("item_place", {
+		'scene': entry.scene.resource_path,
+		'origin': xform.origin,
+		'basis': xform.basis,
+		'config': entry.config,
+	}, true)
+
+func _on_item_place_remote(_sender: int, data: Dictionary) -> void:
+	var scene: PackedScene = load(data['scene'])
+	_place_item(scene, Transform3D(data['basis'], data['origin']), data.get('config', {}), false)
+
+func _place_item(scene: PackedScene, xform: Transform3D, config: Dictionary = {}, is_local: bool = true) -> Node:
+	var instance = place_node(scene, xform)
+	for key in config:
+		instance.set(key, config[key])
+	if is_local and instance.has_method("item_action"):
+		$Player.item_action.connect(instance.item_action)
+	return instance
 
 # ── World generation ──────────────────────────────────────────────────────────
 
@@ -43,10 +76,6 @@ func make_grid() -> void:
 			node.position = Vector3(x, height, z)
 			add_child(node, true)
 
-func receive_world_seed(seed: int) -> void:
-	# Seed stored on Network.world_seed. If make_grid becomes randomised
-	# in future, regenerate the grid here using the host's seed.
-	pass
 
 func make_portal() -> void:
 	var node = place_node(_portal)
@@ -61,27 +90,11 @@ func make_portal() -> void:
 	farnode.get_node('Exit').global_position  = Vector3(0, 180, 2700)
 	farnode.get_node('Exit').get_node('ExitView').get_node('ExitCam').global_position  = Vector3(0, 180, 2700)
 
-# ── Tower placement ───────────────────────────────────────────────────────────
-
-func place_node(node, globaltransform: Transform3D = Transform3D()) -> Node:
-	var instance = node.instantiate()
+func place_node(scene: PackedScene, xform: Transform3D = Transform3D()) -> Node:
+	var instance = scene.instantiate()
 	add_child(instance, true)
-	instance.global_transform = globaltransform
+	instance.global_transform = xform
 	return instance
-
-## Called by local player — places tower and broadcasts to peers.
-func place_tower(preview: Transform3D) -> void:
-	_spawn_tower(preview, true)
-	Network.send("tower_place", {'origin': preview.origin, 'basis': preview.basis}, true)
-
-## Called by Network handler — places a remotely-placed tower, no re-broadcast.
-func _on_tower_place_remote(_sender: int, data: Dictionary) -> void:
-	_spawn_tower(Transform3D(data['basis'], data['origin']), false)
-
-func _spawn_tower(xform: Transform3D, connect_to_player: bool) -> void:
-	var node = place_node(_tower, xform)
-	if connect_to_player:
-		$Player.action_tower.connect(node.action_tower)
 
 # ── Remote peers ──────────────────────────────────────────────────────────────
 

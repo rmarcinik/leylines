@@ -15,7 +15,7 @@ class_name Player extends RigidBody3D
 @export var ground_friction     := 1.1
 @export var air_friction        := 0.8
 @export var accel_curve: Curve
-
+@export var inventory: Array[Node3D]
 ## Set false on nodes that represent remote peers — disables input, camera, and broadcasting.
 var is_local: bool = true
 
@@ -27,15 +27,21 @@ var _target_velocity      := Vector3.ZERO
 var mouseMotion_x: float
 var mouseMotion_y: float
 
-signal send_preview(position)
-signal action_tower()
+signal send_preview(node, position)
+signal item_action()
+
+var active_slot: Node3D
 
 func _ready() -> void:
+	for item in inventory:
+		add_child(item)
+		
+
 	if is_local:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
 		_camera.current = false
-
+		
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_local:
 		return
@@ -112,18 +118,27 @@ func get_mouse_preview() -> Vector3:
 func _process(_delta: float) -> void:
 	if not is_local:
 		return
-
 	_camera_pivot.global_basis = $Head.global_basis
-	$Tower.global_transform.origin = get_mouse_preview()
-	$Tower.global_transform.basis  = transform.basis
-	$Tower.global_transform.basis.z = -global_transform.basis.z
-
+		
 	if Input.is_action_just_pressed("Inventory1"):
-		$Tower.toggle_visible()
-	if Input.is_action_just_pressed("leftclick") and $Tower.visible:
-		send_preview.emit($Tower.global_transform)
+		active_slot = inventory[0]
+		active_slot.visible = not active_slot.visible
+		print(active_slot, inventory)
+	if Input.is_action_just_pressed("Inventory2"):
+		active_slot = inventory[1]
+		active_slot.visible = not active_slot.visible
+		print(active_slot, inventory)
+
+	if active_slot:
+		active_slot.global_transform.origin = get_mouse_preview()
+		active_slot.global_transform.basis  = transform.basis
+		active_slot.global_transform.basis.z = -global_transform.basis.z
+		if Input.is_action_just_pressed("leftclick") and active_slot.visible:
+			send_preview.emit(active_slot, active_slot.global_transform)
+			
+
 	if Input.is_action_just_pressed("rightclick"):
-		action_tower.emit()
+		item_action.emit()
 
 	# Broadcast position — reliable for now until unreliable ENet is confirmed working
 	if not _pos_sent_logged:
