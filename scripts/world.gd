@@ -36,7 +36,7 @@ func ready_player() -> void:
 	$Player.add_child(cursor)
 	$Player.cursor = cursor
 	_register_item(_tower)
-	_register_item(_atom, {radial = -100.0})
+	_register_item(_atom, {radial = -10.0})
 
 func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
 	var preview = scene.instantiate()
