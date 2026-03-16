@@ -17,9 +17,6 @@ height = 50.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_v6as0"]
 radius = 25.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_0j64c"]
-radius = 50.0
-
 [node name="moon" type="RigidBody3D" unique_id=2003515689]
 mass = 1000.0
 physics_material_override = SubResource("PhysicsMaterial_vs3v0")
@@ -33,22 +30,10 @@ mesh = SubResource("SphereMesh_530pw")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1017357484]
 shape = SubResource("SphereShape3D_v6as0")
 
-[node name="Area3D" type="Area3D" parent="." unique_id=713027610]
-process_mode = 4
-gravity_space_override = 3
-gravity_point_unit_distance = 50.0
-gravity_point_center = Vector3(0, 1, 0)
-gravity_direction = Vector3(0, 1, 0)
-gravity = 10.0
-linear_damp_space_override = 3
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1176670367]
-shape = SubResource("SphereShape3D_0j64c")
-
 [node name="Field" parent="." unique_id=1651307999 instance=ExtResource("3_7l7dh")]
-visible = false
 default_radius = 60.0
 
 [node name="Atom" parent="Field" unique_id=913673898 instance=ExtResource("4_xatjt")]
-visible = false
-radial = -100.0
+radial = -10.0
+focal = -10.0
+orient = true
