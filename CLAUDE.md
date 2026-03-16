@@ -43,6 +43,16 @@ TODO Add testing and developing guidlines
 **Assets:** Shaders in `asset/*.gdshader`, materials as `asset/*.tres`, mesh library in `asset/prism.meshlib`.
 
 
+## Design Patterns
+
+**Spatial events drive signal connections.** Nodes connect and disconnect from each other's signals based on Area3D overlap or mouse entry — not by polling `get_children()` from a parent.
+
+- On `mouse_entered` / `body_entered`: connect to the relevant signal
+- On `mouse_exited` / `body_exited`: disconnect from it
+- The node manages its own subscriptions; the parent never iterates to find targets
+
+Example: a placed Atom connects `player.item_action → queue_free` when the mouse enters its Area3D, and disconnects on exit. Right-click removes exactly the hovered atom — no world.gd polling required.
+
 ## Releases
 
 Tag a release from the current commit:
@@ -61,3 +71,7 @@ function to create any arbitrary atom, and random atoms
 - atoms that increase field size
 - atoms that change collision
 - atoms that produce light
+
+reimplement player controls to use fields and atoms. get mouse preview will move a field to where the player is aiming and input will do things in that field
+atom for placing nodes
+atom for removing nodes
