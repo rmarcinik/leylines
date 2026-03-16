@@ -3,7 +3,6 @@ extends CanvasLayer
 # Minimal lobby overlay — built entirely in code, no scene file needed.
 # Shows Host/Join panel on start. Collapses to a corner lobby-ID label once in a lobby.
 
-var _panel: Panel
 var _id_field: LineEdit
 var _status_label: Label
 var _hud_label: Label

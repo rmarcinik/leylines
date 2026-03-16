@@ -73,8 +73,8 @@ func create_lobby() -> void:
 func join_lobby(id: int) -> void:
 	Steam.joinLobby(id)
 
-func _on_lobby_created(connect: int, id: int) -> void:
-	if connect == 1:
+func _on_lobby_created(conn: int, id: int) -> void:
+	if conn == 1:
 		lobby_id = id
 		world_seed = randi()
 		Steam.setLobbyData(lobby_id, 'name', 'Leylines')

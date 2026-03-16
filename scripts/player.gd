@@ -78,8 +78,8 @@ func _integrate_forces(state) -> void:
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 
 	_target_velocity = _move_direction * speed
-	var velocity_difference := (_target_velocity - _current_velocity).length()
-	var curve_sample        := accel_curve.sample_baked(velocity_difference)
+	#var velocity_difference := (_target_velocity - _current_velocity).length()
+	#var curve_sample        := accel_curve.sample_baked(velocity_difference)
 	var accel := ground_acceleration if is_grounded() else air_acceleration
 	var friction := ground_friction if is_grounded() else air_friction
 

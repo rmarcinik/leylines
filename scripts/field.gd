@@ -14,7 +14,7 @@ func _sum_influence() -> Dictionary:
 	var radial := 0.0
 	for area in field_area.get_overlapping_areas():
 		var atom := area.get_parent() as Atom
-		if atom and not (atom.get_parent() is Player):
+		if atom and not atom.is_held:
 			linear += atom.linear
 			radial += atom.radial
 	return {linear = linear, radial = radial}

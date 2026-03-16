@@ -8,14 +8,11 @@ func _ready() -> void:
 	$Timer.timeout.connect(self._on_Timer_timeout)
 
 	if get_parent() is Player:
-		toggle_visible()
+		visible = not visible
 		enable_preview()
 
 func _on_Timer_timeout():
 	item_action()
-
-func toggle_visible():
-	visible = not visible
 
 func item_action():
 	var rock = projectile.instantiate()
