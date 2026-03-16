@@ -1,7 +1,8 @@
 class_name Atom extends Node3D
 
 @export var linear: Vector3 = Vector3.ZERO  # fixed directional force
-@export var radial: float = 0.0             # positive = push, negative = pull
+@export var radial: float = 0.0             # positive = push, negative = pull (relative to field center)
+@export var focal: float = 0.0             # positive = pull toward atom, negative = push away from atom
 var is_held := false
 
 @onready var _area: Area3D = $area_3d

@@ -18,6 +18,8 @@ GodotSteam P2P multiplayer.
 
 **Emergent mechanic — cursor field propulsion:** The player carries a Field at the mouse preview position. Because `field.gd` applies atom forces to all `RigidBody3D` bodies inside the field, the player can accelerate or decelerate themselves by sweeping the cursor over placed force atoms. Rows of radial atoms create pull/push thrust; linear atoms fix a direction. The cursor becomes a steering tool — no special-casing required, it emerges from the existing field/atom physics.
 
+**Emergent mechanic — focal atom pitons:** A positive `focal` atom pulls everything in its field toward the atom's own position. Placed on a wall or ceiling, sweeping the cursor field over it pulls the player toward that point — like a piton or grapple anchor. Chained up a surface they form a climbing system. The field's radius acts as natural reach; the atom must be within the cursor field to take effect.
+
 ## Running & Developing
 
 TODO Add testing and developing guidlines
