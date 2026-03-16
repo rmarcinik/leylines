@@ -31,6 +31,7 @@ signal send_preview(node, position)
 signal item_action()
 
 var active_slot: Node3D
+var cursor: Node3D
 
 func _ready() -> void:
 	for item in inventory:
@@ -129,8 +130,10 @@ func _process(_delta: float) -> void:
 		active_slot.visible = not active_slot.visible
 		print(active_slot, inventory)
 
+	cursor.global_position = get_mouse_preview()
+
 	if active_slot:
-		active_slot.global_transform.origin = get_mouse_preview()
+		active_slot.global_transform.origin = cursor.global_position
 		active_slot.global_transform.basis  = transform.basis
 		active_slot.global_transform.basis.z = -global_transform.basis.z
 		if Input.is_action_just_pressed("leftclick") and active_slot.visible:

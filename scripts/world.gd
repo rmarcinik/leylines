@@ -5,6 +5,7 @@ var time: float
 @onready var _land          = preload("res://scenes/land.tscn")
 @onready var _tower         = preload("res://scenes/tower.tscn")
 @onready var _atom         = preload("res://scenes/atom.tscn")
+@onready var _field         = preload("res://scenes/field.tscn")
 @onready var _portal        = preload("res://scenes/portal.tscn")
 @onready var _moon          = preload("res://scenes/moon.tscn")
 @onready var _path_follower = $path_3d/path_follow_3d
@@ -31,6 +32,9 @@ func _connect_network() -> void:
 
 func ready_player() -> void:
 	$Player.send_preview.connect(_on_send_preview)
+	var cursor = _field.instantiate()
+	$Player.add_child(cursor)
+	$Player.cursor = cursor
 	_register_item(_tower)
 	_register_item(_atom, {radial = -100.0})
 

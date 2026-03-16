@@ -16,6 +16,8 @@ The strength of fields could depend on how many atoms they contain, one example 
 
 GodotSteam P2P multiplayer.
 
+**Emergent mechanic — cursor field propulsion:** The player carries a Field at the mouse preview position. Because `field.gd` applies atom forces to all `RigidBody3D` bodies inside the field, the player can accelerate or decelerate themselves by sweeping the cursor over placed force atoms. Rows of radial atoms create pull/push thrust; linear atoms fix a direction. The cursor becomes a steering tool — no special-casing required, it emerges from the existing field/atom physics.
+
 ## Running & Developing
 
 TODO Add testing and developing guidlines
