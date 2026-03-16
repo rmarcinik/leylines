@@ -4,7 +4,7 @@ class_name Atom extends Node3D
 @export var radial: float = 0.0             # positive = push, negative = pull
 
 func _ready() -> void:
-	if get_parent().get_name() == "Player":
+	if get_parent() is Player:
 		toggle_visible()
 
 func toggle_visible() -> void:

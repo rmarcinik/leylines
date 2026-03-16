@@ -11,6 +11,7 @@ var time: float
 
 var _remote_players: Dictionary = {}   # steam_id (int) -> Node3D ghost
 var _scenes: Dictionary = {}           # preview Node3D -> {scene: PackedScene, config: Dictionary}
+var _scene_by_path: Dictionary = {}    # resource_path -> PackedScene
 
 func _ready() -> void:
 	make_grid()
@@ -35,11 +36,11 @@ func ready_player() -> void:
 
 func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
 	var preview = scene.instantiate()
-	for key in config:
-		preview.set(key, config[key])
+	_apply_config(preview, config)
 	$Player.add_child(preview)
 	$Player.inventory.append(preview)
 	_scenes[preview] = {scene = scene, config = config}
+	_scene_by_path[scene.resource_path] = scene
 
 func _on_send_preview(node: Node3D, xform: Transform3D) -> void:
 	var entry = _scenes[node]
@@ -52,16 +53,20 @@ func _on_send_preview(node: Node3D, xform: Transform3D) -> void:
 	}, true)
 
 func _on_item_place_remote(_sender: int, data: Dictionary) -> void:
-	var scene: PackedScene = load(data['scene'])
+	var scene: PackedScene = _scene_by_path.get(data['scene'], load(data['scene']))
 	_place_item(scene, Transform3D(data['basis'], data['origin']), data.get('config', {}), false)
 
 func _place_item(scene: PackedScene, xform: Transform3D, config: Dictionary = {}, is_local: bool = true) -> Node:
 	var instance = place_node(scene, xform)
-	for key in config:
-		instance.set(key, config[key])
+	_apply_config(instance, config)
 	if is_local and instance.has_method("item_action"):
-		$Player.item_action.connect(instance.item_action)
+		if not $Player.item_action.is_connected(instance.item_action):
+			$Player.item_action.connect(instance.item_action)
 	return instance
+
+func _apply_config(node: Node, config: Dictionary) -> void:
+	for key in config:
+		node.set(key, config[key])
 
 # ── World generation ──────────────────────────────────────────────────────────
 

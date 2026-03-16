@@ -7,7 +7,7 @@ var SPEED = 100
 func _ready() -> void:
 	$Timer.timeout.connect(self._on_Timer_timeout)
 
-	if get_parent().get_name() == "Player":
+	if get_parent() is Player:
 		toggle_visible()
 		enable_preview()
 
@@ -33,36 +33,3 @@ func enable_preview():
 	$Base/Spout.set_surface_override_material(0, previewmesh)
 	$BaseCollider.set_disabled(true)
 	$SpoutCollider.set_disabled(true)
-
-
-
-
-
-
-
-
-func make_triangle():
-	var st = SurfaceTool.new()
-
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-
-	# Prepare attributes for add_vertex.
-	st.add_normal(Vector3(0, 0, 1))
-	st.add_uv(Vector2(0, 0))
-	# Call last for each vertex, adds the above attributes.
-	st.add_vertex(Vector3(-1, -1, 0))
-
-	st.add_normal(Vector3(0, 0, 1))
-	st.add_uv(Vector2(0, 1))
-	st.add_vertex(Vector3(-1, 10, 0))
-
-	st.add_normal(Vector3(0, 0, 1))
-	st.add_uv(Vector2(1, 1))
-	st.add_vertex(Vector3(1, 1, 0))
-
-	# Create indices, indices are optional.
-	st.index()
-
-	# Commit to a mesh.
-	return st.commit()
-	# then do this on a mesh instance 	rock.get_child(1).create_trimesh_collision()
