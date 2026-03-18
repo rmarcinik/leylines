@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func _on_area_entered(area: Area3D) -> void:
 	var player := area.get_parent().get_parent() as Player
-	if player:
+	if player and not player.item_action.is_connected(queue_free):
 		player.item_action.connect(queue_free)
 
 func _on_area_exited(area: Area3D) -> void:

@@ -75,6 +75,7 @@ function to create any arbitrary atom, and random atoms
 - atoms that increase field size
 - atoms that change collision
 - atoms that produce light
+- atoms that inform which portals connect
 
 reimplement player controls to use fields and atoms. get mouse preview will move a field to where the player is aiming and input will do things in that field
 atom for placing nodes

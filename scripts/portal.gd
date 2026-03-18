@@ -1,6 +1,6 @@
 extends Node3D
 
-@onready var _timer: Timer = $Portal_timer # Timer node, wait time: 5s, one shot: true
+@onready var _timer: Timer = $Portal_timer # Timer node, wait time: 2s, one shot: true
 @onready var _enter: Node3D = $Enter
 @onready var _exit: Node3D = $Exit
 @onready var _enterarea: Area3D = $Enter/Area3D
@@ -9,10 +9,14 @@ extends Node3D
 @onready var _exitcam: Camera3D = $Exit/ExitView/ExitCam
 
 func _ready():
-	_enterarea.body_entered.connect(_on_body_entered.bind(_exitarea))
-	_exitarea.body_entered.connect(_on_body_entered.bind(_enterarea))
+	_enterarea.body_entered.connect(_on_body_entered.bind(_exit))
+	_exitarea.body_entered.connect(_on_body_entered.bind(_enter))
 	_set_viewport_mat($Enter/MeshInstance3D, $Exit/ExitView)
 	_set_viewport_mat($Exit/MeshInstance3D, $Enter/EnterView)
+
+func setup(enter_pos: Vector3, exit_pos: Vector3) -> void:
+	_enter.global_position = enter_pos
+	_exit.global_position = exit_pos
 
 func _on_body_entered(body: PhysicsBody3D, exit: Node3D):
 	if body is Player and _timer.is_stopped():
