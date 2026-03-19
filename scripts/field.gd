@@ -1,4 +1,4 @@
-extends Node3D
+class_name Field extends Node3D
 
 @onready var field_area: Area3D = $area_3d
 @onready var field_collision_shape: CollisionShape3D = $area_3d/collision_shape_3d
@@ -8,6 +8,10 @@ extends Node3D
 func _ready() -> void:
 	field_collision_shape.shape = field_collision_shape.shape
 	field_collision_shape.shape.radius = default_radius
+
+func setup(pos: Vector3, radius: float = default_radius) -> void:
+	global_position = pos
+	field_collision_shape.shape.radius = radius
 
 func _sum_influence() -> Dictionary:
 	var linear := Vector3.ZERO

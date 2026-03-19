@@ -36,6 +36,7 @@ func ready_player() -> void:
 	$Player.send_preview.connect(_on_send_preview)
 	var cursor = _field.instantiate()
 	$Player.add_child(cursor)
+	cursor.setup(position, 3)
 	$Player.cursor = cursor
 	_register_item(_tower)
 	_register_item(_atom, {focal = 100.0})
@@ -91,7 +92,7 @@ func make_grid() -> void:
 func make_tunnel():
 	var tunnel: Tunnel = Tunnel.new()
 	add_child(tunnel)
-	tunnel.build([Vector3(0, 0, 0), Vector3(20, 0, 0), Vector3(40, 10, 0)])
+	tunnel.build([Vector3(-5, 5, -44), Vector3(-5, 60, -44)])
 
 func make_portal() -> void:
 	place_node(_portal).setup(Vector3(40, 4, -20),   Vector3(190, 180, 100))
