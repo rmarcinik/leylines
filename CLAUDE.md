@@ -20,6 +20,8 @@ GodotSteam P2P multiplayer.
 
 **Emergent mechanic — focal atom pitons:** A positive `focal` atom pulls everything in its field toward the atom's own position. Placed on a wall or ceiling, sweeping the cursor field over it pulls the player toward that point — like a piton or grapple anchor. Chained up a surface they form a climbing system. The field's radius acts as natural reach; the atom must be within the cursor field to take effect.
 
+**Emergent mechanic — tunnel propulsion:** The `Tunnel` node places fields along any path. Each path field has a linear atom directing force along the tangent. A ring of off-axis fields surrounds each path point, each with a focal atom positioned at the path center — pulling any body inside back to the axis. The result is a tube that carries the player along the path like a tornado, with no special player logic. Curve the path, reverse the force, vary the radius, and entirely different transport behaviors emerge from the same atom/field primitives.
+
 ## Running & Developing
 
 TODO Add testing and developing guidlines
@@ -38,6 +40,7 @@ TODO Add testing and developing guidlines
 | `scripts/player.gd` | Third-person controller: WASD + mouse look, jump, tower placement preview |
 | `scripts/Network.gd` | Steam P2P relay networking (disabled by default in Global.gd) |
 | `scripts/field.gd` | Field/area interaction |
+| `scripts/tunnel.gd` | Path-following tunnel: resamples waypoints, places fields + atoms to propel and center bodies |
 
 **Physics layers:** `player`, `enemies`, `level` (configured in `project.godot`)
 
