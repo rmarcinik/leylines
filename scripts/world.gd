@@ -87,17 +87,8 @@ func make_grid() -> void:
 
 
 func make_portal() -> void:
-	var node = place_node(_portal)
-	node.get_node('Enter').global_position = Vector3(40, 4, -20)
-	node.get_node('Enter').get_node('EnterView').get_node('EnterCam').global_position = Vector3(40, 4, -20)
-	node.get_node('Exit').global_position  = Vector3(190, 180, 100)
-	node.get_node('Exit').get_node('ExitView').get_node('ExitCam').global_position  = Vector3(190, 180, 100)
-
-	var farnode = place_node(_portal)
-	farnode.get_node('Enter').global_position = Vector3(-40, 4, 0)
-	farnode.get_node('Enter').get_node('EnterView').get_node('EnterCam').global_position = Vector3(-40, 4, 0)
-	farnode.get_node('Exit').global_position  = Vector3(0, 180, 2700)
-	farnode.get_node('Exit').get_node('ExitView').get_node('ExitCam').global_position  = Vector3(0, 180, 2700)
+	place_node(_portal).setup(Vector3(40, 4, -20),   Vector3(190, 180, 100))
+	place_node(_portal).setup(Vector3(-40, 4, 0),    Vector3(0, 180, 2700))
 
 func place_node(scene: PackedScene, xform: Transform3D = Transform3D()) -> Node:
 	var instance = scene.instantiate()

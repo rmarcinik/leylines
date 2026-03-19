@@ -36,6 +36,10 @@ func portal_mover():
 	_enter.look_at(view_pos)
 	_exit.look_at(view_pos)
 
+	# SubViewport breaks the Node3D transform chain — sync camera positions manually
+	_entercam.global_position = _enter.global_position
+	_exitcam.global_position  = _exit.global_position
+
 	# Make cameras face opposite direction by rotating 180° around Y axis
 	_entercam.basis = _exit.basis.rotated(Vector3.UP, PI)
 	_exitcam.basis = _enter.basis.rotated(Vector3.UP, PI)
