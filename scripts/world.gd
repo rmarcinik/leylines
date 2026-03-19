@@ -19,9 +19,11 @@ func _ready() -> void:
 	make_portal()
 	move_moon()
 	ready_player()
+	make_tunnel()
+
 	_connect_network()
 	add_child(preload("res://scripts/LobbyUI.gd").new())
-
+	
 func _connect_network() -> void:
 	Network.peer_connected.connect(_on_peer_connected)
 	Network.peer_disconnected.connect(_on_peer_disconnected)
@@ -85,6 +87,11 @@ func make_grid() -> void:
 			node.position = Vector3(x, height, z)
 			add_child(node, true)
 
+
+func make_tunnel():
+	var tunnel: Tunnel = Tunnel.new()
+	add_child(tunnel)
+	tunnel.build([Vector3(0, 0, 0), Vector3(20, 0, 0), Vector3(40, 10, 0)])
 
 func make_portal() -> void:
 	place_node(_portal).setup(Vector3(40, 4, -20),   Vector3(190, 180, 100))
