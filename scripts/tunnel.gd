@@ -7,8 +7,9 @@ const _atom_scene  = preload("res://scenes/atom.tscn")
 @export var force: float = 30.0
 @export var pull: float = -15.0
 @export var ring_count: int = 4
-@export var ring_radius: float = 4.0
-@export var ring_pull: float = 80.0
+@export var ring_radius: float = 2.0
+@export var ring_pull: float = 40.0
+@export var focal_lead: float = 1
 
 func build(points: Array[Vector3]) -> void:
 	var sampled := _resample(points)
@@ -57,6 +58,7 @@ func _place_field(pos: Vector3, direction: Vector3) -> void:
 
 	var center: Atom = _atom_scene.instantiate()
 	center.focal = pull
+	center.position = direction * focal_lead
 	field.add_child(center)
 
 # Place ring_count fields in a circle of ring_radius around pos.

@@ -89,10 +89,17 @@ func make_grid() -> void:
 			add_child(node, true)
 
 
-func make_tunnel():
+func make_tunnel() -> void:
+	_tunnel_from_path($path_3d)
+	_tunnel_from_path($Blocks/Path3D)
+
+func _tunnel_from_path(path: Path3D) -> void:
+	var points: Array[Vector3] = []
+	for p in path.curve.tessellate():
+		points.append(path.global_transform * p)
 	var tunnel: Tunnel = Tunnel.new()
 	add_child(tunnel)
-	tunnel.build([Vector3(-5, 5, -44), Vector3(-5, 60, -44)])
+	tunnel.build(points)
 
 func make_portal() -> void:
 	place_node(_portal).setup(Vector3(40, 4, -20),   Vector3(190, 180, 100))
