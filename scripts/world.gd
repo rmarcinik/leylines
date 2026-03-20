@@ -20,6 +20,7 @@ func _ready() -> void:
 	move_moon()
 	ready_player()
 	make_tunnel()
+	make_gravity()
 	make_stars()
 	make_sun()
 
@@ -105,6 +106,17 @@ func _tunnel_from_path(path: Path3D) -> void:
 	var tunnel: Tunnel = Tunnel.new()
 	add_child(tunnel)
 	tunnel.build(points)
+
+func make_gravity() -> void:
+	var field := _field.instantiate() as Field
+	field.default_radius = 4000.0
+	add_child(field)
+	field.global_position = $Blocks/Crater.global_position - Vector3(0, 2000, 0)
+	var orient := _atom.instantiate() as Atom
+	orient.radial = -10
+	orient.orient = true
+	field.add_child(orient)
+	orient.global_position = field.global_position
 
 func make_stars() -> void:
 	add_child(Stars.new())

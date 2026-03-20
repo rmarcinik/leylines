@@ -21,7 +21,7 @@ func _sum_influence() -> Dictionary:
 	var orient_radial := 0.0
 	for area in field_area.get_overlapping_areas():
 		var atom := area.get_parent() as Atom
-		if atom and not atom.is_held:
+		if atom and not atom.is_held and not _in_inner_field(area):
 			if atom.orient:
 				orient_linear += atom.linear
 				orient_radial += atom.radial
@@ -31,6 +31,13 @@ func _sum_influence() -> Dictionary:
 				if atom.focal != 0.0:
 					focal.append(atom)
 	return {linear = linear, radial = radial, focal = focal, orient_linear = orient_linear, orient_radial = orient_radial}
+
+func _in_inner_field(atom_area: Area3D) -> bool:
+	for area in atom_area.get_overlapping_areas():
+		var field := area.get_parent() as Field
+		if field and field != self and field.default_radius < default_radius:
+			return true
+	return false
 
 func _configure_area_gravity(orient_linear: Vector3, orient_radial: float) -> void:
 	if orient_radial != 0.0:

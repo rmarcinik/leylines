@@ -105,6 +105,10 @@ fall={
 2d_physics/layer_2="enemies"
 2d_physics/layer_3="level"
 
+[physics]
+
+3d/default_gravity=0.0
+
 [rendering]
 
 textures/vram_compression/import_etc2_astc=true
