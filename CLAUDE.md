@@ -62,11 +62,20 @@ Example: a placed Atom connects `player.item_action → queue_free` when the mou
 
 ## Releases
 
-Tag a release from the current commit:
-
 ```
-git tag v0.1-sandbox
-git push origin v0.1-sandbox
+# 1. Make sure you're on main and up to date
+git checkout main
+git pull
+
+# 2. Tag and push the tag
+git tag v0.11
+git push origin v0.11
+
+# 3. Create the GitHub release (auto-generates notes from commits)
+gh release create v0.11 --title "v0.11" --generate-notes
+
+# 4. (Optional) Attach exported build zips after exporting from Godot
+gh release upload v0.11 path/to/build.zip
 ```
 
 ## TODO
