@@ -1,4 +1,4 @@
-extends CanvasLayer
+class_name LobbyUI extends CanvasLayer
 
 # Minimal lobby overlay — built entirely in code, no scene file needed.
 # Shows Host/Join panel on start. Collapses to a corner lobby-ID label once in a lobby.

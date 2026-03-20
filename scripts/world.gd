@@ -20,9 +20,10 @@ func _ready() -> void:
 	move_moon()
 	ready_player()
 	make_tunnel()
+	make_stars()
 
 	_connect_network()
-	add_child(preload("res://scripts/LobbyUI.gd").new())
+	add_child(LobbyUI.new())
 	
 func _connect_network() -> void:
 	Network.peer_connected.connect(_on_peer_connected)
@@ -100,6 +101,9 @@ func _tunnel_from_path(path: Path3D) -> void:
 	var tunnel: Tunnel = Tunnel.new()
 	add_child(tunnel)
 	tunnel.build(points)
+
+func make_stars() -> void:
+	add_child(Stars.new())
 
 func make_portal() -> void:
 	place_node(_portal).setup(Vector3(40, 4, -20),   Vector3(190, 180, 100))

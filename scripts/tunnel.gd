@@ -28,14 +28,14 @@ func _resample(points: Array[Vector3]) -> Array[Vector3]:
 	var carry := step
 	for i in range(1, points.size()):
 		var seg := points[i] - points[i - 1]
-		var len := seg.length()
-		if len == 0.0:
+		var seglen := seg.length()
+		if seglen == 0.0:
 			continue
-		var dir := seg / len
-		while carry <= len:
+		var dir := seg / seglen
+		while carry <= seglen:
 			result.append(points[i - 1] + dir * carry)
 			carry += step
-		carry -= len
+		carry -= seglen
 	return result
 
 func _tangent_at(points: Array[Vector3], i: int) -> Vector3:
