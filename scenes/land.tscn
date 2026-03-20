@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://bsgohbvoaetcv"]
+[gd_scene load_steps=4 format=3 uid="uid://bsgohbvoaetcv"]
+
+[ext_resource type="Script" path="res://scripts/land.gd" id="land_gd"]
 
 [sub_resource type="BoxMesh" id="1"]
 size = Vector3(8, 1, 8)
@@ -6,7 +8,7 @@ size = Vector3(8, 1, 8)
 [sub_resource type="BoxShape3D" id="2"]
 size = Vector3(8, 1, 8)
 
-[node name="Land" type="Node3D" unique_id=1251385615]
+[node name="Land" type="Node3D" script=ExtResource("land_gd") unique_id=1251385615]
 
 [node name="Land" type="RigidBody3D" parent="." unique_id=1223937453]
 mass = 1000.0

@@ -35,6 +35,36 @@ GodotSteam P2P multiplayer.
 TODO — add setup and testing guidelines
 
 ---
+## Development
+### Git Development Commands
+
+Common commands for typical development workflow:
+
+```sh
+# Clone the repository
+git clone https://github.com/yourusername/leylines.git
+
+# Create and switch to a new branch for your feature or fix
+git checkout -b feature/my-new-feature
+
+# Stage changes
+git add .
+
+# Commit changes
+git commit -m "Describe your change"
+
+# Rebase onto latest main (keep your history linear)
+git fetch origin
+git rebase origin/main
+
+# Push your branch to GitHub
+git push origin feature/my-new-feature
+
+# Open a pull request from your branch (use GitHub UI)
+```
+
+For merging, prefer fast-forward or squash merges via the GitHub UI to keep the main branch linear.
+
 
 ## Releases
 

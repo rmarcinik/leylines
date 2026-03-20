@@ -125,6 +125,10 @@ func _process(_delta: float) -> void:
 		_select_slot(0)
 	if Input.is_action_just_pressed("Inventory2"):
 		_select_slot(1)
+	if Input.is_action_just_pressed("Inventory3"):
+		_select_slot(2)
+	if Input.is_action_just_pressed("Inventory4"):
+		_select_slot(3)
 	if Input.is_action_just_pressed("Inventory5"):
 		_select_slot(4)
 
