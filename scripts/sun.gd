@@ -1,7 +1,7 @@
 class_name Sun extends Node3D
 
 @export var orbit_radius: float = 2000.0
-@export var orbit_speed: float = 0.1   # radians/sec — about 2.5 min per orbit
+@export var orbit_speed: float = 0.01   # radians/sec — about 2.5 min per orbit
 @export var mesh_radius: float = 40.0
 
 var _angle: float = 90.0
@@ -22,7 +22,7 @@ func _ready() -> void:
 	add_child(mi)
 
 	_light = DirectionalLight3D.new()
-	_light.light_energy = 1.5
+	_light.light_energy = 5
 	_light.shadow_enabled = true
 	_light.directional_shadow_max_distance = 1000.0
 	add_child(_light)
