@@ -12,10 +12,10 @@
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mi338"]
 sky_top_color = Color(0, 0, 0, 1)
-sky_horizon_color = Color(0.734314, 0.734314, 0.736274, 1)
-sky_energy_multiplier = 0.75
-ground_bottom_color = Color(0.937255, 0.937255, 0.945098, 1)
-ground_horizon_color = Color(0.734314, 0.734314, 0.736274, 1)
+sky_horizon_color = Color(0, 0, 0, 1)
+sky_energy_multiplier = 0.0
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Sky" id="Sky_m0a6d"]
 sky_material = SubResource("ProceduralSkyMaterial_mi338")
@@ -24,8 +24,6 @@ sky_material = SubResource("ProceduralSkyMaterial_mi338")
 background_mode = 2
 sky = SubResource("Sky_m0a6d")
 sdfgi_enabled = true
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.002
 
 [sub_resource type="StandardMaterial3D" id="6"]
 albedo_color = Color(0.184314, 0.176471, 0.176471, 1)
@@ -61,13 +59,6 @@ point_count = 2
 
 [node name="World" type="Node3D" unique_id=574210624]
 script = ExtResource("1_2be1r")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=218236233]
-transform = Transform3D(0.62388, -0.194356, 0.756967, 0, 0.968583, 0.24869, -0.78152, -0.155153, 0.60428, 0, 1000, 0)
-shadow_enabled = true
-directional_shadow_fade_start = 1.0
-directional_shadow_max_distance = 1000.0
-directional_shadow_pancake_size = 0.1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=132071748]
 environment = SubResource("Environment_lm7h8")

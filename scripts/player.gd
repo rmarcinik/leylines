@@ -122,13 +122,11 @@ func _process(_delta: float) -> void:
 	_camera_pivot.global_basis = $Head.global_basis
 		
 	if Input.is_action_just_pressed("Inventory1"):
-		active_slot = inventory[0]
-		active_slot.visible = not active_slot.visible
-		print(active_slot, inventory)
+		_select_slot(0)
 	if Input.is_action_just_pressed("Inventory2"):
-		active_slot = inventory[1]
-		active_slot.visible = not active_slot.visible
-		print(active_slot, inventory)
+		_select_slot(1)
+	if Input.is_action_just_pressed("Inventory5"):
+		_select_slot(4)
 
 	cursor.global_position = get_mouse_preview()
 
@@ -148,6 +146,12 @@ func _process(_delta: float) -> void:
 		print("[Player] sending player_pos pos=", global_position, " lobby_id=", Network.lobby_id)
 		_pos_sent_logged = true
 	Network.send("player_pos", {'pos': global_position, 'rot': global_rotation}, true)
+
+func _select_slot(index: int) -> void:
+	if index >= inventory.size():
+		return
+	active_slot = inventory[index]
+	active_slot.visible = not active_slot.visible
 
 func dampen_velocity() -> void:
 	var tween := create_tween()

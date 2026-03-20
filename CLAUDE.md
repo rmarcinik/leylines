@@ -22,6 +22,8 @@ GodotSteam P2P multiplayer.
 
 **Emergent mechanic — tunnel propulsion:** The `Tunnel` node places fields along any path. Each path field has a linear atom directing force along the tangent. A ring of off-axis fields surrounds each path point, each with a focal atom positioned at the path center — pulling any body inside back to the axis. The result is a tube that carries the player along the path like a tornado, with no special player logic. Curve the path, reverse the force, vary the radius, and entirely different transport behaviors emerge from the same atom/field primitives.
 
+**Emergent mechanic — shadow choreography:** Moving light sources (the orbiting sun, placed light atoms) illuminate polygon faces one at a time as they sweep across geometry. The hard-edged shadows produced by low-poly meshes read as distinct events rather than continuous gradients. This creates natural puzzle opportunities — paths or markings only become visible when lit from a specific angle, objects hidden in shadow until the sun reaches a certain position, or sequences that only reveal themselves at the right time of day. No special shadow logic required; it emerges from the sun's orbital motion combined with the scene geometry.
+
 ## Running & Developing
 
 TODO Add testing and developing guidlines

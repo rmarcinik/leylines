@@ -4,10 +4,15 @@ class_name Atom extends Node3D
 @export var radial: float = 0.0             # positive = push, negative = pull (relative to field center)
 @export var focal: float = 0.0             # positive = pull toward atom, negative = push away from atom
 @export var orient: bool = false            # if true, drives field area gravity for player orientation instead of apply_central_force
-@export var light: float = 0.0             # emission energy; 0 = no glow
+@export var light: float = 0.0:            # emission energy; 0 = no glow
+	set(value):
+		light = value
+		if is_node_ready() and value > 0.0:
+			_setup_light()
 @export var light_color: Color = Color.WHITE
 @export var light_range: float = 0.0       # OmniLight3D range; 0 = skip light node
 var is_held := false
+var _light_ready := false
 
 @onready var _area: Area3D = $area_3d
 
@@ -22,6 +27,9 @@ func _ready() -> void:
 		_area.area_exited.connect(_on_area_exited)
 
 func _setup_light() -> void:
+	if _light_ready:
+		return
+	_light_ready = true
 	var mi: MeshInstance3D = $mesh_instance_3d
 	mi.scale = Vector3.ONE * (1.0 + light * 0.5)
 	var mat := StandardMaterial3D.new()

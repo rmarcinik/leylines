@@ -21,6 +21,7 @@ func _ready() -> void:
 	ready_player()
 	make_tunnel()
 	make_stars()
+	make_sun()
 
 	_connect_network()
 	add_child(LobbyUI.new())
@@ -41,6 +42,9 @@ func ready_player() -> void:
 	$Player.cursor = cursor
 	_register_item(_tower)
 	_register_item(_atom, {focal = 100.0})
+	_register_item(_atom, {radial = 50.0})
+	_register_item(_atom, {radial = -50.0})
+	_register_item(_atom, {light = 2.0, light_color = Color(1.0, 0.9, 0.5), light_range = 100.0})
 
 func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
 	var preview = scene.instantiate()
@@ -104,6 +108,9 @@ func _tunnel_from_path(path: Path3D) -> void:
 
 func make_stars() -> void:
 	add_child(Stars.new())
+
+func make_sun() -> void:
+	add_child(Sun.new())
 
 func make_portal() -> void:
 	place_node(_portal).setup(Vector3(40, 4, -20),   Vector3(190, 180, 100))
