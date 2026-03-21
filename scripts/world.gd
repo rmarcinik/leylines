@@ -20,7 +20,7 @@ func _ready() -> void:
 	move_moon()
 	ready_player()
 	make_tunnel()
-	make_gravity()
+	#make_gravity()
 	make_stars()
 	make_sun()
 
@@ -108,6 +108,8 @@ func _tunnel_from_path(path: Path3D) -> void:
 	tunnel.build(points)
 
 func make_gravity() -> void:
+	var space := get_viewport().find_world_3d().space
+	PhysicsServer3D.area_set_param(space, PhysicsServer3D.AREA_PARAM_GRAVITY, 0.0)
 	var field := _field.instantiate() as Field
 	field.default_radius = 4000.0
 	add_child(field)
