@@ -13,6 +13,7 @@ class_name Atom extends Node3D
 @export var light_range: float = 0.0       # OmniLight3D range; 0 = skip light node
 var is_held := false
 var _light_ready := false
+var _fields: Array[Field] = []
 
 @onready var _area: Area3D = $area_3d
 
@@ -48,7 +49,8 @@ func _setup_light() -> void:
 func _on_area_entered(area: Area3D) -> void:
 	var field := area.get_parent() as Field
 	if field:
-		field.add_atom(self)
+		_fields.append(field)
+		_resync_fields()
 		return
 	var player := area.get_parent().get_parent() as Player
 	if player and not player.item_action.is_connected(queue_free):
@@ -58,7 +60,18 @@ func _on_area_exited(area: Area3D) -> void:
 	var field := area.get_parent() as Field
 	if field:
 		field.remove_atom(self)
+		_fields.erase(field)
+		_resync_fields()
 		return
 	var player := area.get_parent().get_parent() as Player
 	if player and player.item_action.is_connected(queue_free):
 		player.item_action.disconnect(queue_free)
+
+func _resync_fields() -> void:
+	if _fields.is_empty():
+		return
+	var min_r := _fields[0].get_radius()
+	for f in _fields:
+		min_r = min(min_r, f.get_radius())
+	for f in _fields:
+		f.add_atom(self, min_r / f.get_radius())
