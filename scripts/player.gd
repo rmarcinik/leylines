@@ -125,6 +125,10 @@ func _process(_delta: float) -> void:
 		_select_slot(0)
 	if Input.is_action_just_pressed("Inventory2"):
 		_select_slot(1)
+	if Input.is_action_just_pressed("Inventory3"):
+		_select_slot(2)
+	if Input.is_action_just_pressed("Inventory4"):
+		_select_slot(3)
 	if Input.is_action_just_pressed("Inventory5"):
 		_select_slot(4)
 
@@ -150,8 +154,16 @@ func _process(_delta: float) -> void:
 func _select_slot(index: int) -> void:
 	if index >= inventory.size():
 		return
-	active_slot = inventory[index]
-	active_slot.visible = not active_slot.visible
+	var slot := inventory[index]
+	if active_slot == slot:
+		slot.visible = not slot.visible
+		if not slot.visible:
+			active_slot = null
+	else:
+		if active_slot:
+			active_slot.visible = false
+		active_slot = slot
+		active_slot.visible = true
 
 func dampen_velocity() -> void:
 	var tween := create_tween()

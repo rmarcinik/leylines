@@ -1,19 +1,20 @@
 [gd_scene format=3 uid="uid://bsgohbvoaetcv"]
 
+[ext_resource type="Script" uid="uid://fcxyyuy6vd7h" path="res://scripts/land.gd" id="land_gd"]
+
 [sub_resource type="BoxMesh" id="1"]
 size = Vector3(8, 1, 8)
 
 [sub_resource type="BoxShape3D" id="2"]
 size = Vector3(8, 1, 8)
 
-[node name="Land" type="Node3D" unique_id=1251385615]
-
-[node name="Land" type="RigidBody3D" parent="." unique_id=1223937453]
+[node name="Land" type="RigidBody3D" unique_id=1286486769]
 mass = 1000.0
 gravity_scale = 0.0
+script = ExtResource("land_gd")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Land" unique_id=1285769552]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=269234375]
 mesh = SubResource("1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Land" unique_id=237887347]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=116504009]
 shape = SubResource("2")

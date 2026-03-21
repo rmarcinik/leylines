@@ -1,23 +1,29 @@
-# build.ps1 — export and zip for distribution
-# Usage: .\build.ps1
-# Requires Godot 4 to be on PATH as 'godot4' (adjust $GODOT if needed)
-$ErrorActionPreference = "Stop"
+function Invoke-Build {
+    $ErrorActionPreference = "Stop"
 
-$GODOT  = "C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe"
-$PRESET = "Windows Desktop"
-$EXE    = ".\build\leylines.exe"
-$DLL    = ".\build\steam_api64.dll"
-$ZIP    = ".\build\leylines-dist.zip"
-$LIBGODOTSTEAM = ".\build\libgodotsteam.windows.template_release.x86_64.dll"
+    $GODOT  = "C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe"
+    $PRESET = "Windows Desktop"
+    $EXE    = ".\build\leylines.exe"
+    $ZIP    = ".\build\leylines-dist.zip"
+    $FILES  = @(
+        $EXE,
+        ".\build\steam_api64.dll",
+        ".\build\libgodotsteam.windows.template_release.x86_64.dll"
+    )
 
-Write-Host "Exporting '$PRESET'..."
-& $GODOT --headless --export-release $PRESET $EXE
+    Push-Location $PSScriptRoot
+    try {
+        Write-Host "Exporting '$PRESET'..."
+        & $GODOT --headless --export-release $PRESET $EXE
 
-Write-Host "Zipping..."
-if (Test-Path $ZIP) { Remove-Item $ZIP }
+        Write-Host "Zipping...$ZIP"
+        if (Test-Path $ZIP) { Remove-Item $ZIP }
+        Compress-Archive -Path $FILES -DestinationPath $ZIP
 
-Read-Host "Waiting"
+        Write-Host "Done -> $ZIP"
+    } finally {
+        Pop-Location
+    }
+}
 
-Compress-Archive -Path $EXE, $DLL, $LIBGODOTSTEAM -DestinationPath $ZIP
-
-Write-Host "Done -> $ZIP"
+Invoke-Build @args

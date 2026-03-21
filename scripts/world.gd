@@ -43,8 +43,8 @@ func ready_player() -> void:
 	$Player.cursor = cursor
 	_register_item(_tower)
 	_register_item(_atom, {focal = 100.0})
-	_register_item(_atom, {radial = 50.0})
-	_register_item(_atom, {radial = -50.0})
+	_register_item(_atom, {radial = 100.0})
+	_register_item(_land)
 	_register_item(_atom, {light = 2.0, light_color = Color(1.0, 0.9, 0.5), light_range = 100.0})
 
 func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
