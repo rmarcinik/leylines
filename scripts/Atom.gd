@@ -46,11 +46,19 @@ func _setup_light() -> void:
 		add_child(omni)
 
 func _on_area_entered(area: Area3D) -> void:
+	var field := area.get_parent() as Field
+	if field:
+		field.add_atom(self)
+		return
 	var player := area.get_parent().get_parent() as Player
 	if player and not player.item_action.is_connected(queue_free):
 		player.item_action.connect(queue_free)
 
 func _on_area_exited(area: Area3D) -> void:
+	var field := area.get_parent() as Field
+	if field:
+		field.remove_atom(self)
+		return
 	var player := area.get_parent().get_parent() as Player
 	if player and player.item_action.is_connected(queue_free):
 		player.item_action.disconnect(queue_free)
