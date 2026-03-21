@@ -64,12 +64,10 @@ func is_jumping() -> bool:
 func is_falling() -> bool:
 	return Input.is_action_pressed("fall")
 
-func get_gravity_direction(state) -> Vector3:
-	return state.total_gravity.normalized()
-
 func _integrate_forces(state) -> void:
 	_current_velocity = linear_velocity
-	local_gravity     = get_gravity_direction(state)
+	var raw_gravity = state.total_gravity
+	local_gravity = raw_gravity.normalized() if raw_gravity.length_squared() > 0.001 else -_camera_pivot.global_basis.y
 
 	if not is_local:
 		return
