@@ -1,13 +1,11 @@
-extends Node3D
+extends RigidBody3D
 
-var _held := false
+var previewmesh = preload("res://asset/preview.tres")
 
 func _ready() -> void:
 	if get_parent() is Player:
-		_held = true
-		visible = false
-		$Land.freeze = true
-		$Land.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+		visible = not visible
+		enable_preview()
 		return
 	var area  := Area3D.new()
 	var shape := CollisionShape3D.new()
@@ -19,9 +17,9 @@ func _ready() -> void:
 	area.area_entered.connect(_on_area_entered)
 	area.area_exited.connect(_on_area_exited)
 
-func _process(_delta: float) -> void:
-	if _held:
-		$Land.global_transform = global_transform
+func enable_preview() -> void:
+	$MeshInstance3D.set_surface_override_material(0, previewmesh)
+	$CollisionShape3D.disabled = true
 
 func _on_area_entered(area: Area3D) -> void:
 	var player := area.get_parent().get_parent() as Player
