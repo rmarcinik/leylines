@@ -1,21 +1,17 @@
 function Invoke-Build {
-    param(
-        [string]$BuildDir = ".\build"
-    )
-
     $ErrorActionPreference = "Stop"
 
     $GODOT  = "C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe"
     $PRESET = "Windows Desktop"
-    $EXE    = "leylines.exe"
-    $ZIP    = "leylines-dist.zip"
+    $EXE    = ".\build\leylines.exe"
+    $ZIP    = ".\build\leylines-dist.zip"
     $FILES  = @(
-        "leylines.exe",
-        "steam_api64.dll",
-        "libgodotsteam.windows.template_release.x86_64.dll"
+        $EXE,
+        ".\build\steam_api64.dll",
+        ".\build\libgodotsteam.windows.template_release.x86_64.dll"
     )
 
-    Push-Location $BuildDir
+    Push-Location $PSScriptRoot
     try {
         Write-Host "Exporting '$PRESET'..."
         & $GODOT --headless --export-release $PRESET $EXE
