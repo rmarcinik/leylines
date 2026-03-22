@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://csduaqjn4pdhd"]
+[gd_scene format=3 uid="uid://csduaqjn4pdhd"]
 
 [ext_resource type="Script" uid="uid://bl3im7msgma2v" path="res://scripts/tower.gd" id="1_ucv16"]
 
@@ -17,28 +17,28 @@ bottom_radius = 3.0
 [sub_resource type="CylinderMesh" id="12"]
 height = 6.0
 
-[node name="Tower" type="RigidBody3D"]
+[node name="Tower" type="RigidBody3D" unique_id=561462854]
 input_ray_pickable = false
 mass = 500.0
 script = ExtResource("1_ucv16")
 
-[node name="Spawner" type="Marker3D" parent="."]
+[node name="Spawner" type="Marker3D" parent="." unique_id=600915819]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8459, 4.16025)
 
-[node name="SpoutCollider" type="CollisionShape3D" parent="."]
+[node name="SpoutCollider" type="CollisionShape3D" parent="." unique_id=1015964339]
 transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0, 1.81993, 0.926817)
 shape = SubResource("3")
 
-[node name="BaseCollider" type="CollisionShape3D" parent="."]
+[node name="BaseCollider" type="CollisionShape3D" parent="." unique_id=2043903804]
 shape = SubResource("13")
 
-[node name="Base" type="MeshInstance3D" parent="."]
+[node name="Base" type="MeshInstance3D" parent="." unique_id=348690434]
 transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0.00798321, -0.0131406, 0.00105006)
 mesh = SubResource("15")
 
-[node name="Spout" type="MeshInstance3D" parent="Base"]
+[node name="Spout" type="MeshInstance3D" parent="Base" unique_id=2144328801]
 transform = Transform3D(1, 0, 0, 0, 0.544639, -0.838671, 0, 0.838671, 0.544639, 0.00671816, 1.78966, 1.02539)
 mesh = SubResource("12")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1206851895]
 autostart = true
