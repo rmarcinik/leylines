@@ -20,7 +20,7 @@ func _ready() -> void:
 	move_moon()
 	ready_player()
 	make_tunnel()
-	#make_gravity()
+	make_gravity()
 	make_stars()
 	make_sun()
 
@@ -111,7 +111,7 @@ func make_gravity() -> void:
 	var space := get_viewport().find_world_3d().space
 	PhysicsServer3D.area_set_param(space, PhysicsServer3D.AREA_PARAM_GRAVITY, 0.0)
 	var field := _field.instantiate() as Field
-	field.default_radius = 4000.0
+	field.default_radius = 5000.0
 	add_child(field)
 	field.global_position = $Blocks/Crater.global_position - Vector3(0, 2000, 0)
 	var orient := _atom.instantiate() as Atom
