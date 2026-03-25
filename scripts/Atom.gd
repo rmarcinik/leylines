@@ -14,18 +14,23 @@ class_name Atom extends Node3D
 var is_held := false
 var _light_ready := false
 var _current_field: Field
+var _inv: InventoryItem
 
 @onready var _area: Area3D = $area_3d
 
 func _ready() -> void:
 	if light > 0.0:
 		_setup_light()
-	if get_parent() is Player:
-		is_held = true
-		visible = false
-	else:
+	_inv = InventoryItem.new()
+	add_child(_inv)
+	_inv.preview_mode.connect(_on_preview_mode)
+	if not _inv.is_preview:
 		_area.area_entered.connect(_on_area_entered)
 		_area.area_exited.connect(_on_area_exited)
+
+func _on_preview_mode() -> void:
+	is_held = true
+	hide()
 
 func _setup_light() -> void:
 	if _light_ready:
@@ -48,25 +53,18 @@ func _setup_light() -> void:
 
 func _on_area_entered(area: Area3D) -> void:
 	var field := area.get_parent() as Field
-	if field:
-		var dist := global_position.distance_squared_to(field.global_position)
-		var cur_dist := INF if not _current_field else global_position.distance_squared_to(_current_field.global_position)
-		if dist < cur_dist:
-			if _current_field:
-				_current_field.remove_atom(self)
-			_current_field = field
-			field.add_atom(self)
+	if not field:
 		return
-	var player := area.get_parent().get_parent() as Player
-	if player and not player.item_action.is_connected(queue_free):
-		player.item_action.connect(queue_free)
+	var dist := global_position.distance_squared_to(field.global_position)
+	var cur_dist := INF if not _current_field else global_position.distance_squared_to(_current_field.global_position)
+	if dist < cur_dist:
+		if _current_field:
+			_current_field.remove_atom(self)
+		_current_field = field
+		field.add_atom(self)
 
 func _on_area_exited(area: Area3D) -> void:
 	var field := area.get_parent() as Field
 	if field and field == _current_field:
 		field.remove_atom(self)
 		_current_field = null
-		return
-	var player := area.get_parent().get_parent() as Player
-	if player and player.item_action.is_connected(queue_free):
-		player.item_action.disconnect(queue_free)

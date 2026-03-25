@@ -1,65 +1,66 @@
-## Base class for placeable inventory items.
+class_name InventoryItem extends Node
+
+## Shared component for inventory items (Atom, Land, Tower).
+## Add as a child in _ready. Handles preview visuals and player pickup connect/disconnect.
 ##
-## Subclass this and override `item_action()` to implement placement behaviour.
-## The player calls `item_action.emit()` (signal on Player) which world.gd
-## connects to each placed item's `item_action` method.
-##
-## Preview mode (while held in inventory):
-##   - mesh is swapped to the transparent preview material
-##   - colliders are disabled
-##   - `is_preview` is true so subclasses can gate logic
-##
-## Usage in world.gd:
-##   _register_item(load("res://scenes/my_item.tscn"))
-class_name InventoryItem extends Node3D
+## Automatically calls enable_preview() and emits preview_mode (deferred)
+## when parent is held by Player. Items connect preview_mode for extra logic.
+## Items supply their own areas and call on_player_enter/exit from their handlers.
 
-## Emitted when this item performs its action (placement, fire, etc).
-## Connected by world.gd to player.item_action when the item is placed.
-signal activated()
+signal preview_mode
 
-## Material applied while the node is the active inventory preview.
-@export var preview_material: Material = preload("res://asset/preview.tres")
+var is_preview: bool = false
 
-## True while this node lives inside the Player's inventory (pre-placement).
-var is_preview := false
+var _preview_material: Material = preload("res://asset/preview.tres")
 
-# ── Subclass API ──────────────────────────────────────────────────────────────
+func _ready() -> void:
+	is_preview = get_parent().get_parent() is Player
+	if is_preview:
+		_enter_preview.call_deferred()
+	else:
+		_setup_cursor_area()
 
-## Override in subclasses to implement the item's action on placement/use.
-func item_action() -> void:
-	activated.emit()
+func _setup_cursor_area() -> void:
+	var area := Area3D.new()
+	var col := CollisionShape3D.new()
+	col.shape = SphereShape3D.new()
+	area.add_child(col)
+	get_parent().add_child(area)
+	area.area_entered.connect(func(a): _on_cursor_overlap(a, true))
+	area.area_exited.connect(func(a): _on_cursor_overlap(a, false))
 
-# ── Preview mode ──────────────────────────────────────────────────────────────
+func _on_cursor_overlap(area: Area3D, entered: bool) -> void:
+	var player := area.get_parent().get_parent() as Player
+	if not player:
+		return
+	if entered:
+		on_player_enter(player)
+	else:
+		on_player_exit(player)
 
-## Call to enter preview mode (transparent mesh, colliders off).
-## world.gd calls this automatically via _register_item.
 func enable_preview() -> void:
-	is_preview = true
 	_set_colliders_disabled(true)
-	_apply_material_to_meshes(preview_material)
+	_apply_preview_material()
 
-## Called by world.gd when the item is placed into the world.
-func disable_preview() -> void:
-	is_preview = false
-	_set_colliders_disabled(false)
-	_apply_material_to_meshes(null)
+func on_player_enter(player: Player) -> void:
+	if not player.item_action.is_connected(get_parent().queue_free):
+		player.item_action.connect(get_parent().queue_free)
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+func on_player_exit(player: Player) -> void:
+	if player.item_action.is_connected(get_parent().queue_free):
+		player.item_action.disconnect(get_parent().queue_free)
+
+func _enter_preview() -> void:
+	enable_preview()
+	preview_mode.emit()
 
 func _set_colliders_disabled(disabled: bool) -> void:
-	for col in _find_children_of_type(CollisionShape3D):
-		col.disabled = disabled
-	for col in _find_children_of_type(CollisionPolygon3D):
-		col.disabled = disabled
+	for child in get_parent().find_children("*", "CollisionShape3D", true, false):
+		child.disabled = disabled
+	for child in get_parent().find_children("*", "CollisionPolygon3D", true, false):
+		child.disabled = disabled
 
-func _apply_material_to_meshes(material: Material) -> void:
-	for mi in _find_children_of_type(MeshInstance3D):
+func _apply_preview_material() -> void:
+	for mi: MeshInstance3D in get_parent().find_children("*", "MeshInstance3D", true, false):
 		for s in mi.get_surface_override_material_count():
-			mi.set_surface_override_material(s, material)
-
-func _find_children_of_type(type: Variant) -> Array:
-	var result := []
-	for child in find_children("*", "", true, false):
-		if is_instance_of(child, type):
-			result.append(child)
-	return result
+			mi.set_surface_override_material(s, _preview_material)

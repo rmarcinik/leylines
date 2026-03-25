@@ -1,32 +1,5 @@
 extends RigidBody3D
 
-var previewmesh = preload("res://asset/preview.tres")
-
 func _ready() -> void:
-	if get_parent() is Player:
-		visible = not visible
-		enable_preview()
-		return
-	var area  := Area3D.new()
-	var shape := CollisionShape3D.new()
-	var box   := BoxShape3D.new()
-	box.size  = Vector3(8, 1, 8)
-	shape.shape = box
-	area.add_child(shape)
-	add_child(area)
-	area.area_entered.connect(_on_area_entered)
-	area.area_exited.connect(_on_area_exited)
-
-func enable_preview() -> void:
-	$MeshInstance3D.set_surface_override_material(0, previewmesh)
-	$CollisionShape3D.disabled = true
-
-func _on_area_entered(area: Area3D) -> void:
-	var player := area.get_parent().get_parent() as Player
-	if player and not player.item_action.is_connected(queue_free):
-		player.item_action.connect(queue_free)
-
-func _on_area_exited(area: Area3D) -> void:
-	var player := area.get_parent().get_parent() as Player
-	if player and player.item_action.is_connected(queue_free):
-		player.item_action.disconnect(queue_free)
+	var inv := InventoryItem.new()
+	add_child(inv)

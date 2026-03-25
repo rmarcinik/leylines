@@ -69,12 +69,9 @@ func _on_item_place_remote(_sender: int, data: Dictionary) -> void:
 	var scene: PackedScene = _scene_by_path.get(data['scene'], load(data['scene']))
 	_place_item(scene, Transform3D(data['basis'], data['origin']), data.get('config', {}), false)
 
-func _place_item(scene: PackedScene, xform: Transform3D, config: Dictionary = {}, is_local: bool = true) -> Node:
+func _place_item(scene: PackedScene, xform: Transform3D, config: Dictionary = {}, _is_local: bool = true) -> Node:
 	var instance = place_node(scene, xform)
 	_apply_config(instance, config)
-	if is_local and instance.has_method("item_action"):
-		if not $Player.item_action.is_connected(instance.item_action):
-			$Player.item_action.connect(instance.item_action)
 	return instance
 
 func _apply_config(node: Node, config: Dictionary) -> void:
