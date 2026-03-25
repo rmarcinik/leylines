@@ -151,20 +151,24 @@ func _on_peer_disconnected(steam_id: int) -> void:
 func _spawn_remote_player(steam_id: int) -> void:
 	if _remote_players.has(steam_id):
 		return
-	var ghost := Node3D.new()
-	var mesh  := MeshInstance3D.new()
-	var cap   := CapsuleMesh.new()
-	cap.radius = 0.4
-	cap.height = 1.8
-	var mat   := StandardMaterial3D.new()
-	mat.albedo_color = Color.CYAN
-	mesh.mesh = cap
-	mesh.material_override = mat
-	mesh.position.y = cap.height
-	ghost.add_child(mesh)
+	var ghost := _build_player_ghost()
 	add_child(ghost, true)
 	_remote_players[steam_id] = ghost
 	print("ghost spawned for peer: ", steam_id)
+
+func _build_player_ghost() -> Node3D:
+	var cap  := CapsuleMesh.new()
+	cap.radius = 0.4
+	cap.height = 1.8
+	var mat  := StandardMaterial3D.new()
+	mat.albedo_color = Color.CYAN
+	var mesh := MeshInstance3D.new()
+	mesh.mesh = cap
+	mesh.material_override = mat
+	mesh.position.y = cap.height
+	var ghost := Node3D.new()
+	ghost.add_child(mesh)
+	return ghost
 
 var _pos_logged := false
 func _on_player_pos(sender: int, data: Dictionary) -> void:

@@ -49,11 +49,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 	if event is InputEventMouseMotion:
-		mouseMotion_x = event.relative.x
-		mouseMotion_y = event.relative.y
-		_camera_pivot.rotate_y(-mouseMotion_x * mouse_sens)
-		_camera_arm.rotate_x(-mouseMotion_y * mouse_sens * y_mouse_sens)
-		_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI / 2, PI / 2)
+		_rotate_camera_from_mouse(event)
+
+func _rotate_camera_from_mouse(event: InputEventMouseMotion) -> void:
+	mouseMotion_x = event.relative.x
+	mouseMotion_y = event.relative.y
+	_camera_pivot.rotate_y(-mouseMotion_x * mouse_sens)
+	_camera_arm.rotate_x(-mouseMotion_y * mouse_sens * y_mouse_sens)
+	_camera_arm.rotation.x = clamp(_camera_arm.rotation.x, -PI / 2, PI / 2)
 
 func is_grounded() -> bool:
 	return _raycast.is_colliding()
@@ -66,8 +69,7 @@ func is_falling() -> bool:
 
 func _integrate_forces(state) -> void:
 	_current_velocity = linear_velocity
-	var raw_gravity = state.total_gravity
-	local_gravity = raw_gravity.normalized() if raw_gravity.length_squared() > 0.001 else -_camera_pivot.global_basis.y
+	_resolve_local_gravity(state)
 
 	if not is_local:
 		return
@@ -77,20 +79,26 @@ func _integrate_forces(state) -> void:
 	basis = _orient_character_to_direction(_last_strong_direction, local_gravity, state.step)
 
 	_target_velocity = _move_direction * speed
-	#var velocity_difference := (_target_velocity - _current_velocity).length()
-	#var curve_sample        := accel_curve.sample_baked(velocity_difference)
-	var accel := ground_acceleration if is_grounded() else air_acceleration
-	var friction := ground_friction if is_grounded() else air_friction
-
-	_current_velocity *= friction
-	_current_velocity = _current_velocity.lerp(_target_velocity, state.step * accel)
-	apply_central_force(_current_velocity)
+	_apply_movement_physics(state.step)
 
 	if is_jumping():
 		apply_central_impulse(-local_gravity * jump_strength)
 	if is_falling():
 		apply_central_impulse(local_gravity * jump_strength)
 		dampen_velocity()
+
+func _resolve_local_gravity(state) -> void:
+	var raw_gravity = state.total_gravity
+	local_gravity = raw_gravity.normalized() if raw_gravity.length_squared() > 0.001 else -_camera_pivot.global_basis.y
+
+func _apply_movement_physics(step: float) -> void:
+	#var velocity_difference := (_target_velocity - _current_velocity).length()
+	#var curve_sample        := accel_curve.sample_baked(velocity_difference)
+	var accel   := ground_acceleration if is_grounded() else air_acceleration
+	var friction := ground_friction    if is_grounded() else air_friction
+	_current_velocity *= friction
+	_current_velocity = _current_velocity.lerp(_target_velocity, step * accel)
+	apply_central_force(_current_velocity)
 
 func _get_model_oriented_input() -> Vector3:
 	var raw_input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -119,6 +127,21 @@ func _process(_delta: float) -> void:
 		return
 	_camera_pivot.global_basis = $Head.global_basis
 		
+	_handle_inventory_hotkeys()
+
+	cursor.global_position = get_mouse_preview()
+	_update_slot_preview()
+
+	if Input.is_action_just_pressed("rightclick"):
+		item_action.emit()
+
+	# Broadcast position — reliable for now until unreliable ENet is confirmed working
+	if not _pos_sent_logged:
+		print("[Player] sending player_pos pos=", global_position, " lobby_id=", Network.lobby_id)
+		_pos_sent_logged = true
+	Network.send("player_pos", {'pos': global_position, 'rot': global_rotation}, true)
+
+func _handle_inventory_hotkeys() -> void:
 	if Input.is_action_just_pressed("Inventory1"):
 		_select_slot(0)
 	if Input.is_action_just_pressed("Inventory2"):
@@ -130,24 +153,14 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Inventory5"):
 		_select_slot(4)
 
-	cursor.global_position = get_mouse_preview()
-
-	if active_slot:
-		active_slot.global_transform.origin = cursor.global_position
-		active_slot.global_transform.basis  = transform.basis
-		active_slot.global_transform.basis.z = -global_transform.basis.z
-		if Input.is_action_just_pressed("leftclick") and active_slot.visible:
-			send_preview.emit(active_slot, active_slot.global_transform)
-			
-
-	if Input.is_action_just_pressed("rightclick"):
-		item_action.emit()
-
-	# Broadcast position — reliable for now until unreliable ENet is confirmed working
-	if not _pos_sent_logged:
-		print("[Player] sending player_pos pos=", global_position, " lobby_id=", Network.lobby_id)
-		_pos_sent_logged = true
-	Network.send("player_pos", {'pos': global_position, 'rot': global_rotation}, true)
+func _update_slot_preview() -> void:
+	if not active_slot:
+		return
+	active_slot.global_transform.origin = cursor.global_position
+	active_slot.global_transform.basis  = transform.basis
+	active_slot.global_transform.basis.z = -global_transform.basis.z
+	if Input.is_action_just_pressed("leftclick") and active_slot.visible:
+		send_preview.emit(active_slot, active_slot.global_transform)
 
 func _select_slot(index: int) -> void:
 	if index >= inventory.size():

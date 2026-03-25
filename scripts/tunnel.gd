@@ -47,6 +47,12 @@ func _tangent_at(points: Array[Vector3], i: int) -> Vector3:
 		return (points[-1] - points[-2]).normalized()
 	return ((points[i] - points[i - 1]) + (points[i + 1] - points[i])).normalized()
 
+func _perpendicular_basis(tangent: Vector3) -> Array[Vector3]:
+	var ref := Vector3.UP if abs(tangent.dot(Vector3.UP)) < 0.9 else Vector3.RIGHT
+	var a := tangent.cross(ref).normalized()
+	var b := tangent.cross(a).normalized()
+	return [a, b]
+
 func _place_field(pos: Vector3, direction: Vector3) -> void:
 	var field: Field = _field_scene.instantiate()
 	add_child(field)
@@ -64,9 +70,9 @@ func _place_field(pos: Vector3, direction: Vector3) -> void:
 # Place ring_count fields in a circle of ring_radius around pos.
 # Each field's focal atom sits at the path center, pulling the player toward it.
 func _place_ring(pos: Vector3, tangent: Vector3) -> void:
-	var ref := Vector3.UP if abs(tangent.dot(Vector3.UP)) < 0.9 else Vector3.RIGHT
-	var a := tangent.cross(ref).normalized()
-	var b := tangent.cross(a).normalized()
+	var ring_basis := _perpendicular_basis(tangent)
+	var a := ring_basis[0]
+	var b := ring_basis[1]
 	for i in ring_count:
 		var angle := TAU * i / ring_count
 		var offset := (a * cos(angle) + b * sin(angle)) * ring_radius
