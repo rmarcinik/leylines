@@ -13,7 +13,6 @@ var time: float
 var _remote_players: Dictionary = {}   # steam_id (int) -> Node3D ghost
 var _scenes: Dictionary = {}           # preview Node3D -> {scene: PackedScene, config: Dictionary}
 var _scene_by_path: Dictionary = {}    # resource_path -> PackedScene
-var _placed_nodes: Array[Dictionary] = []  # {scene: String, node: Node3D, config: Dictionary}
 
 func _ready() -> void:
 	make_grid()
@@ -38,10 +37,8 @@ func _connect_network() -> void:
 func _on_lobby_ready(_id: int) -> void:
 	if Network.is_host:
 		return
-	for entry in _placed_nodes:
-		if is_instance_valid(entry.node):
-			entry.node.queue_free()
-	_placed_nodes.clear()
+	for item in NetworkItem.all.duplicate():
+		item.get_parent().queue_free()
 
 # ── Player setup ──────────────────────────────────────────────────────────────
 
@@ -79,8 +76,11 @@ func _on_send_preview(node: Node3D, xform: Transform3D) -> void:
 	}, true)
 
 func _place_and_track(scene: PackedScene, xform: Transform3D, config: Dictionary = {}) -> Node:
-	var instance := _place_item(scene, xform, config)
-	_placed_nodes.append({scene = scene.resource_path, node = instance, config = config})
+	var instance = _place_item(scene, xform, config)
+	var net = NetworkItem.new()
+	net.scene_path = scene.resource_path
+	net.config = config
+	instance.add_child(net)
 	return instance
 
 func _on_item_place_remote(_sender: int, data: Dictionary) -> void:
@@ -156,16 +156,9 @@ func _on_peer_connected(steam_id: int, _username: String) -> void:
 		return
 	_spawn_remote_player(steam_id)
 	if Network.is_host:
-		for entry in _placed_nodes:
-			if not is_instance_valid(entry.node):
-				continue
-			var xform: Transform3D = (entry.node as Node3D).global_transform
-			Network.send("item_place", {
-				'scene': entry.scene,
-				'origin': xform.origin,
-				'basis': xform.basis,
-				'config': entry.config,
-			}, true, steam_id)
+		for item in NetworkItem.all:
+			if is_instance_valid(item.get_parent()):
+				Network.send("item_place", item.serialize(), true, steam_id)
 
 func _on_peer_disconnected(steam_id: int) -> void:
 	if _remote_players.has(steam_id):
