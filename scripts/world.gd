@@ -13,6 +13,7 @@ var time: float
 var _remote_players: Dictionary = {}   # steam_id (int) -> Node3D ghost
 var _scenes: Dictionary = {}           # preview Node3D -> {scene: PackedScene, config: Dictionary}
 var _scene_by_path: Dictionary = {}    # resource_path -> PackedScene
+var _placed_nodes: Array[Dictionary] = []  # {scene: String, node: Node3D, config: Dictionary}
 
 func _ready() -> void:
 	make_grid()
@@ -26,12 +27,21 @@ func _ready() -> void:
 
 	_connect_network()
 	add_child(LobbyUI.new())
-	
+
 func _connect_network() -> void:
+	Network.lobby_ready.connect(_on_lobby_ready)
 	Network.peer_connected.connect(_on_peer_connected)
 	Network.peer_disconnected.connect(_on_peer_disconnected)
 	Network.register("player_pos", _on_player_pos)
 	Network.register("item_place", _on_item_place_remote)
+
+func _on_lobby_ready(_id: int) -> void:
+	if Network.is_host:
+		return
+	for entry in _placed_nodes:
+		if is_instance_valid(entry.node):
+			entry.node.queue_free()
+	_placed_nodes.clear()
 
 # ── Player setup ──────────────────────────────────────────────────────────────
 
@@ -60,13 +70,18 @@ func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
 
 func _on_send_preview(node: Node3D, xform: Transform3D) -> void:
 	var entry = _scenes[node]
-	_place_item(entry.scene, xform, entry.config, true)
+	_place_and_track(entry.scene, xform, entry.config)
 	Network.send("item_place", {
 		'scene': entry.scene.resource_path,
 		'origin': xform.origin,
 		'basis': xform.basis,
 		'config': entry.config,
 	}, true)
+
+func _place_and_track(scene: PackedScene, xform: Transform3D, config: Dictionary = {}) -> Node:
+	var instance := _place_item(scene, xform, config)
+	_placed_nodes.append({scene = scene.resource_path, node = instance, config = config})
+	return instance
 
 func _on_item_place_remote(_sender: int, data: Dictionary) -> void:
 	var scene: PackedScene = _scene_by_path.get(data['scene'], load(data['scene']))
@@ -90,9 +105,7 @@ func make_grid() -> void:
 	var height := 4
 	for x in range(0, width * step, step):
 		for z in range(0, length * step, step):
-			var node = _land.instantiate()
-			node.position = Vector3(x, height, z)
-			add_child(node, true)
+			_place_and_track(_land, Transform3D(Basis(), Vector3(x, height, z)))
 
 
 func make_tunnel() -> void:
@@ -142,6 +155,17 @@ func _on_peer_connected(steam_id: int, _username: String) -> void:
 	if steam_id == Global.steam_id:
 		return
 	_spawn_remote_player(steam_id)
+	if Network.is_host:
+		for entry in _placed_nodes:
+			if not is_instance_valid(entry.node):
+				continue
+			var xform: Transform3D = (entry.node as Node3D).global_transform
+			Network.send("item_place", {
+				'scene': entry.scene,
+				'origin': xform.origin,
+				'basis': xform.basis,
+				'config': entry.config,
+			}, true, steam_id)
 
 func _on_peer_disconnected(steam_id: int) -> void:
 	if _remote_players.has(steam_id):
