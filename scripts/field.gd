@@ -53,7 +53,7 @@ func _on_area_exited(area: Area3D) -> void:
 func _should_accept(atom: Atom) -> bool:
 	if atom.get_parent() == self:
 		return true             # permanently parented atoms always register
-	if get_parent() is Player:
+	if is_cursor:
 		return false            # cursor field never accumulates placed atoms
 	return accepts_placed_atoms
 
