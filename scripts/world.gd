@@ -46,6 +46,7 @@ func ready_player() -> void:
 	_register_item(_atom, {radial = 100.0})
 	_register_item(_land)
 	_register_item(_atom, {light = 2.0, light_color = Color(1.0, 0.9, 0.5), light_range = 100.0})
+	_register_item(_field, {accepts_placed_atoms = true})
 
 func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
 	var preview = scene.instantiate()

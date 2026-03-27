@@ -153,6 +153,8 @@ func _handle_inventory_hotkeys() -> void:
 		_select_slot(3)
 	if Input.is_action_just_pressed("Inventory5"):
 		_select_slot(4)
+	if Input.is_action_just_pressed("Inventory6"):
+		_select_slot(5)
 
 func _update_slot_preview() -> void:
 	if not active_slot:

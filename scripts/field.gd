@@ -8,6 +8,7 @@ class_name Field extends Node3D
 @export var accepts_placed_atoms: bool = false
 
 var _atoms: Array[Atom] = []
+var _inv: InventoryItem
 var _linear := Vector3.ZERO
 var _radial := 0.0
 var _orient_linear := Vector3.ZERO
@@ -21,6 +22,9 @@ func _ready() -> void:
 	field_area.area_entered.connect(_on_area_entered)
 	field_area.area_exited.connect(_on_area_exited)
 	_orient_dirty = true
+	_inv = InventoryItem.new()
+	add_child(_inv)
+	_inv.preview_mode.connect(hide)
 
 func setup(pos: Vector3, radius: float = default_radius) -> void:
 	global_position = pos
