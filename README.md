@@ -28,6 +28,8 @@ GodotSteam P2P multiplayer.
 
 **Shadow choreography** — Moving light sources (orbiting sun, placed light atoms) illuminate low-poly faces one at a time. Hard-edged shadows read as distinct events. Paths only appear when lit from a specific angle; sequences only reveal at the right time of day. Emerges from orbital motion + scene geometry.
 
+**Camouflage field** — A field that warps lines of sight around itself, hiding anything inside. Shader distortion at the boundary bends screen-space UVs so the interior is invisible or misleading. Emerges from the field primitive + a boundary shader; no special-casing required.  Changes mesh properties of things inside, example: making it invisible in shadows by turning off emission color
+
 ---
 
 ## Running & Developing
