@@ -38,6 +38,7 @@ func _connect_network() -> void:
 func ready_player() -> void:
 	$Player.send_preview.connect(_on_send_preview)
 	var cursor = _field.instantiate()
+	cursor.is_cursor = true
 	$Player.add_child(cursor)
 	cursor.setup(position, 3)
 	$Player.cursor = cursor
