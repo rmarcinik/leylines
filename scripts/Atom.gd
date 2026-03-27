@@ -68,3 +68,13 @@ func _on_area_exited(area: Area3D) -> void:
 	if field and field == _current_field:
 		field.remove_atom(self)
 		_current_field = null
+		for a in _area.get_overlapping_areas():
+			var f := a.get_parent() as Field
+			if not f:
+				continue
+			var d := global_position.distance_squared_to(f.global_position)
+			var cur_d := INF if not _current_field else global_position.distance_squared_to(_current_field.global_position)
+			if d < cur_d:
+				_current_field = f
+		if _current_field:
+			_current_field.add_atom(self)
