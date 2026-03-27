@@ -13,20 +13,17 @@ class_name Atom extends Node3D
 @export var light_range: float = 0.0       # OmniLight3D range; 0 = skip light node
 var is_held := false
 var _light_ready := false
-var _current_field: Field
 var _inv: InventoryItem
 
 @onready var _area: Area3D = $area_3d
 
 func _ready() -> void:
+	_area.set_meta("field_area", true)
 	if light > 0.0:
 		_setup_light()
 	_inv = InventoryItem.new()
 	add_child(_inv)
 	_inv.preview_mode.connect(_on_preview_mode)
-	if not _inv.is_preview:
-		_area.area_entered.connect(_on_area_entered)
-		_area.area_exited.connect(_on_area_exited)
 
 func _on_preview_mode() -> void:
 	is_held = true
@@ -50,31 +47,3 @@ func _setup_light() -> void:
 		omni.light_energy = light
 		omni.omni_range = light_range
 		add_child(omni)
-
-func _on_area_entered(area: Area3D) -> void:
-	var field := area.get_parent() as Field
-	if not field:
-		return
-	var dist := global_position.distance_squared_to(field.global_position)
-	var cur_dist := INF if not _current_field else global_position.distance_squared_to(_current_field.global_position)
-	if dist < cur_dist:
-		if _current_field:
-			_current_field.remove_atom(self)
-		_current_field = field
-		field.add_atom(self)
-
-func _on_area_exited(area: Area3D) -> void:
-	var field := area.get_parent() as Field
-	if field and field == _current_field:
-		field.remove_atom(self)
-		_current_field = null
-		for a in _area.get_overlapping_areas():
-			var f := a.get_parent() as Field
-			if not f:
-				continue
-			var d := global_position.distance_squared_to(f.global_position)
-			var cur_d := INF if not _current_field else global_position.distance_squared_to(_current_field.global_position)
-			if d < cur_d:
-				_current_field = f
-		if _current_field:
-			_current_field.add_atom(self)

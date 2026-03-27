@@ -32,6 +32,7 @@ shape = SubResource("SphereShape3D_v6as0")
 
 [node name="Field" parent="." unique_id=1651307999 instance=ExtResource("3_7l7dh")]
 default_radius = 60.0
+accepts_placed_atoms = true
 
 [node name="Atom" parent="Field" unique_id=913673898 instance=ExtResource("4_xatjt")]
 radial = -10.0

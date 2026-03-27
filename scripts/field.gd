@@ -4,7 +4,10 @@ class_name Field extends Node3D
 @onready var field_collision_shape: CollisionShape3D = $area_3d/collision_shape_3d
 
 @export var default_radius := 10.0
+## When false this field ignores player-placed atoms. Cursor and background fields stay false.
+@export var accepts_placed_atoms: bool = false
 
+var _atoms: Array[Atom] = []
 var _linear := Vector3.ZERO
 var _radial := 0.0
 var _orient_linear := Vector3.ZERO
@@ -15,32 +18,55 @@ var _orient_dirty := false
 func _ready() -> void:
 	field_collision_shape.shape = field_collision_shape.shape
 	field_collision_shape.shape.radius = default_radius
+	field_area.area_entered.connect(_on_area_entered)
+	field_area.area_exited.connect(_on_area_exited)
 	_orient_dirty = true
 
 func setup(pos: Vector3, radius: float = default_radius) -> void:
 	global_position = pos
 	field_collision_shape.shape.radius = radius
 
-func add_atom(atom: Atom) -> void:
-	if atom.orient:
-		_orient_linear += atom.linear
-		_orient_radial += atom.radial
-		_orient_dirty = true
-	else:
-		_linear += atom.linear
-		_radial += atom.radial
-		if atom.focal != 0.0:
-			_focal.append(atom)
+func _on_area_entered(area: Area3D) -> void:
+	if not area.has_meta("field_area"):
+		return
+	var atom := area.get_parent() as Atom
+	if not atom or atom in _atoms or not _should_accept(atom):
+		return
+	_atoms.append(atom)
+	_recalculate()
 
-func remove_atom(atom: Atom) -> void:
-	if atom.orient:
-		_orient_linear -= atom.linear
-		_orient_radial -= atom.radial
-		_orient_dirty = true
-	else:
-		_linear -= atom.linear
-		_radial -= atom.radial
-		_focal.erase(atom)
+func _on_area_exited(area: Area3D) -> void:
+	if not area.has_meta("field_area"):
+		return
+	var atom := area.get_parent() as Atom
+	if not atom or atom not in _atoms:
+		return
+	_atoms.erase(atom)
+	_recalculate()
+
+func _should_accept(atom: Atom) -> bool:
+	if atom.get_parent() == self:
+		return true             # permanently parented atoms always register
+	if get_parent() is Player:
+		return false            # cursor field never accumulates placed atoms
+	return accepts_placed_atoms
+
+func _recalculate() -> void:
+	_linear = Vector3.ZERO
+	_radial = 0.0
+	_orient_linear = Vector3.ZERO
+	_orient_radial = 0.0
+	_focal.clear()
+	for atom in _atoms:
+		if atom.orient:
+			_orient_linear += atom.linear
+			_orient_radial += atom.radial
+		else:
+			_linear += atom.linear
+			_radial += atom.radial
+			if atom.focal != 0.0:
+				_focal.append(atom)
+	_orient_dirty = true
 
 func _configure_area_gravity() -> void:
 	if _orient_radial != 0.0:

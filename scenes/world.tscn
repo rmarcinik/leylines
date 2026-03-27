@@ -290,9 +290,11 @@ progress = 1.0
 
 [node name="Field" parent="." unique_id=1096557150 instance=ExtResource("8_4mrxx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00526, -21.1888)
+accepts_placed_atoms = true
 
 [node name="Atom" parent="Field" unique_id=1649934180 instance=ExtResource("9_7r4gi")]
 radial = -10.0
 
 [node name="Field2" parent="." unique_id=2038408437 instance=ExtResource("8_4mrxx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -43.11783)
+accepts_placed_atoms = true
