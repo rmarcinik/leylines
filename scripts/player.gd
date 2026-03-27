@@ -15,6 +15,7 @@ class_name Player extends RigidBody3D
 @export var ground_friction     := 1.1
 @export var air_friction        := 0.8
 @export var accel_curve: Curve
+@export var lateral_threshold := 2.0
 @export var inventory: Array[Node3D]
 ## Set false on nodes that represent remote peers — disables input, camera, and broadcasting.
 var is_local: bool = true
@@ -81,6 +82,8 @@ func _integrate_forces(state) -> void:
 
 	_target_velocity = _move_direction * speed
 	_apply_movement_physics(state.step)
+	if is_grounded():
+		_apply_lateral_threshold(state)
 
 	if is_jumping():
 		apply_central_impulse(-local_gravity * jump_strength)
@@ -93,13 +96,21 @@ func _resolve_local_gravity(state) -> void:
 	local_gravity = raw_gravity.normalized() if raw_gravity.length_squared() > 0.001 else -_camera_pivot.global_basis.y
 
 func _apply_movement_physics(step: float) -> void:
-	#var velocity_difference := (_target_velocity - _current_velocity).length()
-	#var curve_sample        := accel_curve.sample_baked(velocity_difference)
 	var accel   := ground_acceleration if is_grounded() else air_acceleration
 	var friction := ground_friction    if is_grounded() else air_friction
 	_current_velocity *= friction
 	_current_velocity = _current_velocity.lerp(_target_velocity, step * accel)
 	apply_central_force(_current_velocity)
+
+func _apply_lateral_threshold(state: PhysicsDirectBodyState3D) -> void:
+	if not accel_curve:
+		return
+	var up      := -local_gravity
+	var vert    := state.linear_velocity.project(up)
+	var lateral := state.linear_velocity - vert
+	var t       := lateral.length() / lateral_threshold
+	var lat_scale := accel_curve.sample_baked(minf(t, 1.0))
+	state.linear_velocity = vert + lateral * lat_scale
 
 func _get_model_oriented_input() -> Vector3:
 	var raw_input := Input.get_vector("move_left", "move_right", "move_up", "move_down")

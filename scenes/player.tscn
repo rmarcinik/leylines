@@ -7,8 +7,8 @@ friction = 0.0
 absorbent = true
 
 [sub_resource type="Curve" id="Curve_3vyb7"]
-_data = [Vector2(0, 1), 0.0, 0.137845, 0, 0, Vector2(0.832753, 0.210714), -2.56982, -2.56982, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 0), -0.1069472, -0.1069472, 0, 0, Vector2(0.15901059, 0), 0.0, 0.0, 0, 0, Vector2(0.30035335, 1), 0.083554104, 0.083554104, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="CapsuleShape3D" id="1"]
 margin = 0.1
