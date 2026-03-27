@@ -1,0 +1,56 @@
+# Run Tests
+
+You are an agent running the automated test suite for this Godot 4.6.1 project and fixing any failures.
+
+## Step 1 — Pre-flight: ensure GdUnitFileAccess.gd is patched
+
+Read `addons/gdUnit4/src/core/GdUnitFileAccess.gd` line 191. If `resource_as_string` calls `file.get_as_text(true)`, change it to `file.get_as_text()`. Godot 4.6.1 removed the `skip_cr` parameter. This fix gets reverted by linters — always check before running.
+
+## Step 2 — Run gdUnit4
+
+```
+addons\gdUnit4\runtest.cmd --godot_binary %GODOT_BIN% -a res://tests -c
+```
+
+Capture stdout. Exit code 0 = all pass. Non-zero = failures to triage.
+
+If `GODOT_BIN` is not set, check `C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe` or ask the user.
+
+## Step 3 — Read the output
+
+Scan stdout for lines containing:
+- `FAILED` or `ERROR` — test name and failure message
+- `Parse Error` — GDScript compilation issue (fix the addon or game script)
+- `GdUnitConsole` or `GdUnitFileAccess` errors — addon compat issue (see pre-flight)
+
+## Step 4 — Triage each failure
+
+| Pattern | Cause | Action |
+|---|---|---|
+| `get_as_text` / `Too many arguments` | GdUnitFileAccess not patched | Re-apply Step 1 fix |
+| `test_player_moves_closer_to_goal` | Physics non-determinism | Increase `FRAMES` constant in the test |
+| `test_no_lateral_drift` | Gravity drift | Raise lateral threshold from 1.0 → 2.0 in the assertion |
+| `test_focal_atom_curves_path_toward_goal` | Atom not registered with field | Add extra `await get_tree().physics_frame` after adding nodes |
+| `test_all_items_place_and_remove` on specific item | Missing InventoryItem child | Read the item's script — confirm it creates InventoryItem in `_ready()` |
+| Any `Parse Error` in a test file | API mismatch | Read the test, read the relevant game script, align them |
+| Consistent logic failure | Game code wrong | Read game script, fix the behavior |
+
+## Step 5 — Fix
+
+**Flaky physics test:** increase `FRAMES` or the force magnitude. Do NOT loosen assertions.
+
+**Logic failure:** read the relevant game script first to understand actual behavior, then either:
+- Fix game code if the behavior is wrong
+- Fix the test if the assertion assumed the wrong thing (e.g. wrong node name)
+
+**Compilation error in a test:** read the test file and the scripts it imports, resolve API mismatches.
+
+## Step 6 — Re-run and confirm
+
+After fixes, re-run the same command from Step 2. Report pass/fail for each test. If all pass, report success. If any still fail, continue triaging.
+
+## Known issues
+
+- `GdUnitFileAccess.gd:191` — `get_as_text(true)` is invalid in Godot 4.6.1. Always check before running.
+- `SceneTree._process` must return `bool` in Godot 4.6 — MP runners use `-> bool` and `return false`.
+- For multiplayer tests only: run `powershell -ExecutionPolicy Bypass -File run_tests.ps1` which spawns host + 2 guest processes and reads JSON results from `%APPDATA%\Godot\app_userdata\leylines\`.
