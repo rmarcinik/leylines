@@ -36,7 +36,8 @@ var cursor: Node3D
 func _ready() -> void:
 	for item in inventory:
 		add_child(item)
-		
+		item.visible = false
+
 
 	if is_local:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

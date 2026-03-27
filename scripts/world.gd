@@ -51,6 +51,7 @@ func _register_item(scene: PackedScene, config: Dictionary = {}) -> void:
 	var preview = scene.instantiate()
 	_apply_config(preview, config)
 	$Player.add_child(preview)
+	preview.visible = false
 	$Player.inventory.append(preview)
 	_scenes[preview] = {scene = scene, config = config}
 	_scene_by_path[scene.resource_path] = scene
