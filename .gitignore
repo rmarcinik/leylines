@@ -1,5 +1,6 @@
 .godot/
 addons/
 build/
+reports/
 *.tmp
 export_presets.cfg
