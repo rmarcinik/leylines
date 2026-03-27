@@ -22,6 +22,7 @@ func _ready() -> void:
 	if light > 0.0:
 		_setup_light()
 	_inv = InventoryItem.new()
+	_inv.name = "InventoryItem"
 	add_child(_inv)
 	_inv.preview_mode.connect(_on_preview_mode)
 

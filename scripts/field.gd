@@ -25,6 +25,7 @@ func _ready() -> void:
 	_orient_dirty = true
 	if not is_cursor:
 		_inv = InventoryItem.new()
+		_inv.name = "InventoryItem"
 		add_child(_inv)
 		_inv.preview_mode.connect(hide)
 

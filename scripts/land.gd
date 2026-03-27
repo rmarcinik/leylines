@@ -1,4 +1,6 @@
 extends RigidBody3D
 
 func _ready() -> void:
-	add_child(InventoryItem.new())
+	var inv := InventoryItem.new()
+	inv.name = "InventoryItem"
+	add_child(inv)

@@ -34,8 +34,9 @@ GodotSteam P2P multiplayer.
 
 ## Running & Developing
 
-TODO — add setup and testing guidelines
+/run-tests
 
+cd "c:/Users/Owner/git/leylines" && powershell -Command "& 'C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe' --path . -s -d 'res://addons/gdUnit4/bin/GdUnitCmdTool.gd' -a 'res://tests' -c 2>&1 | Tee-Object -Variable output; Write-Host 'EXIT:' $LASTEXITCODE; $output" 2>&1
 ---
 ## Development
 ### Git Development Commands

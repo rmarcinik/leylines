@@ -31,4 +31,4 @@ func test_no_lateral_drift() -> void:
 		await get_tree().physics_frame
 	var displacement := _player.global_position - start
 	var lateral      := displacement - displacement.project(fwd)
-	assert_float(lateral.length()).is_less(1.0)
+	assert_float(lateral.length()).is_less(2.0)

@@ -6,6 +6,7 @@ var SPEED = 100
 func _ready() -> void:
 	$Timer.timeout.connect(_on_Timer_timeout)
 	var inv := InventoryItem.new()
+	inv.name = "InventoryItem"
 	add_child(inv)
 	inv.preview_mode.connect($Timer.stop)
 
