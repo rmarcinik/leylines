@@ -60,4 +60,5 @@ After fixes, re-run the same command from Step 2. Report pass/fail for each test
 - MP runners must NOT use `--headless` — it prevents GodotSteam from registering `Steam`, causing `Network.gd` to fail to compile, which means the `Network` autoload is never registered, causing `Identifier not found: Network` in the runner scripts.
 - MP runners must NOT reference `Network` as a bare global identifier — GDScript checks it at compile time before autoloads are ready. Use `get_root().get_node("Network")` at runtime instead.
 - MP runners must NOT call `Network` methods in `_initialize()` — autoload nodes are not yet in the tree. Do setup in the first `_process()` frame using a `_started` flag.
+- Push-atom test output shows `Identifier not found: Network` in `player.gd:152` cascading to `field.gd` — this is a startup-time parse error (hot-reload artifact). Scripts are compiled from cache by the time test code runs; the physics works correctly. Ignore this noise if the test passes.
 - Multiplayer tests spawn host + 2 guest processes and read JSON results from `%APPDATA%\Godot\app_userdata\leylines\`.
