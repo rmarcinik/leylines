@@ -11,14 +11,10 @@ function Invoke-Tests {
         # ── Unit + Integration (gdUnit4) ──────────────────────────────────────
 
         Write-Host "--- gdUnit4 tests ---"
-        $proc = Start-Process $GODOT `
-            -ArgumentList @("--headless", "--path", ".", "-s",
-                "res://addons/gdUnit4/bin/GdUnitCmdTool.gd",
-                "-a", "res://tests/unit",
-                "-a", "res://tests/integration", "-c") `
-            -NoNewWindow -PassThru -Wait
-        if ($proc.ExitCode -ne 0) {
-            Write-Host "FAIL gdUnit4 (exit $($proc.ExitCode))"
+        & $GODOT --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd `
+            -a res://tests/unit -a res://tests/integration -c 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "FAIL gdUnit4 (exit $LASTEXITCODE)"
             $PASSED = $false
         } else {
             Write-Host "PASS gdUnit4"
@@ -67,7 +63,7 @@ function Invoke-Tests {
             }
         }
 
-        if ($PASSED) { Write-Host "Done — all tests passed" }
+        if ($PASSED) { Write-Host "Done - all tests passed" }
         else         { throw "one or more tests failed" }
 
     } finally {

@@ -36,3 +36,5 @@ Guidance for Claude Code when working in this repository. See README.md for proj
 
 Example: a placed Atom connects `player.item_action → queue_free` when the mouse enters its Area3D, and disconnects on exit. Right-click removes exactly the hovered atom — no world.gd polling required.
 
+# Ideas
+https://www.youtube.com/shorts/JPIS_UTjbyA

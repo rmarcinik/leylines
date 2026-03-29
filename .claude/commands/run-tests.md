@@ -6,19 +6,17 @@ You are an agent running the automated test suite for this Godot 4.6.1 project a
 
 Read `addons/gdUnit4/src/core/GdUnitFileAccess.gd` line 191. If `resource_as_string` calls `file.get_as_text(true)`, change it to `file.get_as_text()`. Godot 4.6.1 removed the `skip_cr` parameter. This fix gets reverted by linters — always check before running.
 
-## Step 2 — Run gdUnit4
+## Step 2 — Run tests
 
-Use PowerShell to capture output (runtest.cmd opens a GUI window and output is lost):
+Run the test script (handles both gdUnit4 and multiplayer tests):
 
 ```
-powershell -Command "& 'C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe' --path . -s 'res://addons/gdUnit4/bin/GdUnitCmdTool.gd' -a 'res://tests' -c 2>&1 | Tee-Object -Variable output; Write-Host 'EXIT:' $LASTEXITCODE; $output"
+powershell -ExecutionPolicy Bypass -File run_tests.ps1
 ```
 
 Do NOT use the `-d` flag — it activates the interactive debugger which hangs on any parse error.
 
 Capture stdout. Exit code 0 = all pass. Non-zero = failures to triage.
-
-Default Godot binary: `C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe`
 
 ## Step 3 — Read the output
 
@@ -59,4 +57,4 @@ After fixes, re-run the same command from Step 2. Report pass/fail for each test
 - `InventoryItem.new()` node name — Godot 4 auto-names nodes by native base type (`@Node@3`), NOT by `class_name`. Any script that dynamically creates InventoryItem must set `inv.name = "InventoryItem"` before `add_child(inv)`.
 - `CallableDoubler.gd:84` — Parse error about `call()` signature mismatch; this is a GdUnit4 internal issue that prints as SCRIPT ERROR but does NOT block test execution.
 - `SceneTree._process` must return `bool` in Godot 4.6 — MP runners use `-> bool` and `return false`.
-- For multiplayer tests only: run `powershell -ExecutionPolicy Bypass -File run_tests.ps1` which spawns host + 2 guest processes and reads JSON results from `%APPDATA%\Godot\app_userdata\leylines\`.
+- Multiplayer tests spawn host + 2 guest processes and read JSON results from `%APPDATA%\Godot\app_userdata\leylines\`.
