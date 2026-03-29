@@ -10,11 +10,19 @@ function Invoke-Tests {
     try {
         # ── Unit + Integration (gdUnit4) ──────────────────────────────────────
 
+        $GDOUT = Join-Path $PSScriptRoot "gdunit4_out.txt"
+        $GDERR = Join-Path $PSScriptRoot "gdunit4_err.txt"
         Write-Host "--- gdUnit4 tests ---"
-        & $GODOT --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd `
-            -a res://tests/unit -a res://tests/integration -c 2>&1
-        if ($LASTEXITCODE -ne 0) {
-            Write-Host "FAIL gdUnit4 (exit $LASTEXITCODE)"
+        $proc = Start-Process $GODOT `
+            -ArgumentList @("--path", ".", "-s", "res://addons/gdUnit4/bin/GdUnitCmdTool.gd",
+                "-a", "res://tests/unit", "-a", "res://tests/integration", "-c") `
+            -NoNewWindow -PassThru -Wait `
+            -RedirectStandardOutput $GDOUT -RedirectStandardError $GDERR
+        if (Test-Path $GDOUT) { Get-Content $GDOUT | Write-Host }
+        if (Test-Path $GDERR) { Get-Content $GDERR | Write-Host }
+        Remove-Item $GDOUT, $GDERR -ErrorAction SilentlyContinue
+        if ($proc.ExitCode -ne 0) {
+            Write-Host "FAIL gdUnit4 (exit $($proc.ExitCode))"
             $PASSED = $false
         } else {
             Write-Host "PASS gdUnit4"
@@ -29,9 +37,9 @@ function Invoke-Tests {
             if (Test-Path $p) { Remove-Item $p -Force }
         }
 
-        $HOST_ARGS   = @("--headless", "--path", ".", "-s", "res://tests/mp_runners/mp_host_runner.gd")
-        $GUEST_ARGS1 = @("--headless", "--path", ".", "-s", "res://tests/mp_runners/mp_guest_runner.gd", "--", "--guest-index", "1")
-        $GUEST_ARGS2 = @("--headless", "--path", ".", "-s", "res://tests/mp_runners/mp_guest_runner.gd", "--", "--guest-index", "2")
+        $HOST_ARGS   = @("--path", ".", "-s", "res://tests/mp_runners/mp_host_runner.gd")
+        $GUEST_ARGS1 = @("--path", ".", "-s", "res://tests/mp_runners/mp_guest_runner.gd", "--", "--guest-index", "1")
+        $GUEST_ARGS2 = @("--path", ".", "-s", "res://tests/mp_runners/mp_guest_runner.gd", "--", "--guest-index", "2")
 
         $hostProc = Start-Process $GODOT -ArgumentList $HOST_ARGS -NoNewWindow -PassThru
         Start-Sleep -Seconds 2

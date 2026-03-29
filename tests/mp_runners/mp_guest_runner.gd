@@ -1,15 +1,17 @@
 ## Standalone SceneTree script for multiplayer guest integration test.
-## Run headlessly with:
-##   godot --headless -s res://tests/mp_runners/mp_guest_runner.gd -- --guest-index N
+## Run with:
+##   godot --path . -s res://tests/mp_runners/mp_guest_runner.gd -- --guest-index N
 ## Writes result to user://mp_test_guest_N.json then exits.
 extends SceneTree
 
 const TIMEOUT_SEC := 15.0
 
+var _net         : Node
 var _idx         := 0
 var _result_path := ""
 var _elapsed     := 0.0
 var _done        := false
+var _started     := false
 
 func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -18,11 +20,13 @@ func _initialize() -> void:
 			_idx = int(args[i + 1])
 	_result_path = "user://mp_test_guest_%d.json" % _idx
 
-	Network.lobby_ready.connect(_on_lobby_ready)
-	Network.join_local_lobby()
-	print("[GUEST %d] joining localhost:%d" % [_idx, Network.LOCAL_PORT])
-
 func _process(delta: float) -> bool:
+	if not _started:
+		_started = true
+		_net = get_root().get_node("Network")
+		_net.lobby_ready.connect(_on_lobby_ready)
+		_net.join_local_lobby()
+		print("[GUEST %d] joining localhost:%d" % [_idx, _net.LOCAL_PORT])
 	if _done:
 		return false
 	_elapsed += delta
@@ -38,5 +42,5 @@ func _finish(ok: bool, msg: String) -> void:
 	var f := FileAccess.open(_result_path, FileAccess.WRITE)
 	f.store_string(JSON.stringify({passed = ok, message = msg, role = "guest", index = _idx}))
 	f.close()
-	print("[GUEST %d] %s — %s" % [_idx, "PASS" if ok else "FAIL", msg])
+	print("[GUEST %d] %s - %s" % [_idx, "PASS" if ok else "FAIL", msg])
 	quit(0 if ok else 1)

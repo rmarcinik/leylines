@@ -57,4 +57,7 @@ After fixes, re-run the same command from Step 2. Report pass/fail for each test
 - `InventoryItem.new()` node name — Godot 4 auto-names nodes by native base type (`@Node@3`), NOT by `class_name`. Any script that dynamically creates InventoryItem must set `inv.name = "InventoryItem"` before `add_child(inv)`.
 - `CallableDoubler.gd:84` — Parse error about `call()` signature mismatch; this is a GdUnit4 internal issue that prints as SCRIPT ERROR but does NOT block test execution.
 - `SceneTree._process` must return `bool` in Godot 4.6 — MP runners use `-> bool` and `return false`.
+- MP runners must NOT use `--headless` — it prevents GodotSteam from registering `Steam`, causing `Network.gd` to fail to compile, which means the `Network` autoload is never registered, causing `Identifier not found: Network` in the runner scripts.
+- MP runners must NOT reference `Network` as a bare global identifier — GDScript checks it at compile time before autoloads are ready. Use `get_root().get_node("Network")` at runtime instead.
+- MP runners must NOT call `Network` methods in `_initialize()` — autoload nodes are not yet in the tree. Do setup in the first `_process()` frame using a `_started` flag.
 - Multiplayer tests spawn host + 2 guest processes and read JSON results from `%APPDATA%\Godot\app_userdata\leylines\`.
